@@ -1,0 +1,40 @@
+{
+  "id": "contains-duplicate",
+  "leetcode_id": 217,
+  "title": "Contains Duplicate",
+  "difficulty": "Easy",
+  "description": "Given an integer array `nums`, return `true` if any value appears at least twice in the array, and return `false` if every element is distinct.\n\n**Example 1:**\n```\nInput: nums = [1,2,3,1]\nOutput: true\n```\n\n**Example 2:**\n```\nInput: nums = [1,2,3,4]\nOutput: false\n```\n\n**Example 3:**\n```\nInput: nums = [1,1,1,3,3,4,3,2,4,2]\nOutput: true\n```\n\n**Constraints:**\n- 1 <= nums.length <= 10^5\n- -10^9 <= nums[i] <= 10^9",
+  "function_signature": "def contains_duplicate(nums: list[int]) -> bool:",
+  "starter_code": "def contains_duplicate(nums):\n    # Write your solution here\n    pass",
+  "test_cases": [
+    {"input": {"nums": [1, 2, 3, 1]}, "expected": true},
+    {"input": {"nums": [1, 2, 3, 4]}, "expected": false},
+    {"input": {"nums": [1, 1, 1, 3, 3, 4, 3, 2, 4, 2]}, "expected": true},
+    {"input": {"nums": [7]}, "expected": false}
+  ],
+  "brute_force": {
+    "approach": "Nested loops comparing every pair of elements to find duplicates",
+    "complexity": "O(n^2) time, O(1) space"
+  },
+  "optimal": {
+    "approach": "Use a set to track seen elements — if an element is already in the set, it's a duplicate",
+    "complexity": "O(n) time, O(n) space",
+    "key_insight": "Set lookup is O(1), so checking 'have I seen this before?' becomes instant instead of requiring a scan"
+  },
+  "optimal_solutions": [
+    "def contains_duplicate(nums):\n    return len(nums) != len(set(nums))",
+    "def contains_duplicate(nums):\n    seen = set()\n    for num in nums:\n        if num in seen:\n            return True\n        seen.add(num)\n    return False"
+  ],
+  "anti_patterns": [
+    {
+      "rule": "nested_loop_over_same_array",
+      "description": "Two nested for-loops comparing every pair of elements in the array",
+      "explanation": "Comparing every pair is O(n^2). Using a set gives you O(1) lookups — just check if the element is already in the set as you iterate once."
+    }
+  ],
+  "hints": [
+    "Is there a data structure that can tell you instantly whether you've seen a value before?",
+    "A set has O(1) lookup time. As you iterate through the array, check if each element is already in the set.",
+    "Create an empty set. For each num: if num is in the set, return True. Otherwise, add num to the set. If you finish the loop, return False."
+  ]
+}

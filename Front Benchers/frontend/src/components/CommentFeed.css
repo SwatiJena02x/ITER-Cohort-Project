@@ -1,0 +1,85 @@
+.comment-feed {
+  flex: 1;
+  min-height: 100px;
+  max-height: 200px;
+  border-top: 1px solid var(--panel-line);
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.comment-feed-inner {
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ─── Comment lines ─── */
+.comment-line {
+  display: flex;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  padding: 4px 0;
+}
+
+.comment-prompt {
+  color: var(--ash);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.comment-text {
+  color: var(--fog);
+  word-break: break-word;
+}
+
+/* Tone coloring on the prompt glyph */
+.comment-tone-playful_warning .comment-prompt,
+.comment-tone-disappointed .comment-prompt { color: var(--alert); }
+.comment-tone-impressed .comment-prompt,
+.comment-tone-celebrating .comment-prompt { color: var(--signal); }
+.comment-tone-encouraging .comment-prompt,
+.comment-tone-neutral_thinking .comment-prompt { color: var(--ember); }
+
+/* ─── Line-by-line reveal animation ─── */
+.comment-enter {
+  animation: commentSlideIn 0.3s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes commentSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Empty state ─── */
+.comment-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 8px;
+  text-align: center;
+}
+
+.comment-empty .empty-icon {
+  font-size: 1.5rem;
+  opacity: 0.5;
+}
+
+.comment-empty p {
+  font-size: 0.8rem;
+  color: var(--ash);
+  max-width: 200px;
+  line-height: 1.5;
+}

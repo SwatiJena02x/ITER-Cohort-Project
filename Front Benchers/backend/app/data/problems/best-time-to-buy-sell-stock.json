@@ -1,0 +1,40 @@
+{
+  "id": "best-time-to-buy-sell-stock",
+  "leetcode_id": 121,
+  "title": "Best Time to Buy and Sell Stock",
+  "difficulty": "Easy",
+  "description": "You are given an array `prices` where `prices[i]` is the price of a given stock on the i-th day.\n\nYou want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.\n\nReturn the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.\n\n**Example 1:**\n```\nInput: prices = [7,1,5,3,6,4]\nOutput: 5\nExplanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.\n```\n\n**Example 2:**\n```\nInput: prices = [7,6,4,3,1]\nOutput: 0\nExplanation: No transactions are done and the max profit = 0.\n```\n\n**Constraints:**\n- 1 <= prices.length <= 10^5\n- 0 <= prices[i] <= 10^4",
+  "function_signature": "def max_profit(prices: list[int]) -> int:",
+  "starter_code": "def max_profit(prices):\n    # Write your solution here\n    pass",
+  "test_cases": [
+    {"input": {"prices": [7, 1, 5, 3, 6, 4]}, "expected": 5},
+    {"input": {"prices": [7, 6, 4, 3, 1]}, "expected": 0},
+    {"input": {"prices": [2, 4, 1]}, "expected": 2},
+    {"input": {"prices": [1, 2]}, "expected": 1}
+  ],
+  "brute_force": {
+    "approach": "Check every pair of days (buy day i, sell day j where j > i) and track the maximum profit",
+    "complexity": "O(n^2) time, O(1) space"
+  },
+  "optimal": {
+    "approach": "Single pass tracking the minimum price seen so far and the maximum profit at each step",
+    "complexity": "O(n) time, O(1) space",
+    "key_insight": "At each price, the best you could do is sell at today's price minus the cheapest price you've seen so far"
+  },
+  "optimal_solutions": [
+    "def max_profit(prices):\n    min_price = prices[0]\n    max_profit = 0\n    for price in prices:\n        if price < min_price:\n            min_price = price\n        elif price - min_price > max_profit:\n            max_profit = price - min_price\n    return max_profit",
+    "def max_profit(prices):\n    min_price = float('inf')\n    max_profit = 0\n    for price in prices:\n        min_price = min(min_price, price)\n        max_profit = max(max_profit, price - min_price)\n    return max_profit"
+  ],
+  "anti_patterns": [
+    {
+      "rule": "nested_loop_over_same_array",
+      "description": "Two nested for-loops iterating over prices to compare every pair of buy/sell days",
+      "explanation": "Checking every pair of days is O(n^2). You only need to track the minimum price seen so far and compute the profit at each step — one pass, O(n)."
+    }
+  ],
+  "hints": [
+    "You don't need to know the best sell day in advance — you just need to know the cheapest price you've seen so far.",
+    "Track `min_price` as you go. At each day, the potential profit is `price - min_price`. Track the maximum of these.",
+    "Initialize min_price = prices[0], max_profit = 0. For each price: update min_price = min(min_price, price), then max_profit = max(max_profit, price - min_price). Return max_profit."
+  ]
+}
