@@ -1,0 +1,154 @@
+DYNAMIC PROGRAMMING
+===================
+
+## What is Dynamic Programming?
+
+Dynamic Programming (DP) is a technique for solving problems
+by breaking them into smaller overlapping subproblems and
+storing the results of those subproblems so that they do not
+need to be solved repeatedly.
+
+A DP solution generally consists of:
+
+1. State
+2. Transition
+3. Base case
+4. Computation order
+
+A problem is commonly suitable for Dynamic Programming when
+it contains:
+
+1. Overlapping subproblems
+2. Optimal substructure
+
+
+## Two Common DP Approaches
+
+### Memoization
+
+Memoization is a top-down approach.
+
+We solve the problem recursively and store the result of
+each subproblem so that the same subproblem is not calculated
+again.
+
+### Tabulation
+
+Tabulation is a bottom-up approach.
+
+We start from the smallest known states and iteratively
+calculate larger states using a DP table.
+
+
+==================================================
+CLIMBING STAIRS
+==================================================
+
+## Problem
+
+You are climbing a staircase with n steps.
+
+At every move, you can climb either:
+
+- 1 step
+- 2 steps
+
+Return the number of distinct ways to reach the top.
+
+
+## Why is Climbing Stairs a DP Problem?
+
+To reach stair i, there are only two possibilities:
+
+1. We came from stair i - 1 by taking 1 step.
+2. We came from stair i - 2 by taking 2 steps.
+
+Therefore, the number of ways to reach stair i is:
+
+dp[i] = dp[i - 1] + dp[i - 2]
+
+
+## DP State
+
+Define:
+
+dp[i] = number of distinct ways to reach stair i.
+
+
+## Base Cases
+
+There is one way to reach stair 0:
+
+dp[0] = 1
+
+There is one way to reach stair 1:
+
+dp[1] = 1
+
+
+## Transition
+
+For every stair i >= 2:
+
+dp[i] = dp[i - 1] + dp[i - 2]
+
+
+## Example
+
+For n = 5:
+
+dp[0] = 1
+dp[1] = 1
+
+dp[2] = dp[1] + dp[0] = 2
+dp[3] = dp[2] + dp[1] = 3
+dp[4] = dp[3] + dp[2] = 5
+dp[5] = dp[4] + dp[3] = 8
+
+Therefore, there are 8 distinct ways to climb 5 stairs.
+
+
+## Tabulation Implementation
+
+The standard DP solution can use an array:
+
+dp = [0] * (n + 1)
+
+dp[0] = 1
+dp[1] = 1
+
+for i in range(2, n + 1):
+    dp[i] = dp[i - 1] + dp[i - 2]
+
+return dp[n]
+
+
+## Complexity
+
+Time Complexity: O(n)
+
+Space Complexity: O(n)
+
+
+## Space Optimization
+
+Only the previous two states are required.
+
+Therefore, the DP array can be replaced with two variables.
+
+This reduces the space complexity to:
+
+O(1)
+
+
+==================================================
+COMMON DYNAMIC PROGRAMMING PATTERNS
+==================================================
+
+1. 1D DP
+2. 2D DP
+3. Knapsack
+4. Grid DP
+5. Subsequence DP
+6. Interval DP
+7. Tree DP

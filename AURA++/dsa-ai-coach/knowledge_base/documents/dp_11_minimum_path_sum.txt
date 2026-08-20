@@ -1,0 +1,27 @@
+TITLE: Minimum Path Sum
+
+Problem Statement:
+Find the minimum sum path from the top-left to bottom-right of a grid,
+moving only right or down.
+
+Core Idea:
+The minimum cost to reach a cell depends on the minimum cost of its
+top and left predecessors.
+
+DP State:
+dp[r][c] = minimum path sum to reach cell (r, c).
+
+Transition:
+grid[r][c] + min(dp[r-1][c], dp[r][c-1]).
+
+Time Complexity:
+O(m*n).
+
+Space Complexity:
+O(m*n), or O(n) optimized.
+
+Common Mistakes:
+Handling first row, first column, and negative/large values incorrectly.
+
+Key Takeaway:
+Replace counting with minimizing when the objective is path cost.

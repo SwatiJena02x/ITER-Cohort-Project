@@ -1,0 +1,29 @@
+TITLE: Decode Ways
+
+Problem Statement:
+A digit string maps 1-26 to letters. Count the number of ways to decode it.
+
+Core Idea:
+At each position, consider using one digit or two valid digits.
+
+DP State:
+dp[i] = number of ways to decode the first i characters.
+
+Base Case:
+dp[0] = 1.
+
+Transition:
+Add dp[i-1] if the current digit is valid.
+Add dp[i-2] if the two-digit number is between 10 and 26.
+
+Time Complexity:
+O(n).
+
+Space Complexity:
+O(n), or O(1) with rolling values.
+
+Common Mistakes:
+Incorrect handling of zeroes.
+
+Key Takeaway:
+Two possible transition lengths make this a useful string DP problem.

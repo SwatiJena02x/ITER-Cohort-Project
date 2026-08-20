@@ -1,0 +1,32 @@
+TITLE: Partition Equal Subset Sum
+
+Problem Statement:
+Determine whether an array can be divided into two subsets having equal sums.
+
+Core Idea:
+The problem can be reduced to finding whether a subset with sum total/2 exists.
+
+DP State:
+dp[s] indicates whether sum s is achievable.
+
+Base Case:
+dp[0] = True.
+
+Transition:
+For each number, update achievable sums from right to left.
+
+Example:
+nums = [1, 5, 11, 5]
+Answer = True because [1, 5, 5] and [11] have equal sum 11.
+
+Time Complexity:
+O(n * target), where target is total_sum / 2.
+
+Space Complexity:
+O(target).
+
+Common Mistakes:
+Forgetting that the total sum must be even or iterating sums in the wrong direction.
+
+Key Takeaway:
+This is a 0/1 subset-sum style dynamic programming problem.

@@ -1,0 +1,26 @@
+TITLE: Matrix Chain Multiplication
+
+Problem Statement:
+Given matrices, determine the minimum number of scalar multiplications
+needed to multiply them.
+
+Core Idea:
+Choose the best place to split the chain.
+
+DP State:
+dp[i][j] = minimum multiplication cost for matrices i through j.
+
+Base Case:
+dp[i][i] = 0.
+
+Transition:
+Try every split k between i and j and choose the minimum cost.
+
+Time Complexity:
+O(n^3).
+
+Space Complexity:
+O(n^2).
+
+Key Takeaway:
+This is a classic interval DP problem where the transition tries every split.
