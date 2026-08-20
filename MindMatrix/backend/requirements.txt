@@ -1,0 +1,66 @@
+# ==========================================================
+# DSA Coach AI - Backend Requirements
+#
+# Two parts:
+#
+# 1. Active architecture: single code_exec_agent, orchestrated
+#    by LangGraph, using CrewAI for the agent/tool/task layer.
+#
+# 2. RAG stack (rag/embeddings.py, rag/vector_store.py,
+#    rag/retriever.py, rag/postgres_db.py) — built and
+#    working, currently NOT called from feedback.py or
+#    code_exec_agent.py, but kept installed since it will be
+#    reconnected soon.
+# ==========================================================
+
+# FastAPI web framework
+fastapi
+
+# ASGI server
+uvicorn[standard]
+
+# LangGraph - Agentic AI workflow
+langgraph
+
+# CrewAI - agent/tool/task/crew layer
+crewai>=1.15.0
+
+# Required by CrewAI for non-OpenAI/Anthropic providers (e.g. Groq)
+litellm
+
+# Environment variables
+python-dotenv
+
+# Data validation
+pydantic
+
+
+# ==========================================================
+# RAG stack (FAISS + PostgreSQL + HuggingFace embeddings)
+# ==========================================================
+
+# LangChain — used by rag/vector_store.py, rag/retriever.py
+# (FAISS wrapper, TextLoader, HuggingFaceEmbeddings)
+langchain
+langchain-community
+langchain-core
+langchain-text-splitters
+
+# FAISS vector database
+faiss-cpu
+
+# CPU-only PyTorch — prevents pulling CUDA/NVIDIA packages
+torch==2.7.0
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Sentence Transformer embeddings (used by rag/embeddings.py)
+sentence-transformers
+
+# Hugging Face transformers (sentence-transformers dependency)
+transformers
+
+# Numerical computation (FAISS/transformers dependency)
+numpy
+
+# PostgreSQL driver — used by rag/postgres_db.py
+psycopg2-binary
