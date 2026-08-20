@@ -1,0 +1,40 @@
+# --- Backend ---
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+pydantic-settings==2.5.2
+email-validator==2.2.0
+python-multipart==0.0.9
+python-dotenv==1.0.1
+bcrypt==4.2.0
+python-jose[cryptography]==3.3.0
+
+# --- Database ---
+SQLAlchemy==2.0.35
+psycopg2-binary==2.9.9
+alembic==1.13.2
+
+# --- Agent / LLM ---
+langchain==0.3.3
+langchain-community==0.3.2
+langgraph==0.2.34
+ollama==0.3.3
+
+# --- Detection / CV ---
+opencv-python==4.10.0.84
+ultralytics==8.2.103
+face-recognition==1.3.0
+mediapipe==0.10.14
+numpy==1.26.4
+Pillow==10.4.0
+rapidocr-onnxruntime==1.3.24
+
+# --- Report Generation ---
+fpdf2==2.7.9
+
+# --- HTTP client (used by agent/LLM layer) ---
+requests==2.32.3
+
+# --- Testing ---
+pytest==8.3.3
+httpx==0.27.2

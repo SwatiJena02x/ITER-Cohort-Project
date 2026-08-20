@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard · ProctorIQ</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/theme.css?v=25"/>
+  <link rel="stylesheet" href="css/dashboard.css?v=25"/>
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <header class="topbar" id="topbar"></header>
+
+    <main class="page-content animate-in">
+
+      <!-- WELCOME -->
+      <div class="section-header">
+        <h1 class="section-title" id="welcome-heading">Welcome, Administrator 👋</h1>
+        <p class="section-desc">Manage registered students, analyze examination images and review AI-generated risk reports.</p>
+      </div>
+
+      <!-- STATS GRID -->
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-box">
+          <div class="stat-icon">👥</div>
+          <div class="stat-label">Total Students</div>
+          <div class="stat-number" id="stat-students">0</div>
+          <div class="stat-trend trend-up" id="stat-students-sub">Registered in system</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">🔍</div>
+          <div class="stat-label">Analyzed Exams</div>
+          <div class="stat-number" id="stat-analyzed">0</div>
+          <div class="stat-trend trend-up" id="stat-analyzed-sub">Images processed</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">📋</div>
+          <div class="stat-label">Reports Generated</div>
+          <div class="stat-number" id="stat-reports">0</div>
+          <div class="stat-trend" style="color:#8b5cf6;" id="stat-reports-sub">AI risk reports</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-label">High Risk Cases</div>
+          <div class="stat-number" style="color:#ef4444;" id="stat-high-risk">00</div>
+          <div class="stat-trend trend-down" id="stat-high-risk-sub">Needs attention</div>
+        </div>
+      </div>
+
+      <!-- CONTENT ROW -->
+      <div class="grid-2-1" style="margin-top:4px;">
+
+        <!-- RECENT ANALYSES -->
+        <div class="card">
+          <div class="panel-header">
+            <span class="panel-title">📊 Recent Analyses</span>
+            <a href="admin-students.html" class="btn-ghost" style="font-size:0.8rem;">View All →</a>
+          </div>
+          <table class="data-table" id="recent-table">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Roll Number</th>
+                <th>Risk Score</th>
+                <th>Risk Level</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="recent-tbody">
+              <tr>
+                <td colspan="5" style="text-align:center; padding:32px; color:var(--clr-muted);">
+                  Loading recent analyses...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- QUICK ACTIONS + RISK DIST -->
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <!-- Risk Distribution Donut -->
+          <div class="card" style="text-align:center;">
+            <div class="panel-title" style="margin-bottom:12px;">Risk Level Distribution</div>
+            <div id="donut-container" style="position:relative; display:inline-block;">
+              <svg viewBox="0 0 120 120" width="120" height="120" id="donut-svg">
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#e2e8f0" stroke-width="16"/>
+                <text x="60" y="64" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="14" font-weight="800" fill="#0f172a" id="donut-count">0</text>
+                <text x="60" y="76" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="8" fill="#64748b">Reports</text>
+              </svg>
+            </div>
+            <div id="donut-legend" style="display:flex; flex-direction:column; gap:6px; margin-top:12px; text-align:left;">
+              <div style="font-size:0.8rem; color:var(--clr-muted); text-align:center; padding:8px 0;">No risk reports generated yet</div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="card">
+            <div class="panel-title" style="margin-bottom:12px;">⚡ Quick Actions</div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <a href="admin-analyze.html" class="btn-primary" style="justify-content:flex-start; gap:10px;">📤 Upload New Image</a>
+              <a href="admin-reports.html" class="btn-secondary" style="justify-content:flex-start; gap:10px;">📑 View All Reports</a>
+              <a href="admin-students.html" class="btn-secondary" style="justify-content:flex-start; gap:10px;">👥 Student Database</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="js/theme.js?v=25"></script>
+<script src="js/api.js?v=25"></script>
+<script src="js/dashboard.js?v=25"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!guardRoute('admin')) return;
+  renderSidebar('dashboard', 'admin');
+  renderTopbar('Admin Dashboard');
+
+  const userName = (window.Auth && window.Auth.getName()) || sessionStorage.getItem('userName') || 'Administrator';
+  document.getElementById('welcome-heading').textContent = `Welcome, ${userName} 👋`;
+
+  // 1. Fetch and render real dashboard stats
+  try {
+    const stats = await api.getDashboardStats();
+    if (stats) {
+      document.getElementById('stat-students').textContent = stats.total_students || 0;
+      document.getElementById('stat-analyzed').textContent = stats.total_analyzed || 0;
+      document.getElementById('stat-reports').textContent = stats.total_reports || 0;
+      document.getElementById('stat-high-risk').textContent = String(stats.high_risk_count || 0).padStart(2, '0');
+    }
+  } catch (err) {
+    console.error("Error loading dashboard stats:", err);
+  }
+
+  // 2. Fetch real reports for table and risk distribution
+  const tbody = document.getElementById('recent-tbody');
+  try {
+    const reports = await api.getAllReports();
+    if (reports && reports.length > 0) {
+      tbody.innerHTML = '';
+      reports.slice(0, 5).forEach(r => {
+        const tr = document.createElement('tr');
+        const score = Math.round(r.risk_score || 0);
+        const level = r.risk_level || 'UNKNOWN';
+        const dateStr = r.created_at ? r.created_at.slice(0, 10) : 'N/A';
+        const studentLabel = r.student_id ? `Student #${r.student_id}` : 'Student';
+        const rollLabel = r.student_id ? `STU-${r.student_id}` : 'N/A';
+
+        tr.innerHTML = `
+          <td><div style="display:flex;align-items:center;gap:8px;">
+            <div class="student-avatar">${getInitials(studentLabel)}</div>
+            <span style="font-weight:600;">${studentLabel}</span>
+          </div></td>
+          <td>${rollLabel}</td>
+          <td><span style="font-weight:700;">${score}/100</span></td>
+          <td><span class="badge ${getLevelBadgeClass(level)}">${level}</span></td>
+          <td style="color:var(--clr-muted);">${dateStr}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      renderRiskDonut(reports);
+    } else {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align:center; padding:36px 16px; color:var(--clr-muted);">
+            <div style="font-size:1.6rem; margin-bottom:8px;">🔍</div>
+            <div style="font-weight:600; margin-bottom:4px;">No exam analyses yet</div>
+            <div style="font-size:0.82rem;">Upload student examination images to generate AI risk scores.</div>
+          </td>
+        </tr>
+      `;
+      renderEmptyDonut();
+    }
+  } catch (err) {
+    console.error("Error loading reports:", err);
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" style="text-align:center; padding:24px; color:var(--clr-muted);">
+          No analyses found.
+        </td>
+      </tr>
+    `;
+    renderEmptyDonut();
+  }
+});
+
+function renderRiskDonut(reports) {
+  const total = reports.length;
+  if (total === 0) {
+    renderEmptyDonut();
+    return;
+  }
+
+  let counts = { low: 0, medium: 0, high: 0, critical: 0 };
+  reports.forEach(r => {
+    const l = (r.risk_level || '').toLowerCase();
+    if (counts[l] !== undefined) counts[l]++;
+    else counts.low++;
+  });
+
+  const lowPct = Math.round((counts.low / total) * 100);
+  const medPct = Math.round((counts.medium / total) * 100);
+  const highPct = Math.round((counts.high / total) * 100);
+  const critPct = Math.round((counts.critical / total) * 100);
+
+  // SVG Circumference = 2 * PI * 45 = 282.74
+  const circ = 282.74;
+  const lowLen = (counts.low / total) * circ;
+  const medLen = (counts.medium / total) * circ;
+  const highLen = (counts.high / total) * circ;
+  const critLen = (counts.critical / total) * circ;
+
+  let offset = 0;
+  const svg = `
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <circle cx="60" cy="60" r="45" fill="none" stroke="#e2e8f0" stroke-width="16"/>
+      ${counts.low > 0 ? `<circle cx="60" cy="60" r="45" fill="none" stroke="#10b981" stroke-width="16" stroke-dasharray="${lowLen} ${circ - lowLen}" stroke-dashoffset="${-offset}" transform="rotate(-90 60 60)"/>` : ''}
+      ${counts.medium > 0 ? `<circle cx="60" cy="60" r="45" fill="none" stroke="#f59e0b" stroke-width="16" stroke-dasharray="${medLen} ${circ - medLen}" stroke-dashoffset="${-(offset += lowLen)}" transform="rotate(-90 60 60)"/>` : ''}
+      ${counts.high > 0 ? `<circle cx="60" cy="60" r="45" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="${highLen} ${circ - highLen}" stroke-dashoffset="${-(offset += medLen)}" transform="rotate(-90 60 60)"/>` : ''}
+      ${counts.critical > 0 ? `<circle cx="60" cy="60" r="45" fill="none" stroke="#9d174d" stroke-width="16" stroke-dasharray="${critLen} ${circ - critLen}" stroke-dashoffset="${-(offset += highLen)}" transform="rotate(-90 60 60)"/>` : ''}
+      <text x="60" y="64" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="14" font-weight="800" fill="#0f172a">${total}</text>
+      <text x="60" y="76" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="8" fill="#64748b">Reports</text>
+    </svg>
+  `;
+  document.getElementById('donut-container').innerHTML = svg;
+
+  document.getElementById('donut-legend').innerHTML = `
+    <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem;"><span style="width:10px;height:10px;background:#10b981;border-radius:3px;flex-shrink:0;"></span>Low: ${counts.low} (${lowPct}%)</div>
+    <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem;"><span style="width:10px;height:10px;background:#f59e0b;border-radius:3px;flex-shrink:0;"></span>Medium: ${counts.medium} (${medPct}%)</div>
+    <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem;"><span style="width:10px;height:10px;background:#ef4444;border-radius:3px;flex-shrink:0;"></span>High: ${counts.high} (${highPct}%)</div>
+    <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem;"><span style="width:10px;height:10px;background:#9d174d;border-radius:3px;flex-shrink:0;"></span>Critical: ${counts.critical} (${critPct}%)</div>
+  `;
+}
+
+function renderEmptyDonut() {
+  document.getElementById('donut-container').innerHTML = `
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <circle cx="60" cy="60" r="45" fill="none" stroke="#e2e8f0" stroke-width="16"/>
+      <text x="60" y="64" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="14" font-weight="800" fill="#0f172a">0</text>
+      <text x="60" y="76" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="8" fill="#64748b">Reports</text>
+    </svg>
+  `;
+  document.getElementById('donut-legend').innerHTML = `
+    <div style="font-size:0.8rem; color:var(--clr-muted); text-align:center; padding:8px 0;">No risk reports generated yet</div>
+  `;
+}
+</script>
+</body>
+</html>

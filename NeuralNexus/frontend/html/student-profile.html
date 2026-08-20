@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile · ProctorIQ</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/theme.css?v=25"/>
+  <link rel="stylesheet" href="css/dashboard.css?v=25"/>
+  <style>
+    .profile-hero {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+    .profile-hero-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.22);
+      border: 3px solid rgba(255,255,255,0.5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; font-weight: 800; color: white;
+      flex-shrink: 0;
+    }
+    .profile-hero-name   { font-size: 1.4rem; font-weight: 800; }
+    .profile-hero-sub    { font-size: 0.88rem; opacity: 0.85; margin-top: 2px; }
+    .profile-hero-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .badge-white { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.35); }
+
+    .info-section { margin-bottom: var(--space-lg); }
+    .info-section-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--clr-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--clr-border);
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.88rem;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: var(--clr-muted); font-weight: 500; }
+    .info-val   { font-weight: 600; color: var(--clr-dark); text-align: right; }
+
+    .id-photo-box {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: 2px dashed var(--clr-border);
+      border-radius: var(--radius-md);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--clr-muted);
+      background: var(--clr-surface-2);
+      font-size: 0.82rem;
+      gap: 6px;
+      overflow: hidden;
+    }
+    .verify-status-card {
+      background: #fef3c7;
+      border: 1.5px solid #fde68a;
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .verify-icon { font-size: 1.8rem; }
+    .verify-title { font-weight: 700; color: #92400e; font-size: 0.95rem; }
+    .verify-sub   { font-size: 0.82rem; color: #b45309; margin-top: 2px; }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <header class="topbar" id="topbar"></header>
+    <main class="page-content animate-in">
+
+      <div class="section-header">
+        <h1 class="section-title">My Profile</h1>
+        <p class="section-desc">Your verified enrollment and identity registration details.</p>
+      </div>
+
+      <!-- PROFILE HERO -->
+      <div class="profile-hero">
+        <div class="profile-hero-avatar" id="ph-avatar">--</div>
+        <div>
+          <div class="profile-hero-name" id="ph-name">Loading Profile...</div>
+          <div class="profile-hero-sub" id="ph-sub">Roll: -- &nbsp;·&nbsp; --</div>
+          <div class="profile-hero-badges">
+            <span id="ph-hero-badge-verified"><span class="badge badge-white">Checking status...</span></span>
+            <span class="badge badge-white">🎓 Student</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="gap:20px;">
+
+        <!-- LEFT: Personal + Academic Info -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- Personal Info -->
+          <div class="card">
+            <div class="info-section">
+              <div class="info-section-title">Personal Information</div>
+              <div class="info-row"><span class="info-label">Full Name</span><span class="info-val" id="pi-name">--</span></div>
+              <div class="info-row"><span class="info-label">Roll Number</span><span class="info-val" id="pi-roll">--</span></div>
+              <div class="info-row"><span class="info-label">Email Address</span><span class="info-val" id="pi-email">--</span></div>
+            </div>
+            <div class="info-section" style="margin-bottom:0;">
+              <div class="info-section-title">Academic Information</div>
+              <div class="info-row"><span class="info-label">Course / Department</span><span class="info-val" id="pi-course">--</span></div>
+              <div class="info-row"><span class="info-label">Registration Date</span><span class="info-val" id="pi-reg-date">--</span></div>
+              <div class="info-row"><span class="info-label">Account Status</span><span class="info-val" id="pi-account-status"><span class="badge badge-info">--</span></span></div>
+            </div>
+          </div>
+
+          <!-- Risk Summary -->
+          <div class="card">
+            <div class="info-section-title" style="margin-bottom:12px;">Risk Report Summary</div>
+            <div style="display:flex;gap:10px;">
+              <div class="stat-box" style="flex:1; padding:14px;">
+                <div class="stat-label">Total Reports</div>
+                <div class="stat-number" style="font-size:1.5rem;" id="stat-prof-total-reports">0</div>
+              </div>
+              <div class="stat-box" style="flex:1; padding:14px;">
+                <div class="stat-label">Latest Score</div>
+                <div class="stat-number" style="font-size:1.2rem; color:var(--clr-muted);" id="stat-prof-latest-score">No report yet</div>
+              </div>
+              <div class="stat-box" style="flex:1; padding:14px;">
+                <div class="stat-label">Risk Level</div>
+                <div style="margin-top:4px;" id="stat-prof-latest-level"><span class="badge badge-info">Not assessed</span></div>
+              </div>
+            </div>
+            <a href="student-reports.html" class="btn-secondary full-width" style="margin-top:14px; justify-content:center;">View All Reports →</a>
+          </div>
+        </div>
+
+        <!-- RIGHT: Identity Info -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- ID Card + Passport -->
+          <div class="card">
+            <div class="info-section-title" style="margin-bottom:12px;">Identity Information</div>
+            <div class="grid-2" style="gap:14px; margin-bottom:14px;">
+              <div>
+                <div style="font-size:0.8rem;color:var(--clr-muted);font-weight:600;margin-bottom:8px;">Student ID Card</div>
+                <div class="id-photo-box" id="id-photo-box-card">
+                  <span style="font-size:1.5rem;">🪪</span><span>ID Card Photo</span><span style="font-size:0.72rem;">Not uploaded</span>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:0.8rem;color:var(--clr-muted);font-weight:600;margin-bottom:8px;">Passport Size Photo</div>
+                <div class="id-photo-box" id="id-photo-box-passport">
+                  <span style="font-size:1.5rem;">📸</span><span>Passport Photo</span><span style="font-size:0.72rem;">Not uploaded</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Verification Status -->
+            <div class="verify-status-card" id="verify-status-card" style="margin-bottom:14px;">
+              <div class="verify-icon">⚠️</div>
+              <div>
+                <div class="verify-title">Identity Status: Not Verified</div>
+                <div class="verify-sub">Student ID OCR Match: Not available &nbsp;|&nbsp; Face Biometric Match: Not available</div>
+              </div>
+            </div>
+
+            <!-- Upload / Update Button -->
+            <div style="text-align:center;">
+              <button type="button" class="btn-secondary" style="font-size:0.82rem; padding:8px 16px; width:100%; justify-content:center;" onclick="toggleUploadModal(true)">
+                📷 Upload / Update Identity Photos
+              </button>
+            </div>
+          </div>
+
+          <!-- Security Info -->
+          <div class="card">
+            <div class="info-section-title" style="margin-bottom:12px;">Account Security</div>
+            <div class="info-row"><span class="info-label">Password</span><span class="info-val">••••••••</span></div>
+            <div class="info-row"><span class="info-label">Two-Factor Auth</span><span class="info-val"><span class="badge badge-info">Managed by System</span></span></div>
+            <div class="info-row"><span class="info-label">Last Login</span><span class="info-val" id="sec-last-login">Not available</span></div>
+            <div class="alert alert-info" style="margin-top:12px; margin-bottom:0;">
+              ℹ️ Your personal information is read-only. Contact the administrator to make changes.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- UPDATE IDENTITY DOCUMENTS MODAL -->
+<div id="update-id-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.6); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+  <div class="card" style="max-width:500px; width:90%; background:white; padding:24px; border-radius:var(--radius-lg); box-shadow:var(--shadow-xl);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <h3 style="font-size:1.1rem; font-weight:800; color:var(--clr-dark);">Upload Identity Documents</h3>
+      <button type="button" class="btn-ghost" onclick="toggleUploadModal(false)" style="font-size:1.2rem; padding:4px 8px;">✕</button>
+    </div>
+    <form id="update-id-form" onsubmit="handleUpdateIdentityDocs(event)">
+      <div class="form-group" style="margin-bottom:14px;">
+        <label style="font-size:0.85rem; font-weight:700; color:var(--clr-dark); margin-bottom:6px; display:block;">1. Student ID Card Photo</label>
+        <input type="file" id="modal-id-card" accept="image/*" class="form-control" style="font-size:0.85rem; width:100%; border:1px solid #cbd5e1; padding:8px; border-radius:6px;" />
+        <div style="font-size:0.75rem; color:var(--clr-muted); margin-top:4px;">Upload your ID card image (JPG/PNG)</div>
+      </div>
+      <div class="form-group" style="margin-bottom:18px;">
+        <label style="font-size:0.85rem; font-weight:700; color:var(--clr-dark); margin-bottom:6px; display:block;">2. Passport Size Photo</label>
+        <input type="file" id="modal-passport" accept="image/*" class="form-control" style="font-size:0.85rem; width:100%; border:1px solid #cbd5e1; padding:8px; border-radius:6px;" />
+        <div style="font-size:0.75rem; color:var(--clr-muted); margin-top:4px;">Upload your reference baseline photo (JPG/PNG)</div>
+      </div>
+      <div class="error-msg hidden" id="modal-id-error" style="margin-bottom:12px; color:#ef4444; font-size:0.82rem;"></div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
+        <button type="button" class="btn-secondary" onclick="toggleUploadModal(false)">Cancel</button>
+        <button type="submit" class="btn-primary" id="modal-id-submit-btn">Save Identity Photos</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/theme.js?v=25"></script>
+<script src="js/api.js?v=25"></script>
+<script src="js/dashboard.js?v=25"></script>
+<script>
+function resolveImageUrl(path) {
+  if (!path) return null;
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  const baseUrl = (typeof API_BASE !== 'undefined' ? API_BASE : 'http://localhost:8000');
+  if (path.startsWith('/')) return baseUrl + path;
+  return baseUrl + '/' + path;
+}
+
+function toggleUploadModal(show) {
+  const modal = document.getElementById('update-id-modal');
+  if (modal) modal.style.display = show ? 'flex' : 'none';
+}
+
+async function handleUpdateIdentityDocs(event) {
+  event.preventDefault();
+  const idCard = document.getElementById('modal-id-card').files[0];
+  const passport = document.getElementById('modal-passport').files[0];
+  const errEl = document.getElementById('modal-id-error');
+
+  if (!idCard && !passport) {
+    errEl.textContent = 'Please select at least one image file to upload.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+  errEl.classList.add('hidden');
+
+  const btn = document.getElementById('modal-id-submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Uploading...';
+  if (typeof showSpinner === 'function') showSpinner('Saving identity documents...');
+
+  const fd = new FormData();
+  if (idCard) fd.append('id_card', idCard);
+  if (passport) fd.append('passport', passport);
+
+  try {
+    let updated;
+    if (window.api && typeof window.api.updateMyIdentityDocuments === 'function') {
+      updated = await window.api.updateMyIdentityDocuments(fd);
+    } else {
+      // Fallback direct HTTP call if browser cached old api.js
+      const token = (window.Auth && window.Auth.getToken()) || localStorage.getItem('access_token');
+      const targetUrl = (typeof API_BASE !== 'undefined' && API_BASE ? API_BASE : '') + '/api/students/me/identity-documents';
+      const res = await fetch(targetUrl, {
+        method: 'POST',
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+        body: fd
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        throw new Error(d.detail || `HTTP ${res.status}`);
+      }
+      updated = await res.json();
+    }
+
+    if (typeof hideSpinner === 'function') hideSpinner();
+    if (typeof showToast === 'function') showToast('Identity documents updated successfully!', 'success');
+    toggleUploadModal(false);
+    loadProfileData();
+  } catch (err) {
+    if (typeof hideSpinner === 'function') hideSpinner();
+    btn.disabled = false;
+    btn.textContent = 'Save Identity Photos';
+    errEl.textContent = err.message || 'Failed to upload images.';
+    errEl.classList.remove('hidden');
+  }
+}
+
+async function loadProfileData() {
+  try {
+    const [profile, noticesRes] = await Promise.all([
+      api.getMyProfile(),
+      api.getMyNotices().catch(() => [])
+    ]);
+
+    if (!profile || !profile.full_name) {
+      showErrorMessage("Unable to load profile from server.");
+      return;
+    }
+
+    const name = profile.full_name;
+    const roll = profile.roll_number || profile.student_code || 'N/A';
+    const email = profile.email || 'N/A';
+    const course = profile.course || 'N/A';
+    
+    let regDateStr = 'N/A';
+    if (profile.created_at) {
+      try {
+        const d = new Date(profile.created_at);
+        regDateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      } catch (_) {
+        regDateStr = String(profile.created_at).slice(0, 10);
+      }
+    }
+
+    // Hero Section
+    document.getElementById('ph-avatar').textContent = getInitials(name);
+    document.getElementById('ph-name').textContent = name;
+    document.getElementById('ph-sub').textContent = `Roll: ${roll} · ${course}`;
+
+    const isVerified = Boolean(profile.identity_verified);
+    const heroBadgeEl = document.getElementById('ph-hero-badge-verified');
+    if (heroBadgeEl) {
+      heroBadgeEl.innerHTML = isVerified
+        ? `<span class="badge badge-white" style="background:rgba(255,255,255,0.18);color:white;">✓ Identity Verified</span>`
+        : `<span class="badge badge-white" style="background:rgba(239,68,68,0.3);color:white;">⚠️ Identity Not Verified</span>`;
+    }
+
+    // Personal & Academic Info
+    document.getElementById('pi-name').textContent = name;
+    document.getElementById('pi-roll').textContent = roll;
+    document.getElementById('pi-email').textContent = email;
+    document.getElementById('pi-course').textContent = course;
+    document.getElementById('pi-reg-date').textContent = regDateStr;
+    document.getElementById('pi-account-status').innerHTML = `<span class="badge badge-success">Active</span>`;
+
+    // Reports Stats
+    const reports = Array.isArray(noticesRes) ? noticesRes : [];
+    reports.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+
+    const totalReportsEl = document.getElementById('stat-prof-total-reports');
+    const latestScoreEl = document.getElementById('stat-prof-latest-score');
+    const latestLevelEl = document.getElementById('stat-prof-latest-level');
+
+    totalReportsEl.textContent = reports.length;
+
+    if (reports.length > 0) {
+      const latest = reports[0];
+      const score = Math.round(latest.risk_score || 0);
+      const level = latest.risk_level || 'UNKNOWN';
+      const color = getLevelColor(level);
+      const badgeClass = getLevelBadgeClass(level);
+
+      latestScoreEl.textContent = `${score}/100`;
+      latestScoreEl.style.fontSize = '1.4rem';
+      latestScoreEl.style.color = color;
+      latestLevelEl.innerHTML = `<span class="badge ${badgeClass}">${level}</span>`;
+    } else {
+      latestScoreEl.textContent = 'No report yet';
+      latestScoreEl.style.fontSize = '0.9rem';
+      latestScoreEl.style.color = 'var(--clr-muted)';
+      latestLevelEl.innerHTML = `<span class="badge badge-info">Not assessed</span>`;
+    }
+
+    // ID Photos
+    const idCardBox = document.getElementById('id-photo-box-card');
+    if (idCardBox) {
+      const idCardUrl = resolveImageUrl(profile.id_card_image_path);
+      if (idCardUrl) {
+        idCardBox.innerHTML = `<img src="${idCardUrl}" alt="Student ID Card" style="width:100%; height:100%; object-fit:cover; border-radius:var(--radius-md);" onerror="this.parentNode.innerHTML='<span style=\\'font-size:1.5rem;\\'>🪪</span><span>ID Card Image</span><span style=\\'font-size:0.72rem;\\'>Unable to display image</span>'" />`;
+      } else {
+        idCardBox.innerHTML = `<span style="font-size:1.5rem;">🪪</span><span>ID Card Photo</span><span style="font-size:0.72rem;">Not uploaded</span>`;
+      }
+    }
+
+    const passportBox = document.getElementById('id-photo-box-passport');
+    if (passportBox) {
+      const passportUrl = resolveImageUrl(profile.passport_image_path);
+      if (passportUrl) {
+        passportBox.innerHTML = `<img src="${passportUrl}" alt="Passport Photo" style="width:100%; height:100%; object-fit:cover; border-radius:var(--radius-md);" onerror="this.parentNode.innerHTML='<span style=\\'font-size:1.5rem;\\'>📸</span><span>Passport Photo</span><span style=\\'font-size:0.72rem;\\'>Unable to display image</span>'" />`;
+      } else {
+        passportBox.innerHTML = `<span style="font-size:1.5rem;">📸</span><span>Passport Photo</span><span style="font-size:0.72rem;">Not uploaded</span>`;
+      }
+    }
+
+    // Verification Status & Scores
+    const verifyCard = document.getElementById('verify-status-card');
+    if (verifyCard) {
+      const ocrRaw = profile.ocr_match_score;
+      const faceRaw = profile.face_match_score_reg ?? profile.face_match_score;
+
+      let ocrStr = 'Not available';
+      if (ocrRaw != null && ocrRaw !== '') {
+        const val = Number(ocrRaw);
+        ocrStr = val <= 1 ? Math.round(val * 100) + '%' : Math.round(val) + '%';
+      }
+
+      let faceStr = 'Not available';
+      if (faceRaw != null && faceRaw !== '') {
+        const val = Number(faceRaw);
+        faceStr = val <= 1 ? Math.round(val * 100) + '%' : Math.round(val) + '%';
+      }
+
+      if (isVerified) {
+        verifyCard.className = 'verify-status-card';
+        verifyCard.style.cssText = 'background:#d1fae5; border:1.5px solid #6ee7b7; border-radius:var(--radius-lg); padding:16px 20px; display:flex; align-items:center; gap:14px; margin-bottom:14px;';
+        verifyCard.innerHTML = `
+          <div class="verify-icon">✅</div>
+          <div>
+            <div class="verify-title" style="color:#065f46;">Identity Status: Verified</div>
+            <div class="verify-sub" style="color:#047857;">Student ID OCR Match: ${ocrStr} &nbsp;|&nbsp; Face Biometric Match: ${faceStr}</div>
+          </div>
+        `;
+      } else {
+        verifyCard.className = 'verify-status-card';
+        verifyCard.style.cssText = 'background:#fef3c7; border:1.5px solid #fde68a; border-radius:var(--radius-lg); padding:16px 20px; display:flex; align-items:center; gap:14px; margin-bottom:14px;';
+        verifyCard.innerHTML = `
+          <div class="verify-icon">⚠️</div>
+          <div>
+            <div class="verify-title" style="color:#92400e;">Identity Status: Not Verified</div>
+            <div class="verify-sub" style="color:#b45309;">Student ID OCR Match: ${ocrStr} &nbsp;|&nbsp; Face Biometric Match: ${faceStr}</div>
+          </div>
+        `;
+      }
+    }
+
+    // Account Security
+    const lastLoginEl = document.getElementById('sec-last-login');
+    if (lastLoginEl) {
+      const loginTime = profile.last_login_at || profile.last_login;
+      if (loginTime) {
+        try {
+          const d = new Date(loginTime.endsWith('Z') ? loginTime : loginTime + 'Z');
+          lastLoginEl.textContent = d.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          });
+        } catch (_) {
+          lastLoginEl.textContent = String(loginTime).slice(0, 16);
+        }
+      } else {
+        lastLoginEl.textContent = 'Not available';
+      }
+    }
+
+  } catch (err) {
+    console.error("Failed to load student profile:", err);
+    showErrorMessage("Unable to load profile from server.");
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!guardRoute('student')) return;
+  renderSidebar('profile', 'student');
+  renderTopbar('My Profile');
+  loadProfileData();
+});
+
+function showErrorMessage(msg) {
+  const pageContent = document.querySelector('.page-content');
+  if (pageContent) {
+    pageContent.innerHTML = `
+      <div class="card" style="padding:40px; text-align:center; max-width:500px; margin:40px auto;">
+        <div style="font-size:2.5rem; margin-bottom:12px;">⚠️</div>
+        <h2 style="font-size:1.3rem; font-weight:700; color:var(--clr-dark); margin-bottom:8px;">Profile Load Error</h2>
+        <p style="color:var(--clr-muted); font-size:0.9rem; margin-bottom:20px;">${msg}</p>
+        <button class="btn-primary" onclick="window.location.reload()">🔄 Retry Loading</button>
+      </div>
+    `;
+  }
+}
+</script>
+</body>
+</html>

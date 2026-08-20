@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account · ProctorIQ</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <meta name="description" content="Register for secure access to the Proctoring Risk Scoring System." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/theme.css?v=3" />
+  <link rel="stylesheet" href="css/login.css?v=3" />
+  <style>
+    .reg-tabs { display: flex; background: #f1f5f9; border-radius: var(--radius-md); padding: 4px; gap: 4px; margin-bottom: 24px; }
+    .reg-tab  { flex: 1; padding: 9px; border: none; border-radius: 9px; background: transparent; color: var(--clr-muted); font-family: var(--font-base); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .reg-tab.active { background: #fff; color: var(--clr-primary); box-shadow: var(--shadow-sm); }
+    .reg-panel { display: none; } .reg-panel.active { display: block; animation: fadeIn 0.25s ease; }
+
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .upload-section { margin-top: 20px; }
+    .upload-section h4 { font-size: 0.9rem; font-weight: 700; color: var(--clr-dark); margin-bottom: 12px; border-bottom: 1px solid var(--clr-border); padding-bottom: 8px; }
+    .upload-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .upload-item { display: flex; flex-direction: column; gap: 8px; }
+    .upload-item label { font-size: 0.82rem; font-weight: 600; color: var(--clr-dark); }
+    .upload-drop {
+      border: 2px dashed #c7d2fe;
+      border-radius: var(--radius-md);
+      padding: 18px 12px;
+      text-align: center;
+      cursor: pointer;
+      background: #f5f7ff;
+      transition: var(--transition);
+      position: relative;
+    }
+    .upload-drop:hover { border-color: var(--clr-primary); background: #eff6ff; }
+    .upload-drop.has-file { border-color: #10b981; background: #f0fdf4; }
+    .upload-drop input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-drop-icon { font-size: 1.5rem; }
+    .upload-drop-text { font-size: 0.78rem; color: var(--clr-muted); margin-top: 4px; font-weight: 600; }
+    .upload-preview { width: 100%; max-height: 80px; object-fit: cover; border-radius: 8px; margin-top: 6px; display: none; }
+
+    .pw-hints { font-size: 0.75rem; color: var(--clr-muted); margin-top: 4px; line-height: 1.5; }
+    .pw-req { display: flex; align-items: center; gap: 5px; }
+    .pw-req .dot { width: 6px; height: 6px; border-radius: 50%; background: #e2e8f0; transition: background 0.2s; }
+    .pw-req.met .dot { background: #10b981; }
+    .pw-req.met      { color: #065f46; }
+    .identity-verify { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 600; margin-top: 12px; }
+    .identity-verify.success { background: #d1fae5; color: #065f46; }
+    .identity-verify.fail    { background: #fee2e2; color: #991b1b; }
+    .right-panel.wide { padding: 32px 40px; }
+    .login-card.tall  { max-width: 520px; }
+
+    @media (max-width: 820px) {
+      .form-row-2, .upload-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+    <div class="left-inner">
+      <div class="brand-logo brand-lockup">
+        <img src="assets/logo.png" alt="ProctorIQ logo" class="brand-icon" id="brand-logo-img" onerror="this.onerror=null; this.src='../assets/logo.png';" />
+        <span class="brand-wordmark">Proctor<span class="accent">IQ</span></span>
+      </div>
+      <p class="brand-tagline">Upload • Analyze • Score</p>
+      <h1 class="brand-title">AI-Powered Proctoring.</h1>
+      <p class="brand-subtitle gradient-text">Smarter &amp; Fairer Evaluations.</p>
+      <p class="brand-desc">Upload proctoring images and let AI detect suspicious activities, calculate a risk score, and generate a detailed risk report automatically.</p>
+      <div class="feature-cards">
+        <div class="feature-card"><div class="feature-icon">🛡️</div><div><div class="feature-title">Accurate Analysis</div><div class="feature-desc">AI models detect suspicious activities from uploaded examination images.</div></div></div>
+        <div class="feature-card"><div class="feature-icon">📊</div><div><div class="feature-title">Risk Scoring</div><div class="feature-desc">Calculate a detailed risk score from detected evidence and suspicious activities.</div></div></div>
+        <div class="feature-card"><div class="feature-icon">🔒</div><div><div class="feature-title">Secure &amp; Private</div><div class="feature-desc">Student information, identity data, examination images and reports are securely stored.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel wide" style="overflow-y:auto; padding-top:32px; padding-bottom:32px;">
+    <div class="login-card tall" style="margin:auto;">
+      <h2 class="card-title">Create Account</h2>
+      <p class="card-subtitle">Register for secure access to ProctorIQ.</p>
+
+      <div class="reg-tabs">
+        <button class="reg-tab active" id="rtab-student" onclick="switchRegTab('student')">🎓 Student Registration</button>
+        <button class="reg-tab" id="rtab-admin" onclick="switchRegTab('admin')">🛡️ Admin Registration</button>
+      </div>
+
+      <!-- Student Registration -->
+      <div class="reg-panel active" id="rpanel-student">
+        <form id="student-reg-form" onsubmit="handleStudentReg(event)">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="sr-name">Full Name</label>
+              <input type="text" id="sr-name" placeholder="Enter full name" required />
+            </div>
+            <div class="form-group">
+              <label for="sr-roll">Roll Number / Student ID</label>
+              <input type="text" id="sr-roll" placeholder="STU2026001" required />
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="sr-email">Email Address</label>
+              <input type="email" id="sr-email" placeholder="student@example.com" required />
+            </div>
+            <div class="form-group">
+              <label for="sr-course">Course / Department</label>
+              <select id="sr-course">
+                <option>Computer Science and Engineering</option>
+                <option>Information Technology</option>
+                <option>Electronics &amp; Communication Engineering</option>
+                <option>Electrical Engineering</option>
+                <option>Mechanical Engineering</option>
+                <option>Civil Engineering</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="sr-pw">Password</label>
+              <div class="password-wrap">
+                <input type="password" id="sr-pw" placeholder="Student@123" required oninput="checkPwStrength(this.value)" />
+                <button type="button" class="pw-toggle" onclick="togglePassword('sr-pw',this)"><svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div>
+              <div class="pw-hints" id="pw-reqs">
+                <div class="pw-req" id="req-len"><span class="dot"></span> Minimum 8 characters</div>
+                <div class="pw-req" id="req-cap"><span class="dot"></span> Starts with a capital letter</div>
+                <div class="pw-req" id="req-num"><span class="dot"></span> Contains a number</div>
+                <div class="pw-req" id="req-sym"><span class="dot"></span> Contains a special character</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="sr-cpw">Confirm Password</label>
+              <div class="password-wrap">
+                <input type="password" id="sr-cpw" placeholder="Re-enter password" required />
+                <button type="button" class="pw-toggle" onclick="togglePassword('sr-cpw',this)"><svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Identity Upload -->
+          <div class="upload-section">
+            <h4>📋 Student Identity Verification Data</h4>
+            <div class="upload-row">
+              <div class="upload-item">
+                <label>1. Student ID Card Photo</label>
+                <div class="upload-drop" id="id-drop">
+                  <input type="file" accept="image/*" id="id-card-upload" onchange="previewFile(this,'id-preview','id-drop')" />
+                  <div class="upload-drop-icon">🪪</div>
+                  <div class="upload-drop-text">Click or drag to upload<br/>JPG / JPEG / PNG</div>
+                  <img id="id-preview" class="upload-preview" alt="ID Card" />
+                </div>
+                <div style="font-size:0.73rem; color:var(--clr-muted);">Used for OCR name &amp; ID extraction</div>
+              </div>
+              <div class="upload-item">
+                <label>2. Passport Size Photo</label>
+                <div class="upload-drop" id="pp-drop">
+                  <input type="file" accept="image/*" id="passport-upload" onchange="previewFile(this,'pp-preview','pp-drop')" />
+                  <div class="upload-drop-icon">📸</div>
+                  <div class="upload-drop-text">Click or drag to upload<br/>JPG / JPEG / PNG</div>
+                  <img id="pp-preview" class="upload-preview" alt="Passport Photo" />
+                </div>
+                <div style="font-size:0.73rem; color:var(--clr-muted);">Used as face reference baseline</div>
+              </div>
+            </div>
+            <div id="identity-status" style="display:none;"></div>
+          </div>
+
+          <div class="error-msg hidden" id="sr-error"></div>
+          <button type="submit" class="btn-primary full-width" style="margin-top:20px;" id="sr-btn">➜ Create Student Account</button>
+        </form>
+      </div>
+
+      <!-- Admin Registration -->
+      <div class="reg-panel" id="rpanel-admin">
+        <form id="admin-reg-form" onsubmit="handleAdminReg(event)">
+          <div class="form-group">
+            <label for="ar-name">Admin Name</label>
+            <input type="text" id="ar-name" placeholder="Enter admin name" required />
+          </div>
+          <div class="form-group">
+            <label for="ar-email">Admin Email</label>
+            <input type="email" id="ar-email" placeholder="admin@example.com" required />
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="ar-pw">Password</label>
+              <div class="password-wrap">
+                <input type="password" id="ar-pw" placeholder="Create password" required />
+                <button type="button" class="pw-toggle" onclick="togglePassword('ar-pw',this)"><svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ar-cpw">Confirm Password</label>
+              <div class="password-wrap">
+                <input type="password" id="ar-cpw" placeholder="Confirm password" required />
+                <button type="button" class="pw-toggle" onclick="togglePassword('ar-cpw',this)"><svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <div class="error-msg hidden" id="ar-error"></div>
+          <button type="submit" class="btn-primary full-width" style="margin-top:4px;" id="ar-btn">➜ Create Admin Account</button>
+        </form>
+      </div>
+
+      <div class="divider"></div>
+      <div style="text-align:center;">
+        <span style="font-size:0.85rem; color:var(--clr-muted);">Already have an account?</span>
+        <a href="index.html" class="btn-ghost" style="margin-left:8px;">← Back to Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/theme.js?v=21"></script>
+<script src="js/api.js?v=21"></script>
+<script>
+/* Tab switch */
+function switchRegTab(tab) {
+  ['student','admin'].forEach(t => {
+    document.getElementById('rtab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('rpanel-'+t).classList.toggle('active', t===tab);
+  });
+}
+
+/* File preview */
+function previewFile(input, previewId, dropId) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById(previewId);
+    img.src = e.target.result;
+    img.style.display = 'block';
+    document.getElementById(dropId).classList.add('has-file');
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+/* Password requirements check */
+function checkPwStrength(val) {
+  const checks = {
+    'req-len': val.length >= 8,
+    'req-cap': /^[A-Z]/.test(val),
+    'req-num': /\d/.test(val),
+    'req-sym': /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val)
+  };
+  Object.entries(checks).forEach(([id, met]) => {
+    document.getElementById(id).classList.toggle('met', met);
+  });
+}
+
+/* Student Registration */
+async function handleStudentReg(event) {
+  event.preventDefault();
+  const err    = document.getElementById('sr-error');
+  const name   = document.getElementById('sr-name').value.trim();
+  const roll   = document.getElementById('sr-roll').value.trim();
+  const email  = document.getElementById('sr-email').value.trim();
+  const course = document.getElementById('sr-course').value;
+  const pw     = document.getElementById('sr-pw').value;
+  const cpw    = document.getElementById('sr-cpw').value;
+  const idCard = document.getElementById('id-card-upload').files[0];
+  const pp     = document.getElementById('passport-upload').files[0];
+
+  const pwErr = Validators.password(pw);
+  if (!name || !roll || !email) { err.textContent = 'Please fill in all personal details.'; err.classList.remove('hidden'); return; }
+  if (pwErr) { err.textContent = pwErr; err.classList.remove('hidden'); return; }
+  if (pw !== cpw) { err.textContent = 'Passwords do not match.'; err.classList.remove('hidden'); return; }
+  if (!idCard || !pp) { err.textContent = 'Please upload both identity photos.'; err.classList.remove('hidden'); return; }
+  err.classList.add('hidden');
+
+  const btn = document.getElementById('sr-btn');
+  btn.disabled = true;
+  btn.textContent = 'Creating Account…';
+  showSpinner('Registering student profile & face embedding…');
+
+  const fd = new FormData();
+  fd.append('student_code', roll);
+  fd.append('full_name',    name);
+  fd.append('email',        email);
+  fd.append('password',     pw);
+  fd.append('course',       course);
+  if (idCard) {
+    fd.append('id_card', idCard);
+    fd.append('student_id_card', idCard);
+  }
+  if (pp) {
+    fd.append('passport', pp);
+    fd.append('profile_image', pp);
+  }
+
+  try {
+    const student = await api.registerStudent(fd);
+    hideSpinner();
+
+    const statusDiv = document.getElementById('identity-status');
+    if (statusDiv) {
+      statusDiv.innerHTML = `<div class="identity-verify success">✓ Student registered successfully! Profile & reference photos stored.</div>`;
+      statusDiv.style.display = 'block';
+    }
+
+    showToast('Student registered successfully. Redirecting to login…', 'success', 3000);
+    setTimeout(() => { window.location.href = 'index.html?tab=student&registered=true'; }, 1500);
+  } catch (e) {
+    hideSpinner();
+    btn.disabled = false;
+    btn.textContent = '➜ Create Student Account';
+    err.textContent = e.message || 'Registration failed.';
+    err.classList.remove('hidden');
+  }
+}
+
+/* Admin Registration */
+async function handleAdminReg(event) {
+  event.preventDefault();
+  const err  = document.getElementById('ar-error');
+  const name = document.getElementById('ar-name').value.trim();
+  const email= document.getElementById('ar-email').value.trim();
+  const pw   = document.getElementById('ar-pw').value;
+  const cpw  = document.getElementById('ar-cpw').value;
+
+  if (!name || !email) { err.textContent = 'Please fill in all fields.'; err.classList.remove('hidden'); return; }
+  const pwErr = Validators.password(pw);
+  if (pwErr) { err.textContent = pwErr; err.classList.remove('hidden'); return; }
+  if (pw !== cpw) { err.textContent = 'Passwords do not match.'; err.classList.remove('hidden'); return; }
+  err.classList.add('hidden');
+
+  const btn = document.getElementById('ar-btn');
+  btn.disabled = true;
+  btn.textContent = 'Creating…';
+  showSpinner('Creating admin account…');
+
+  try {
+    await api.registerAdmin(name, email, pw);
+    hideSpinner();
+    showToast('Admin account created! Redirecting to dashboard…', 'success');
+    setTimeout(() => { window.location.href = 'admin-dashboard.html'; }, 1000);
+  } catch (e) {
+    hideSpinner();
+    btn.disabled = false;
+    btn.textContent = '➜ Create Admin Account';
+    err.textContent = e.message || 'Admin registration failed.';
+    err.classList.remove('hidden');
+  }
+}
+</script>
+</body>
+</html>

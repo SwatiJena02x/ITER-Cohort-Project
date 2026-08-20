@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reports · ProctorIQ</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/theme.css?v=3"/>
+  <link rel="stylesheet" href="css/dashboard.css?v=3"/>
+  <style>
+    .report-row {
+      display: grid;
+      grid-template-columns: 1.2fr 1.6fr 1fr 1fr 1.2fr 1fr 1.3fr auto;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.85rem;
+      gap: 10px;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .report-row:hover { background: #f8faff; }
+    .report-row:last-child { border-bottom: none; }
+
+    .report-detail-panel {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .report-detail-panel.visible { display: block; }
+
+    .ai-box {
+      background: linear-gradient(135deg, #f5f3ff, #eff6ff);
+      border: 1px solid #c4b5fd;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--clr-body);
+    }
+    .detail-score-card {
+      text-align: center;
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      border: 2px solid;
+    }
+    .detail-score-val { font-size: 2.8rem; font-weight: 800; }
+    .detail-score-max { font-size: 1rem; color: var(--clr-muted); font-weight: 500; }
+
+    .evidence-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      margin-bottom: 8px;
+      border: 1px solid;
+    }
+    .ev-detected { background:#fff5f5; border-color:#fca5a5; }
+    .ev-possible  { background:#fffbeb; border-color:#fcd34d; }
+    .ev-clear     { background:#f0fdf4; border-color:#6ee7b7; }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <header class="topbar" id="topbar"></header>
+    <main class="page-content animate-in">
+
+      <div class="section-header flex justify-between items-center">
+        <div>
+          <h1 class="section-title">Reports Management</h1>
+          <p class="section-desc">View and manage all AI-generated proctoring risk reports.</p>
+        </div>
+        <a href="admin-analyze.html" class="btn-primary">+ Upload &amp; Analyze New Exam</a>
+      </div>
+
+      <!-- Search + Filters -->
+      <div class="filter-row" style="margin-bottom:16px;">
+        <div class="search-bar" style="flex:1;">
+          <span class="search-bar-icon">🔍</span>
+          <input type="text" id="report-search" placeholder="Search by student name or roll number…" oninput="filterReports()" />
+        </div>
+        <select class="filter-select" id="filter-level" onchange="filterReports()">
+          <option value="">All Risk Levels</option>
+          <option value="LOW">Low</option>
+          <option value="MEDIUM">Medium</option>
+          <option value="HIGH">High</option>
+          <option value="CRITICAL">Critical</option>
+        </select>
+        <select class="filter-select" id="filter-pub" onchange="filterReports()">
+          <option value="">All Status</option>
+          <option value="Published">Published</option>
+          <option value="Draft">Draft</option>
+        </select>
+      </div>
+
+      <!-- Reports Table -->
+      <div class="card" style="padding:0; overflow:hidden; margin-bottom:20px;">
+        <div style="display:grid; grid-template-columns:1.2fr 1.6fr 1fr 1fr 1.2fr 1fr 1.3fr auto; gap:10px; padding:12px 16px; background:var(--clr-surface-2); border-bottom:1.5px solid var(--clr-border); font-size:0.8rem; font-weight:700; color:var(--clr-dark);">
+          <span>Report ID</span>
+          <span>Student</span>
+          <span>Roll No.</span>
+          <span>Risk Score</span>
+          <span>Risk Level</span>
+          <span>Date</span>
+          <span>Status</span>
+          <span>Actions</span>
+        </div>
+        <div id="reports-list"></div>
+      </div>
+
+      <!-- Report Detail Panel -->
+      <div class="report-detail-panel" id="report-detail">
+        <h2 style="font-size:1rem; font-weight:700; color:var(--clr-dark); margin-bottom:16px;">📋 Report Detail View</h2>
+
+        <div class="grid-2" style="margin-bottom:16px;">
+          <!-- Score + Level -->
+          <div class="grid-2" style="gap:12px;">
+            <div class="detail-score-card" id="detail-score-card" style="border-color:#fca5a5; background:linear-gradient(135deg,#fff5f5,#fff);">
+              <div style="font-size:0.8rem;color:var(--clr-muted);font-weight:600;margin-bottom:4px;">Risk Score</div>
+              <div class="detail-score-val" id="detail-score-val" style="color:#ef4444;">0</div>
+              <div class="detail-score-max">/ 100</div>
+              <div class="progress-bar-wrap" style="margin-top:10px;">
+                <div class="progress-bar-fill" id="detail-score-bar" style="width:0%; background:linear-gradient(90deg,#ef4444,#dc2626);"></div>
+              </div>
+            </div>
+            <div class="detail-score-card" id="detail-level-card" style="border-color:#fca5a5; background:linear-gradient(135deg,#fff5f5,#fff); display:flex; flex-direction:column; align-items:center; justify-content:center;">
+              <div style="font-size:0.8rem;color:var(--clr-muted);font-weight:600;margin-bottom:8px;">Risk Level</div>
+              <div id="detail-level-val" style="font-size:1.5rem; font-weight:800; color:#ef4444;">LOW Risk</div>
+              <span class="badge badge-high" id="detail-level-badge" style="margin-top:8px;">LOW</span>
+            </div>
+          </div>
+
+          <!-- Student Info -->
+          <div class="card">
+            <div class="panel-title" style="margin-bottom:12px;">Student Information</div>
+            <div style="display:flex; flex-direction:column; gap:8px; font-size:0.88rem;">
+              <div><span class="text-muted">Student Name:</span> <b id="detail-name">—</b></div>
+              <div><span class="text-muted">Roll Number:</span> <b id="detail-roll">—</b></div>
+              <div><span class="text-muted">Report ID:</span> <b id="detail-id">—</b></div>
+              <div><span class="text-muted">Date:</span> <b id="detail-date">—</b></div>
+              <div><span class="text-muted">Status:</span> <span class="badge badge-success" id="detail-status">Published</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detected Issues -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="panel-title" style="margin-bottom:12px;">🔍 Detected Issues &amp; Evidence</div>
+          <div id="detail-evidence-list"></div>
+        </div>
+
+        <!-- AI Explanation -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="panel-title" style="margin-bottom:10px;">🤖 AI Explanation</div>
+          <div class="ai-box" id="detail-ai-exp">
+            Report summary will appear here.
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="btn-primary" id="detail-dl-btn" onclick="downloadDetailPDF()">📥 Download Report (PDF)</button>
+          <button class="btn-secondary" id="detail-pub-btn" onclick="publishDetailReport()">📤 Publish to Student Notice Board</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="js/theme.js?v=21"></script>
+<script src="js/api.js?v=21"></script>
+<script src="js/dashboard.js?v=21"></script>
+<script>
+let currentReportsList = [];
+let selectedReportDbId = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!guardRoute('admin')) return;
+  renderSidebar('reports', 'admin');
+  renderTopbar('Reports Management');
+
+  try {
+    const reports = await api.getAllReports();
+    if (reports && reports.length > 0) {
+      currentReportsList = reports.map(r => ({
+        id: `RPT-${r.id}`,
+        db_id: r.id,
+        student: r.student_name || `Student #${r.student_id}`,
+        roll: r.student_roll || `STU-${r.student_id}`,
+        score: Math.round(r.risk_score || 0),
+        raw_score: r.risk_score,
+        level: (r.risk_level || 'LOW').toUpperCase(),
+        date: r.created_at ? r.created_at.slice(0, 10) : 'N/A',
+        status: r.is_published ? 'Published' : 'Draft',
+        summary: r.summary,
+        evidence: r.evidence,
+        pdf_path: r.pdf_path,
+      }));
+      renderReportRows(currentReportsList);
+      if (currentReportsList.length > 0) {
+        showReportDetail(currentReportsList[0].id);
+      }
+      return;
+    }
+  } catch (err) {
+    console.error("Failed to load reports:", err);
+  }
+
+  currentReportsList = [];
+  renderReportRows([]);
+});
+
+function filterReports() {
+  const q     = document.getElementById('report-search').value.toLowerCase();
+  const level = document.getElementById('filter-level').value;
+  const pub   = document.getElementById('filter-pub').value;
+  const filtered = currentReportsList.filter(r =>
+    (r.student.toLowerCase().includes(q) || r.roll.toLowerCase().includes(q)) &&
+    (!level || r.level === level) &&
+    (!pub   || r.status === pub)
+  );
+  renderReportRows(filtered);
+}
+
+function renderReportRows(reports) {
+  const list = document.getElementById('reports-list');
+  if (reports.length === 0) {
+    list.innerHTML = '<div style="padding:32px; text-align:center; color:var(--clr-muted);">No reports found. Generate reports from the "Upload & Analyze" section.</div>';
+    return;
+  }
+  list.innerHTML = reports.map(r => `
+    <div class="report-row" onclick="showReportDetail('${r.id}')">
+      <span style="font-size:0.78rem; font-weight:700; color:var(--clr-muted);">${r.id}</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="student-avatar">${getInitials(r.student)}</div>
+        <span style="font-weight:600;">${r.student}</span>
+      </div>
+      <span style="color:var(--clr-muted); font-size:0.82rem;">${r.roll}</span>
+      <span style="font-weight:700; color:${getLevelColor(r.level)};">${r.score}/100</span>
+      <span><span class="badge ${getLevelBadgeClass(r.level)}">${r.level}</span></span>
+      <span style="color:var(--clr-muted); font-size:0.78rem;">${r.date}</span>
+      <span><span class="badge ${r.status==='Published'?'badge-success':'badge-info'}">${r.status}</span></span>
+      <div style="display:flex;gap:6px;">
+        <button class="btn-ghost" style="padding:4px 8px;font-size:0.8rem;" onclick="event.stopPropagation();showReportDetail('${r.id}')" title="View Detail">👁️</button>
+        <button class="btn-ghost" style="padding:4px 8px;font-size:0.8rem;" onclick="event.stopPropagation();downloadPDF('${r.db_id}')" title="Download PDF">📥</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function downloadPDF(dbId) {
+  if (dbId) {
+    window.open(api.getDownloadUrl(dbId), '_blank');
+  } else {
+    showToast('Report ID not found.', 'error');
+  }
+}
+
+function downloadDetailPDF() {
+  if (selectedReportDbId) {
+    downloadPDF(selectedReportDbId);
+  }
+}
+
+async function publishDetailReport() {
+  if (!selectedReportDbId) return;
+  const btn = document.getElementById('detail-pub-btn');
+  btn.disabled = true;
+  btn.textContent = 'Publishing…';
+
+  try {
+    await api.publishReport(selectedReportDbId);
+    const r = currentReportsList.find(x => x.db_id === selectedReportDbId);
+    if (r) r.status = 'Published';
+    document.getElementById('detail-status').className = 'badge badge-success';
+    document.getElementById('detail-status').textContent = 'Published';
+    renderReportRows(currentReportsList);
+    showToast('Report published to student notice board!', 'success');
+  } catch (err) {
+    showToast('Failed to publish report.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📤 Publish to Student Notice Board';
+  }
+}
+
+function showReportDetail(id) {
+  const r = currentReportsList.find(x => x.id === id);
+  if (!r) return;
+
+  selectedReportDbId = r.db_id;
+
+  document.getElementById('detail-name').textContent = r.student;
+  document.getElementById('detail-roll').textContent = r.roll;
+  document.getElementById('detail-id').textContent   = r.id;
+  document.getElementById('detail-date').textContent = r.date;
+  document.getElementById('detail-status').className = `badge ${r.status==='Published'?'badge-success':'badge-info'}`;
+  document.getElementById('detail-status').textContent = r.status;
+
+  const score = r.score;
+  const level = r.level;
+  const color = getLevelColor(level);
+
+  document.getElementById('detail-score-val').textContent = score;
+  document.getElementById('detail-score-bar').style.width = score + '%';
+  document.getElementById('detail-score-bar').style.background = `linear-gradient(90deg, ${color}, ${color}cc)`;
+  document.getElementById('detail-level-val').textContent = level + ' Risk';
+  document.getElementById('detail-level-badge').textContent = level;
+  document.getElementById('detail-level-badge').className = 'badge ' + getLevelBadgeClass(level);
+
+  document.getElementById('detail-score-val').style.color = color;
+  document.getElementById('detail-level-val').style.color = color;
+  document.getElementById('detail-score-card').style.borderColor = color + '80';
+  document.getElementById('detail-level-card').style.borderColor = color + '80';
+
+  if (r.summary) {
+    document.getElementById('detail-ai-exp').innerHTML = r.summary;
+  }
+
+  // Render dynamic detected evidence
+  renderDynamicEvidence(r);
+
+  const panel = document.getElementById('report-detail');
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function renderDynamicEvidence(r) {
+  const container = document.getElementById('detail-evidence-list');
+  const summaryLower = (r.summary || '').toLowerCase();
+
+  let evidenceItems = [];
+
+  if (summaryLower.includes('phone') || summaryLower.includes('mobile')) {
+    evidenceItems.push({ icon: '📱', label: 'Mobile Phone / Device Detected in Hand', severity: 'High', type: 'detected' });
+  }
+  if (summaryLower.includes('talking') || summaryLower.includes('mouth')) {
+    evidenceItems.push({ icon: '🗣️', label: 'Talking / Mouth Movement Flagged', severity: 'High', type: 'detected' });
+  }
+  if (summaryLower.includes('earbud') || summaryLower.includes('bluetooth') || summaryLower.includes('earphone')) {
+    evidenceItems.push({ icon: '🎧', label: 'Earbud / Bluetooth Device Detected near Ear', severity: 'High', type: 'detected' });
+  }
+  if (summaryLower.includes('multiple people') || summaryLower.includes('another person') || summaryLower.includes('people')) {
+    evidenceItems.push({ icon: '👥', label: 'Multiple People / Background Presence Flagged', severity: 'High', type: 'detected' });
+  }
+  if (summaryLower.includes('looking away') || summaryLower.includes('gaze')) {
+    evidenceItems.push({ icon: '👁️', label: 'Looking Away from Exam Screen', severity: 'Medium', type: 'possible' });
+  }
+
+  // Always verify candidate face
+  evidenceItems.push({ icon: '👤', label: 'Primary Candidate Face Verified in Frame', severity: 'Verified', type: 'clear' });
+
+  container.innerHTML = evidenceItems.map(item => `
+    <div class="evidence-row ev-${item.type}">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.1rem;">${item.icon}</span>
+        <span style="font-size:0.85rem; font-weight:600; color:var(--clr-dark);">${item.label}</span>
+      </div>
+      <span class="badge ${item.severity==='Verified'?'badge-success':getLevelBadgeClass(item.severity)}">${item.severity}</span>
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>

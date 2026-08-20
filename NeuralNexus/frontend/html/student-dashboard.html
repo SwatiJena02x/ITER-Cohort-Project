@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Dashboard · ProctorIQ</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/theme.css?v=25"/>
+  <link rel="stylesheet" href="css/dashboard.css?v=25"/>
+  <style>
+    .profile-card-mini {
+      background: linear-gradient(135deg, #f0f4fd, #f5f3ff);
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius-lg);
+      padding: 20px;
+    }
+    .profile-id-row { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+    .profile-big-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.3rem; color: white;
+      flex-shrink: 0;
+    }
+    .notice-new-dot {
+      display: inline-block;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #ef4444;
+      margin-left: 6px;
+      vertical-align: middle;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity:1; }
+      50% { transform: scale(1.4); opacity:0.7; }
+    }
+    .notice-board-card {
+      background: linear-gradient(135deg, #f0f4fd 0%, #f5f3ff 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .notice-board-header {
+      background: linear-gradient(90deg, #2563eb, #7c3aed);
+      padding: 14px 20px;
+      color: white;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .notice-item {
+      border-bottom: 1px solid #dbeafe;
+      padding: 16px 20px;
+      transition: background 0.15s;
+    }
+    .notice-item:hover { background: #eff6ff; }
+    .notice-item:last-child { border-bottom: none; }
+    .notice-badge-new {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #fee2e2; color: #991b1b;
+      padding: 3px 8px; border-radius: var(--radius-full);
+      font-size: 0.72rem; font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <header class="topbar" id="topbar"></header>
+    <main class="page-content animate-in">
+
+      <!-- WELCOME HEADER -->
+      <div class="section-header">
+        <h1 class="section-title" id="welcome-heading">Welcome 👋</h1>
+        <p class="section-desc">Here is your proctoring dashboard and risk notifications.</p>
+      </div>
+
+      <!-- STATS ROW -->
+      <div class="stats-grid" style="grid-template-columns: repeat(3,1fr); margin-bottom:20px;" id="student-stats">
+        <div class="stat-box">
+          <div class="stat-icon">📋</div>
+          <div class="stat-label">Total Reports</div>
+          <div class="stat-number" id="stat-total-reports">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">📊</div>
+          <div class="stat-label">Latest Risk Score</div>
+          <div class="stat-number" id="stat-latest-score" style="color:var(--clr-muted); font-size:1.2rem;">No report yet</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-label">Latest Risk Level</div>
+          <div style="margin-top:4px;" id="stat-latest-level">
+            <span class="badge badge-info" style="font-size:0.85rem;">Not assessed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="gap:20px; align-items:start;">
+
+        <!-- PROFILE SUMMARY CARD -->
+        <div>
+          <div class="profile-card-mini">
+            <div class="profile-id-row">
+              <div class="profile-big-avatar" id="st-avatar">--</div>
+              <div>
+                <div style="font-size:1.05rem; font-weight:800; color:var(--clr-dark);" id="st-name">Loading...</div>
+                <div style="font-size:0.82rem; color:var(--clr-muted);" id="st-roll">Roll: --</div>
+                <div id="st-identity-badge-mini" style="margin-top:4px;">
+                  <span class="badge badge-info">Checking status...</span>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:7px; font-size:0.85rem;">
+              <div><span class="text-muted">Email:</span> <b id="st-email">--</b></div>
+              <div><span class="text-muted">Course:</span> <b id="st-course">--</b></div>
+              <div><span class="text-muted">Registration Date:</span> <b id="st-reg-date">--</b></div>
+              <div><span class="text-muted">Registration Status:</span> <span id="st-identity-badge-full"><span class="badge badge-info">--</span></span></div>
+            </div>
+            <div style="margin-top:14px; display:flex; gap:8px;">
+              <a href="student-profile.html" class="btn-secondary" style="flex:1; font-size:0.82rem; justify-content:center;">View Full Profile →</a>
+            </div>
+          </div>
+
+          <!-- RISK SCORE SUMMARY CARD -->
+          <div class="card" style="margin-top:16px;">
+            <div class="panel-title" style="margin-bottom:12px;">📊 Risk Score Summary</div>
+            <div style="display:flex; align-items:center; gap:16px;">
+              <div style="text-align:center;">
+                <div style="font-size:2rem; font-weight:800; color:var(--clr-muted);" id="summary-score-big">—</div>
+                <div style="font-size:0.75rem; color:var(--clr-muted); font-weight:600;">/ 100</div>
+              </div>
+              <div style="flex:1;">
+                <div style="display:flex; justify-content:space-between; font-size:0.78rem; color:var(--clr-muted); margin-bottom:4px;">
+                  <span>Risk Score</span><span id="summary-score-pct">0%</span>
+                </div>
+                <div class="progress-bar-wrap">
+                  <div class="progress-bar-fill" id="summary-progress-bar" style="width:0%; background:var(--clr-primary);"></div>
+                </div>
+                <div style="margin-top:8px;" id="summary-level-badge">
+                  <span class="badge badge-info">No risk assessment available yet</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NOTICE BOARD CARD -->
+        <div class="notice-board-card">
+          <div class="notice-board-header">
+            📢 Notice Board <span class="notice-new-dot"></span>
+          </div>
+
+          <!-- Dynamic Notice Items Container -->
+          <div id="notice-list-container">
+            <div style="padding:32px 20px; text-align:center; color:var(--clr-muted); font-size:0.88rem;">
+              Loading notices...
+            </div>
+          </div>
+
+          <div style="padding:12px 20px; border-top:1px solid #dbeafe; text-align:center;">
+            <a href="student-reports.html" class="btn-ghost" style="font-size:0.82rem;">View All Reports →</a>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="js/theme.js?v=25"></script>
+<script src="js/api.js?v=25"></script>
+<script src="js/dashboard.js?v=25"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!guardRoute('student')) return;
+  renderSidebar('dashboard', 'student');
+  renderTopbar('Student Dashboard');
+
+  try {
+    // Fetch profile and notices from backend
+    const [profile, noticesRes] = await Promise.all([
+      api.getMyProfile(),
+      api.getMyNotices().catch(() => [])
+    ]);
+
+    if (!profile || !profile.full_name) {
+      showErrorMessage("Unable to load your latest information. Please try again.");
+      return;
+    }
+
+    // 1. Populate Profile Details
+    const name = profile.full_name;
+    const roll = profile.roll_number || profile.student_code || 'N/A';
+    const email = profile.email || 'N/A';
+    const course = profile.course || 'N/A';
+
+    let regDateStr = 'N/A';
+    if (profile.created_at) {
+      try {
+        const d = new Date(profile.created_at);
+        regDateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      } catch (_) {
+        regDateStr = String(profile.created_at).slice(0, 10);
+      }
+    }
+
+    document.getElementById('welcome-heading').textContent = `Welcome, ${name} 👋`;
+    document.getElementById('st-avatar').textContent = getInitials(name);
+    document.getElementById('st-name').textContent = name;
+    document.getElementById('st-roll').textContent = 'Roll: ' + roll;
+    document.getElementById('st-email').textContent = email;
+    document.getElementById('st-course').textContent = course;
+    document.getElementById('st-reg-date').textContent = regDateStr;
+
+    // 2. Populate Identity Verification Badge
+    const isVerified = Boolean(profile.identity_verified);
+    const miniBadgeEl = document.getElementById('st-identity-badge-mini');
+    const fullBadgeEl = document.getElementById('st-identity-badge-full');
+
+    if (isVerified) {
+      if (miniBadgeEl) miniBadgeEl.innerHTML = `<span class="badge badge-success">✓ Verified</span>`;
+      if (fullBadgeEl) fullBadgeEl.innerHTML = `<span class="badge badge-success">✓ Identity Verified</span>`;
+    } else {
+      if (miniBadgeEl) miniBadgeEl.innerHTML = `<span class="badge" style="background:#fef3c7; color:#b45309;">⚠️ Unverified</span>`;
+      if (fullBadgeEl) fullBadgeEl.innerHTML = `<span class="badge" style="background:#fef3c7; color:#b45309;">⚠️ Identity Not Verified</span>`;
+    }
+
+    // 3. Process Reports & Notices strictly for logged-in student
+    const myStudentId = Number(profile.id || Auth.getUserId() || 0);
+    const myStudentRoll = String(profile.roll_number || profile.student_code || '').trim().toLowerCase();
+    const rawReports = Array.isArray(noticesRes) ? noticesRes : [];
+
+    const reports = rawReports.filter(r => {
+      if (!r) return false;
+      // Strict student ID matching
+      if (r.student_id !== undefined && r.student_id !== null && myStudentId > 0) {
+        if (Number(r.student_id) !== myStudentId) return false;
+      }
+      // Strict roll / student code matching
+      if (r.student_roll && myStudentRoll) {
+        if (String(r.student_roll).trim().toLowerCase() !== myStudentRoll) return false;
+      }
+      return true;
+    });
+
+    // Sort reports descending by report_id and created_at (newest first)
+    reports.sort((a, b) => (Number(b.report_id || 0) - Number(a.report_id || 0)) || (new Date(b.created_at || 0) - new Date(a.created_at || 0)));
+
+
+    // Stats Elements
+    const totalReportsEl = document.getElementById('stat-total-reports');
+    const latestScoreEl = document.getElementById('stat-latest-score');
+    const latestLevelEl = document.getElementById('stat-latest-level');
+
+    // Risk Summary Elements
+    const summaryBigEl = document.getElementById('summary-score-big');
+    const summaryPctEl = document.getElementById('summary-score-pct');
+    const summaryBarEl = document.getElementById('summary-progress-bar');
+    const summaryBadgeEl = document.getElementById('summary-level-badge');
+    const noticeListContainer = document.getElementById('notice-list-container');
+
+    totalReportsEl.textContent = reports.length;
+
+    if (reports.length > 0) {
+      const latest = reports[0];
+      const score = Math.round(latest.risk_score || 0);
+      const level = latest.risk_level || 'UNKNOWN';
+      const color = getLevelColor(level);
+      const badgeClass = getLevelBadgeClass(level);
+
+      // Latest Stats
+      latestScoreEl.textContent = `${score}/100`;
+      latestScoreEl.style.fontSize = '1.8rem';
+      latestScoreEl.style.color = color;
+      latestLevelEl.innerHTML = `<span class="badge ${badgeClass}" style="font-size:0.95rem; padding:6px 14px;">${level}</span>`;
+
+      // Summary Card
+      summaryBigEl.textContent = score;
+      summaryBigEl.style.color = color;
+      summaryPctEl.textContent = `${score}%`;
+      summaryBarEl.style.width = `${score}%`;
+      summaryBarEl.style.background = color;
+      summaryBadgeEl.innerHTML = `<span class="badge ${badgeClass}">${level} RISK</span>`;
+
+      // Notice Board Items
+      noticeListContainer.innerHTML = reports.map((n, idx) => {
+        let rDate = 'N/A';
+        if (n.created_at) {
+          try {
+            rDate = new Date(n.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+          } catch (_) {
+            rDate = String(n.created_at).slice(0, 10);
+          }
+        }
+        const rScore = Math.round(n.risk_score || 0);
+        const rLevel = n.risk_level || 'UNKNOWN';
+        const rColor = getLevelColor(rLevel);
+        const rBadge = getLevelBadgeClass(rLevel);
+        const isNew = idx === 0;
+
+        return `
+          <div class="notice-item">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+              ${isNew ? '<span class="notice-badge-new">🔴 NEW</span>' : '<span class="badge badge-info" style="font-size:0.72rem;">REPORT</span>'}
+              <span style="font-size:0.85rem; font-weight:700; color:var(--clr-dark);">Risk Report #${n.report_id}</span>
+            </div>
+            <div style="font-size:0.82rem; color:var(--clr-muted); margin-bottom:10px; line-height:1.6;">
+              ${n.summary ? n.summary : 'Your examination risk report is ready for download.'}
+            </div>
+            <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:10px; font-size:0.82rem;">
+              <div><span class="text-muted">Risk Score:</span> <b style="color:${rColor};">${rScore}/100</b></div>
+              <div><span class="text-muted">Risk Level:</span> <span class="badge ${rBadge}">${rLevel}</span></div>
+              <div><span class="text-muted">Date:</span> <b>${rDate}</b></div>
+            </div>
+            <button class="btn-primary" style="font-size:0.82rem; padding:0.5rem 1rem;" onclick="window.open(api.getDownloadUrl('${n.report_id}'), '_blank')">
+              📥 Download Your Risk Report (PDF)
+            </button>
+          </div>
+        `;
+      }).join('');
+
+    } else {
+      // Empty Reports Case
+      latestScoreEl.textContent = 'No report yet';
+      latestScoreEl.style.fontSize = '1.1rem';
+      latestScoreEl.style.color = 'var(--clr-muted)';
+      latestLevelEl.innerHTML = `<span class="badge badge-info" style="font-size:0.85rem;">Not assessed</span>`;
+
+      summaryBigEl.textContent = '—';
+      summaryBigEl.style.color = 'var(--clr-muted)';
+      summaryPctEl.textContent = '0%';
+      summaryBarEl.style.width = '0%';
+      summaryBadgeEl.innerHTML = `<span class="badge badge-info">No risk assessment available yet</span>`;
+
+      noticeListContainer.innerHTML = `
+        <div style="padding:36px 20px; text-align:center; color:var(--clr-muted); font-size:0.9rem;">
+          📢 No risk reports have been published yet.
+        </div>
+      `;
+    }
+
+  } catch (err) {
+    console.error("Failed to load student profile/notices:", err);
+    showErrorMessage("Unable to load your latest information. Please try again.");
+  }
+});
+
+function showErrorMessage(msg) {
+  const pageContent = document.querySelector('.page-content');
+  if (pageContent) {
+    pageContent.innerHTML = `
+      <div class="card" style="padding:40px; text-align:center; max-width:500px; margin:40px auto;">
+        <div style="font-size:2.5rem; margin-bottom:12px;">⚠️</div>
+        <h2 style="font-size:1.3rem; font-weight:700; color:var(--clr-dark); margin-bottom:8px;">Data Load Error</h2>
+        <p style="color:var(--clr-muted); font-size:0.9rem; margin-bottom:20px;">${msg}</p>
+        <button class="btn-primary" onclick="window.location.reload()">🔄 Retry Loading</button>
+      </div>
+    `;
+  }
+}
+</script>
+</body>
+</html>

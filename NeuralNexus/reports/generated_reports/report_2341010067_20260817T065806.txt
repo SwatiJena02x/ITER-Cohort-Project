@@ -1,0 +1,10 @@
+Risk report for Swati Jena (2341010067): risk score 79.16/100, classified as HIGH.
+
+Contributing indicators:
+- multiple people: +16.81 pts
+- bluetooth earbud: +37.35 pts
+- talking detected: +25.0 pts
+
+No registered profile embedding was available for identity comparison. 1 face(s) detected in the submitted frame.
+
+This report was generated automatically from image-based evidence and reflects a preliminary risk flag, not a final determination. Recommend manual review before any disciplinary action is taken.

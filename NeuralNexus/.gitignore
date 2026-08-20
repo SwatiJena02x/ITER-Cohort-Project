@@ -1,0 +1,42 @@
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing, Type Checks & Cache
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Logs & Temporary
+*.log
+scratch/
+tmp/
+*.tmp
+*.sqlite
+*.sqlite3
+*.db
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# OS specific
+.DS_Store
+Thumbs.db
+desktop.ini
+

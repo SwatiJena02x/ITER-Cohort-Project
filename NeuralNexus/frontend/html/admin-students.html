@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Students · ProctorIQ</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/theme.css?v=3"/>
+  <link rel="stylesheet" href="css/dashboard.css?v=3"/>
+  <style>
+    .student-profile-panel {
+      display: none;
+      margin-top: 24px;
+      animation: fadeIn 0.3s ease;
+    }
+    .student-profile-panel.visible { display: block; }
+
+    .profile-header-card {
+      background: linear-gradient(135deg, #f0f4fd, #f5f3ff);
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+    .profile-avatar-lg {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--clr-grad-start), var(--clr-grad-end));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.4rem; color: white;
+      flex-shrink: 0;
+    }
+    .student-count { font-size: 0.82rem; color: var(--clr-muted); margin-top: 4px; }
+    .filter-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-select {
+      padding: 8px 12px;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--radius-md);
+      font-family: var(--font-base);
+      font-size: 0.82rem;
+      background: white;
+      color: var(--clr-body);
+      outline: none;
+    }
+    .id-photo-thumb {
+      width: 80px; height: 60px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--clr-border);
+      background: var(--clr-surface-2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--clr-muted); font-size: 0.75rem;
+    }
+    .pagination-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-top: 16px; justify-content: flex-end;
+    }
+    .page-btn {
+      width: 32px; height: 32px;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--radius-sm);
+      background: white; cursor: pointer;
+      font-family: var(--font-base); font-size: 0.82rem; font-weight: 600;
+      color: var(--clr-muted); transition: var(--transition);
+    }
+    .page-btn.active { background: var(--clr-primary); color: white; border-color: var(--clr-primary); }
+    .page-btn:hover:not(.active) { background: #f0f4fd; }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <header class="topbar" id="topbar"></header>
+    <main class="page-content animate-in">
+
+      <!-- HEADER -->
+      <div class="section-header flex justify-between items-center">
+        <div>
+          <h1 class="section-title">Students Database</h1>
+          <p class="section-desc">View and manage all registered students in the system.</p>
+        </div>
+        <button class="btn-primary" onclick="showToast('Student addition coming in backend integration.','info')">+ Add Student</button>
+      </div>
+
+      <!-- SEARCH + FILTER -->
+      <div class="filter-row">
+        <div class="search-bar" style="flex:1; min-width:220px;">
+          <span class="search-bar-icon">🔍</span>
+          <input type="text" id="student-search" placeholder="Search by Roll Number or Student Name…" oninput="filterStudents()" />
+        </div>
+        <select class="filter-select" id="filter-course" onchange="filterStudents()">
+          <option value="">All Courses</option>
+          <option value="CSE">CSE</option>
+          <option value="ECE">ECE</option>
+          <option value="IT">IT</option>
+        </select>
+        <select class="filter-select" id="filter-status" onchange="filterStudents()">
+          <option value="">All Status</option>
+          <option value="Verified">Verified</option>
+          <option value="Pending">Pending</option>
+        </select>
+      </div>
+
+      <!-- TABLE -->
+      <div class="card" style="padding:0; overflow:hidden;">
+        <!-- Table Header -->
+        <div style="display:grid; grid-template-columns:2fr 1.4fr 2fr 0.8fr 1.2fr 1.3fr 1.1fr auto; gap:12px; padding:12px 20px; background:var(--clr-surface-2); border-bottom:1.5px solid var(--clr-border); font-size:0.8rem; font-weight:700; color:var(--clr-dark);">
+          <span>Student Name</span>
+          <span>Roll Number</span>
+          <span>Email</span>
+          <span>Course</span>
+          <span>Reg. Date</span>
+          <span>Identity</span>
+          <span>Reports</span>
+          <span>Actions</span>
+        </div>
+        <div id="students-list" style="padding:8px 12px;"></div>
+        <div class="pagination-row" style="padding:12px 20px;">
+          <span style="font-size:0.8rem; color:var(--clr-muted);" id="page-info">Showing 1–6 of 6 students</span>
+          <div style="display:flex; gap:6px;">
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">→</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STUDENT PROFILE PANEL -->
+      <div class="student-profile-panel" id="profile-panel">
+        <h2 style="font-size:1rem; font-weight:700; color:var(--clr-dark); margin-bottom:12px;">📌 Student Profile</h2>
+        <div class="profile-header-card">
+          <div class="profile-avatar-lg" id="p-avatar">AK</div>
+          <div>
+            <div style="font-size:1.15rem; font-weight:800; color:var(--clr-dark);" id="p-name">—</div>
+            <div style="font-size:0.85rem; color:var(--clr-muted);" id="p-roll">—</div>
+            <div style="margin-top:6px;" id="p-badge"><span class="badge badge-success">✓ Identity Verified</span></div>
+          </div>
+          <div style="margin-left:auto; display:flex; gap:10px;">
+            <a href="admin-analyze.html" class="btn-primary" style="font-size:0.85rem;">🔍 Analyze Exam Image</a>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="panel-title" style="margin-bottom:12px;">Student Information</div>
+            <div style="display:flex; flex-direction:column; gap:8px; font-size:0.88rem;">
+              <div><span class="text-muted">Full Name:</span> <b id="pi-name">—</b></div>
+              <div><span class="text-muted">Roll Number:</span> <b id="pi-roll">—</b></div>
+              <div><span class="text-muted">Email:</span> <b id="pi-email">—</b></div>
+              <div><span class="text-muted">Course:</span> <b id="pi-course">—</b></div>
+              <div><span class="text-muted">Registration Date:</span> <b id="pi-date">—</b></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="panel-title" style="margin-bottom:12px;">Identity Verification</div>
+            <div style="display:flex; gap:14px; margin-bottom:12px;">
+              <div>
+                <div style="font-size:0.78rem; color:var(--clr-muted); font-weight:600; margin-bottom:6px;">Student ID Card</div>
+                <div class="id-photo-thumb" id="id-thumb">🪪 ID Card</div>
+              </div>
+              <div>
+                <div style="font-size:0.78rem; color:var(--clr-muted); font-weight:600; margin-bottom:6px;">Passport Photo</div>
+                <div class="id-photo-thumb" id="pp-thumb">📸 Photo</div>
+              </div>
+            </div>
+            <div id="pi-verify-status" class="badge badge-success">✓ Identity Verified</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="js/theme.js?v=21"></script>
+<script src="js/api.js?v=21"></script>
+<script src="js/dashboard.js?v=21"></script>
+<script>
+let currentStudentsList = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!guardRoute('admin')) return;
+  renderSidebar('students', 'admin');
+  renderTopbar('Students Database');
+
+  // Try fetching real students from backend
+  try {
+    const res = await api.getStudents();
+    if (res.students && res.students.length > 0) {
+      currentStudentsList = res.students.map(s => ({
+        id: s.id,
+        name: s.full_name,
+        roll: s.roll_number || s.student_code,
+        code: s.student_code,
+        email: s.email,
+        course: s.course || 'CSE',
+        reg_date: s.created_at ? s.created_at.slice(0, 10) : '2026-08-16',
+        status: s.identity_verified ? 'Verified' : 'Pending',
+        reports: 0,
+        score: 0,
+        level: '—',
+      }));
+      renderStudentRows(currentStudentsList);
+      document.getElementById('page-info').textContent = `Showing 1–${currentStudentsList.length} of ${currentStudentsList.length} students`;
+      return;
+    } else {
+      currentStudentsList = [];
+      renderStudentRows([]);
+      document.getElementById('page-info').textContent = `Showing 0 students`;
+      return;
+    }
+  } catch (err) {
+    console.error("Failed to load students:", err);
+  }
+
+  currentStudentsList = [];
+  renderStudentRows([]);
+  document.getElementById('page-info').textContent = `Showing 0 students`;
+});
+
+function filterStudents() {
+  const q      = document.getElementById('student-search').value.toLowerCase();
+  const course = document.getElementById('filter-course').value;
+  const status = document.getElementById('filter-status').value;
+  const filtered = currentStudentsList.filter(s =>
+    (s.name.toLowerCase().includes(q) || s.roll.toLowerCase().includes(q)) &&
+    (!course || s.course.includes(course)) &&
+    (!status || s.status === status)
+  );
+  renderStudentRows(filtered);
+}
+
+function renderStudentRows(students) {
+  const list = document.getElementById('students-list');
+  if (students.length === 0) {
+    list.innerHTML = '<div style="padding:24px; text-align:center; color:var(--clr-muted);">No students found.</div>';
+    return;
+  }
+  list.innerHTML = students.map(s => `
+    <div class="student-row-card" onclick="showProfile('${s.roll}')">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="student-avatar">${getInitials(s.name)}</div>
+        <span style="font-weight:600; font-size:0.88rem;">${s.name}</span>
+      </div>
+      <span style="font-size:0.85rem; color:var(--clr-muted);">${s.roll}</span>
+      <span style="font-size:0.82rem; color:var(--clr-muted); overflow:hidden; text-overflow:ellipsis;">${s.email}</span>
+      <span style="font-size:0.85rem;">${s.course}</span>
+      <span style="font-size:0.82rem; color:var(--clr-muted);">${s.reg_date}</span>
+      <span class="badge ${s.status==='Verified' ? 'badge-success' : 'badge-info'}">${s.status==='Verified' ? '✓ Verified' : '⏳ Pending'}</span>
+      <span style="font-size:0.85rem; font-weight:600;">${s.reports} report${s.reports!==1?'s':''}</span>
+      <div style="display:flex; gap:6px;">
+        <button class="btn-ghost" style="padding:4px 8px; font-size:0.75rem;" onclick="event.stopPropagation(); showProfile('${s.roll}')">👁️</button>
+        <a href="admin-analyze.html" class="btn-ghost" style="padding:4px 8px; font-size:0.75rem;" onclick="event.stopPropagation()">🔍</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function showProfile(roll) {
+  const s = currentStudentsList.find(x => x.roll === roll);
+  if (!s) return;
+  document.getElementById('p-avatar').textContent = getInitials(s.name);
+  document.getElementById('p-name').textContent = s.name;
+  document.getElementById('p-roll').textContent = s.roll;
+  document.getElementById('pi-name').textContent   = s.name;
+  document.getElementById('pi-roll').textContent   = s.roll;
+  document.getElementById('pi-email').textContent  = s.email;
+  document.getElementById('pi-course').textContent = s.course;
+  document.getElementById('pi-date').textContent   = s.reg_date;
+
+  // Trigger identity verification via API if ID exists
+  if (s.id) {
+    try {
+      const v = await api.verifyStudentIdentity(s.id);
+      document.getElementById('pi-verify-status').className = `badge ${v.identity_verified ? 'badge-success' : 'badge-info'}`;
+      document.getElementById('pi-verify-status').textContent = v.message;
+    } catch (_) {}
+  }
+
+  const panel = document.getElementById('profile-panel');
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+</script>
+</body>
+</html>

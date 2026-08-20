@@ -1,0 +1,9 @@
+Risk report for Subhashree Swain (2341019671): risk score 41.13/100, classified as MEDIUM.
+
+Contributing indicators:
+- multiple people: +16.43 pts
+- talking detected: +24.7 pts
+
+Face match distance to registered profile was 0.40 (higher indicates a poorer match). 1 face(s) detected in the submitted frame.
+
+This report was generated automatically from image-based evidence and reflects a preliminary risk flag, not a final determination. Recommend manual review before any disciplinary action is taken.

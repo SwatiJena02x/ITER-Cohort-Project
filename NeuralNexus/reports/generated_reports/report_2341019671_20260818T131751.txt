@@ -1,0 +1,15 @@
+Risk report for Subhashree Swain (2341019671): risk score 100.0/100, classified as CRITICAL.
+
+Contributing indicators:
+- phone usage: +19.95 pts
+- unauthorized device: +5.9 pts
+- multiple people: +18.83 pts
+- bluetooth earbud: +32.85 pts
+- eye movement away: +20.0 pts
+- talking detected: +24.7 pts
+- impersonation: +36.47 pts
+- identity mismatch: +30.0 pts
+
+Face match distance to registered profile was 0.73 (higher indicates a poorer match). 1 face(s) detected in the submitted frame.
+
+This report was generated automatically from image-based evidence and reflects a preliminary risk flag, not a final determination. Recommend manual review before any disciplinary action is taken.

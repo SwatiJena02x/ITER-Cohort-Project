@@ -1,0 +1,8 @@
+Risk report for Unknown student (UNKNOWN): risk score 40.0/100, classified as MEDIUM.
+
+Contributing indicators:
+- no face detected: +40.0 pts
+
+No registered profile embedding was available for identity comparison. 0 face(s) detected in the submitted frame.
+
+This report was generated automatically from image-based evidence and reflects a preliminary risk flag, not a final determination. Recommend manual review before any disciplinary action is taken.

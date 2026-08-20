@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProctorIQ · Login</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <meta name="description" content="AI-Powered Proctoring Risk Scoring Agent. Upload proctoring images, detect suspicious activities and generate automated risk reports." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/theme.css?v=3" />
+  <link rel="stylesheet" href="css/login.css?v=3" />
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="left-inner">
+        <div class="brand-logo brand-lockup">
+          <img src="assets/logo.png" alt="ProctorIQ logo" class="brand-icon" id="brand-logo-img" onerror="this.onerror=null; this.src='../assets/logo.png';" />
+          <span class="brand-wordmark">Proctor<span class="accent">IQ</span></span>
+        </div>
+        <p class="brand-tagline">Upload • Analyze • Score</p>
+        <h1 class="brand-title">AI-Powered Proctoring.</h1>
+        <p class="brand-subtitle gradient-text">Smarter &amp; Fairer Evaluations.</p>
+        <p class="brand-desc">Upload proctoring images and let AI detect suspicious activities, calculate a risk score, and generate a detailed risk report automatically.</p>
+
+        <div class="feature-cards">
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <div>
+              <div class="feature-title">Accurate Analysis</div>
+              <div class="feature-desc">AI models detect suspicious activities from uploaded examination images.</div>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <div>
+              <div class="feature-title">Risk Scoring</div>
+              <div class="feature-desc">Calculate a detailed risk score from detected evidence and suspicious activities.</div>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <div>
+              <div class="feature-title">Secure &amp; Private</div>
+              <div class="feature-desc">Student information, identity data, examination images and reports are securely stored.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="login-card">
+        <h2 class="card-title">ProctorIQ Portal</h2>
+        <p class="card-subtitle">Choose your account type to continue.</p>
+
+        <!-- Tab Switcher -->
+        <div class="tab-row" role="tablist">
+          <button type="button" class="tab-btn active" id="tab-admin" role="tab" aria-selected="true" onclick="switchTab('admin')">🛡️ Admin Login</button>
+          <button type="button" class="tab-btn" id="tab-student" role="tab" aria-selected="false" onclick="switchTab('student')">🎓 Student Login</button>
+        </div>
+
+        <!-- Admin Login Panel -->
+        <div class="tab-panel active" id="panel-admin" role="tabpanel">
+          <p class="panel-desc">Manage students, upload examination images, analyze suspicious activities and view risk reports.</p>
+          <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
+            <div class="form-group">
+              <label for="admin-email">Admin Email</label>
+              <input type="email" id="admin-email" name="email" placeholder="admin@proctor.ai" autocomplete="email" required />
+            </div>
+            <div class="form-group">
+              <label for="admin-password">Admin Password</label>
+              <div class="password-wrap">
+                <input type="password" id="admin-password" name="password" placeholder="Enter your password" autocomplete="current-password" required />
+                <button type="button" class="pw-toggle" onclick="togglePassword('admin-password', this)" aria-label="Toggle password visibility">
+                  <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="form-check-row">
+              <label class="checkbox-label"><input type="checkbox" id="admin-remember" /> Remember me</label>
+              <a href="#" class="forgot-link">Forgot Password?</a>
+            </div>
+            <div class="error-msg hidden" id="admin-error">Please fill in all fields.</div>
+            <button type="submit" class="btn-primary full-width" id="admin-login-btn">➜ Enter Admin Portal</button>
+          </form>
+        </div>
+
+        <!-- Student Login Panel -->
+        <div class="tab-panel" id="panel-student" role="tabpanel">
+          <p class="panel-desc">View your profile, examination information and generated risk reports.</p>
+          <form id="student-login-form" onsubmit="handleStudentLogin(event)">
+            <div class="form-group">
+              <label for="student-id">Student Email / Roll Number</label>
+              <input type="text" id="student-id" name="student_id" placeholder="student@example.com or STU2026001" autocomplete="username" required />
+            </div>
+            <div class="form-group">
+              <label for="student-password">Student Password</label>
+              <div class="password-wrap">
+                <input type="password" id="student-password" name="password" placeholder="••••••••" autocomplete="current-password" required />
+                <button type="button" class="pw-toggle" onclick="togglePassword('student-password', this)" aria-label="Toggle password visibility">
+                  <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="error-msg hidden" id="student-error">Please fill in your credentials.</div>
+            <button type="submit" class="btn-primary full-width" id="student-login-btn">➜ Enter Student Portal</button>
+          </form>
+        </div>
+
+        <div class="divider"></div>
+        <div class="register-row">
+          <span class="register-text">New user?</span>
+          <a href="register.html" class="btn-outline-sm">Create Account</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/theme.js?v=21"></script>
+  <script src="js/api.js?v=21"></script>
+  <script src="js/login.js?v=21"></script>
+</body>
+</html>

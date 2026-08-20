@@ -1,0 +1,8 @@
+Risk report for Swati jena (0067): risk score 29.45/100, classified as LOW.
+
+Contributing indicators:
+- multiple people: +29.45 pts
+
+Face match distance to registered profile was 0.42 (higher indicates a poorer match). 1 face(s) detected in the submitted frame.
+
+This report was generated automatically from image-based evidence and reflects a preliminary risk flag, not a final determination. Recommend manual review before any disciplinary action is taken.

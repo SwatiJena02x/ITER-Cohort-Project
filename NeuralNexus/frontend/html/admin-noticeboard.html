@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notice Board · ProctorIQ</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/theme.css?v=3"/>
+  <link rel="stylesheet" href="css/dashboard.css?v=3"/>
+  <style>
+    .publish-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-bottom: 16px;
+      transition: var(--transition);
+    }
+    .publish-card:hover { box-shadow: var(--shadow-lg); border-color: #bfdbfe; }
+    .pc-header { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-bottom:1px solid var(--clr-border); background:var(--clr-surface-2); flex-wrap:wrap; gap:8px; }
+    .pc-body   { padding: 16px 20px; }
+    .pc-footer { padding: 12px 20px; border-top:1px solid var(--clr-border); display:flex; gap:8px; align-items:center; background:var(--clr-surface-2); flex-wrap:wrap; }
+
+    .pub-status { display:flex; align-items:center; gap:6px; font-size:0.8rem; font-weight:600; }
+    .pub-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .pub-dot.published { background:#10b981; }
+    .pub-dot.draft     { background:#f59e0b; }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <header class="topbar" id="topbar"></header>
+    <main class="page-content animate-in">
+
+      <div class="section-header flex justify-between items-center">
+        <div>
+          <h1 class="section-title">📢 Notice Board Management</h1>
+          <p class="section-desc">Manage published reports and student notifications.</p>
+        </div>
+        <a href="admin-analyze.html" class="btn-primary">+ Publish New Report</a>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr); margin-bottom:24px;">
+        <div class="stat-box">
+          <div class="stat-icon">📤</div>
+          <div class="stat-label">Published Notices</div>
+          <div class="stat-number">4</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">📝</div>
+          <div class="stat-label">Draft Reports</div>
+          <div class="stat-number" style="color:#f59e0b;">1</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">👥</div>
+          <div class="stat-label">Students Notified</div>
+          <div class="stat-number">4</div>
+        </div>
+      </div>
+
+      <!-- Published Notices List -->
+      <div id="notices-list"></div>
+
+    </main>
+  </div>
+</div>
+
+<script src="js/theme.js?v=21"></script>
+<script src="js/api.js?v=21"></script>
+<script src="js/dashboard.js?v=21"></script>
+<script>
+let currentNoticeReports = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!guardRoute('admin')) return;
+  renderSidebar('noticeboard', 'admin');
+  renderTopbar('Notice Board');
+
+  try {
+    const reports = await api.getAllReports();
+    if (reports && reports.length > 0) {
+      currentNoticeReports = reports.map((r, i) => ({
+        id: `RPT-${r.id}`,
+        db_id: r.id,
+        student: `Student #${r.student_id}`,
+        roll: `STU-${r.student_id}`,
+        score: r.risk_score,
+        level: r.risk_level,
+        date: r.created_at ? r.created_at.slice(0, 10) : '2026-08-16',
+        status: r.is_published ? 'Published' : 'Draft',
+      }));
+      renderNotices(currentNoticeReports);
+      updateNoticeStats(currentNoticeReports);
+      return;
+    } else {
+      currentNoticeReports = [];
+      renderNotices([]);
+      updateNoticeStats([]);
+      return;
+    }
+  } catch (err) {
+    console.error("Failed to load notice reports:", err);
+  }
+
+  currentNoticeReports = [];
+  renderNotices([]);
+  updateNoticeStats([]);
+});
+
+function updateNoticeStats(reports) {
+  const published = reports.filter(r => r.status === 'Published').length;
+  const drafts = reports.filter(r => r.status === 'Draft').length;
+  const notified = new Set(reports.filter(r => r.status === 'Published').map(r => r.roll)).size;
+
+  const statBoxes = document.querySelectorAll('.stats-grid .stat-box .stat-number');
+  if (statBoxes.length >= 3) {
+    statBoxes[0].textContent = published;
+    statBoxes[1].textContent = drafts;
+    statBoxes[2].textContent = notified;
+  }
+}
+
+function renderNotices(reports = currentNoticeReports) {
+  const list = document.getElementById('notices-list');
+  list.innerHTML = reports.map((r, i) => `
+    <div class="publish-card">
+      <div class="pc-header">
+        <div>
+          <div style="font-weight:700; font-size:0.9rem; color:var(--clr-dark);">${r.student} – Risk Report ${i+1===1?'#001':i+1===2?'#002':i+1===3?'#003':'#004'}</div>
+          <div style="font-size:0.78rem; color:var(--clr-muted); margin-top:2px;">${r.id} &nbsp;·&nbsp; Roll: ${r.roll}</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="pub-status">
+            <span class="pub-dot ${r.status.toLowerCase()}"></span>
+            ${r.status}
+          </div>
+          <span class="badge ${getLevelBadgeClass(r.level)}">${r.level}</span>
+        </div>
+      </div>
+      <div class="pc-body">
+        <div style="display:flex; gap:20px; align-items:center; flex-wrap:wrap;">
+          <div style="text-align:center;">
+            <div style="font-size:0.72rem; color:var(--clr-muted); font-weight:600;">Risk Score</div>
+            <div style="font-size:1.8rem; font-weight:800; color:${getLevelColor(r.level)};">${r.score}</div>
+            <div style="font-size:0.78rem; color:var(--clr-muted);">/100</div>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:0.78rem; color:var(--clr-muted); margin-bottom:4px; font-weight:600;">Score Progress</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width:${r.score}%; background:linear-gradient(90deg,${getLevelColor(r.level)},${getLevelColor(r.level)}cc);"></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:0.72rem; color:var(--clr-muted); font-weight:600;">Published Date</div>
+            <div style="font-size:0.85rem; font-weight:600; margin-top:2px;">${r.date}</div>
+          </div>
+        </div>
+      </div>
+      <div class="pc-footer">
+        ${r.status === 'Published'
+          ? `<span class="badge badge-success">✓ Report sent to student notice board</span>`
+          : `<button class="btn-primary" style="font-size:0.8rem; padding:0.45rem 1rem;" onclick="publishReportReal('${r.db_id || r.id}', this)">📤 Publish to Student</button>`
+        }
+        <button class="btn-ghost" style="margin-left:auto;" onclick="window.open(api.getDownloadUrl('${r.db_id || 1}'), '_blank')">📥 Download (PDF)</button>
+        <a href="admin-reports.html" class="btn-ghost">View Details →</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function publishReportReal(id, btn) {
+  btn.disabled = true;
+  btn.textContent = 'Publishing…';
+  showSpinner('Publishing report to student notice board…');
+
+  if (typeof id === 'number' || !isNaN(id)) {
+    try {
+      await api.publishReport(id);
+    } catch (_) {}
+  }
+
+  setTimeout(() => {
+    hideSpinner();
+    const r = currentNoticeReports.find(x => x.db_id == id || x.id == id);
+    if (r) r.status = 'Published';
+    renderNotices();
+    showToast('Report published successfully!', 'success');
+  }, 1000);
+}
+</script>
+</body>
+</html>
