@@ -89,15 +89,6 @@
 
 ---
 
-### Default Test Login Credentials
-
-| Role | Email / Roll Number | Password |
-|---|---|---|
-| **Student** | `swatijena02x@gmail.com` *(or `2341010067`)* | `Swati@123` |
-| **Admin** | `admin@proctor.ai` | `Admin@123` |
-
----
-
 ## 4. Project Structure
 
 ```
