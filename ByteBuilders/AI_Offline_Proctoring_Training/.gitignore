@@ -1,2 +1,49 @@
+# --- Secrets: NEVER commit these ---
+.env
+*.env
+!.env.example
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
 .venv/
-.venv/
+venv/
+env/
+
+# --- Streamlit ---
+.streamlit/secrets.toml
+
+# --- Generated at runtime -- large, per-user, or per-run; never versioned ---
+data/videos/uploads/*
+!data/videos/uploads/.gitkeep
+data/videos/*.mp4
+data/videos/*.mov
+data/videos/*.mkv
+data/videos/*.avi
+data/frames/*
+!data/frames/.gitkeep
+data/audio/*
+!data/audio/.gitkeep
+data/events/*.json
+!data/events/.gitkeep
+
+# --- Model weights / caches downloaded at runtime, not part of the repo ---
+*.pt
+*.pth
+*.bin
+.cache/
+
+# --- OS / editor noise ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# --- Logs ---
+*.log

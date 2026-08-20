@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.zip
+*.db
+.git/
+
+data/videos/
+data/frames/
+*.pyc
+.vscode
+.idea
+*.log
