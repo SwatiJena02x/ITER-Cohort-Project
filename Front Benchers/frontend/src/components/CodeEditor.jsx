@@ -17,13 +17,13 @@ const CodeEditor = ({ code, onChange }) => {
         <span className="editor-label">solution.py</span>
       </div>
       <Editor
-        height="450px"
+        height="calc(100vh - 430px)"
         language="python"
         value={code}
         onChange={handleEditorChange}
         theme="vs-dark"
         options={{
-          fontSize: 14,
+          fontSize: 15,
           fontFamily: "'JetBrains Mono', monospace",
           minimap: { enabled: false },
           scrollBeyondLastLine: false,
@@ -47,31 +47,31 @@ const CodeEditor = ({ code, onChange }) => {
             base: 'vs-dark',
             inherit: true,
             rules: [
-              { token: 'comment', foreground: '9AA3B2', fontStyle: 'italic' },
-              { token: 'keyword', foreground: 'FF8A3D' },
-              { token: 'string', foreground: '4FD8B5' },
-              { token: 'number', foreground: 'FF8A3D' },
-              { token: 'function', foreground: 'E7E9EE' },
-              { token: 'variable', foreground: 'E7E9EE' },
-              { token: 'type', foreground: '4FD8B5' },
-              { token: 'operator', foreground: 'FF5C5C' },
+              { token: 'comment', foreground: '7A8394', fontStyle: 'italic' },
+              { token: 'keyword', foreground: 'D4793A' },
+              { token: 'string', foreground: '44B899' },
+              { token: 'number', foreground: 'D4AD42' },
+              { token: 'function', foreground: 'C8CCD4' },
+              { token: 'variable', foreground: 'C8CCD4' },
+              { token: 'type', foreground: '44B899' },
+              { token: 'operator', foreground: 'D45454' },
             ],
             colors: {
-              'editor.background': '#0E1117',
-              'editor.foreground': '#E7E9EE',
-              'editor.lineHighlightBackground': '#14171F',
-              'editor.selectionBackground': '#FF8A3D33',
-              'editorCursor.foreground': '#FF8A3D',
-              'editorLineNumber.foreground': '#3A3F52',
-              'editorLineNumber.activeForeground': '#9AA3B2',
-              'editor.selectionHighlightBackground': '#FF8A3D1A',
-              'editorBracketMatch.background': '#FF8A3D22',
-              'editorBracketMatch.border': '#FF8A3D44',
-              'editorIndentGuide.background': '#1A1E2A',
-              'editorIndentGuide.activeBackground': '#242836',
+              'editor.background': '#0C0E14',
+              'editor.foreground': '#C8CCD4',
+              'editor.lineHighlightBackground': '#13161E',
+              'editor.selectionBackground': '#D4793A22',
+              'editorCursor.foreground': '#C8CCD4',
+              'editorLineNumber.foreground': '#2A2E3A',
+              'editorLineNumber.activeForeground': '#7A8394',
+              'editor.selectionHighlightBackground': '#D4793A11',
+              'editorBracketMatch.background': '#D4793A15',
+              'editorBracketMatch.border': '#D4793A30',
+              'editorIndentGuide.background': '#1A1D26',
+              'editorIndentGuide.activeBackground': '#1E2230',
               'scrollbar.shadow': '#00000000',
-              'scrollbarSlider.background': '#24283666',
-              'scrollbarSlider.hoverBackground': '#9AA3B244',
+              'scrollbarSlider.background': '#1E223044',
+              'scrollbarSlider.hoverBackground': '#7A839433',
             },
           });
         }}

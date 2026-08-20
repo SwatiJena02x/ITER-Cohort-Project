@@ -30,8 +30,7 @@ const CommentFeed = ({ comments }) => {
         {comments.map((comment, i) => (
           <div
             key={comment.timestamp + i}
-            className={`comment-line comment-tone-${comment.tone} comment-enter`}
-            style={{ animationDelay: `${i * 50}ms` }}
+            className={`comment-line comment-tone-${comment.tone}`}
           >
             <span className="comment-prompt">&gt;</span>
             <span className="comment-text">{comment.text}</span>

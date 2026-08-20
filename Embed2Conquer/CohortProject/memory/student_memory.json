@@ -1,0 +1,13 @@
+{
+    "student_name": "",
+    "topics_learned": [
+        "Binary Search Tree",
+        "Inorder Traversal"
+    ],
+    "weak_topics": [],
+    "recent_questions": [
+        "Given a Binary Search Tree (BST), write a function to find the kth smallest element in the tree."
+    ],
+    "learning_preferences": [],
+    "progress_notes": []
+}

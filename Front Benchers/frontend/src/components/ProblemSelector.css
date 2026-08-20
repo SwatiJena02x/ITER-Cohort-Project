@@ -6,27 +6,26 @@
 
 .problem-dropdown {
   appearance: none;
-  background: var(--panel);
+  background: var(--surface);
   color: var(--fog);
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 500;
-  padding: 8px 36px 8px 14px;
+  padding: 6px 30px 6px 12px;
   border: 1px solid var(--panel-line);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: border-color var(--transition-fast);
   min-width: 200px;
 }
 
 .problem-dropdown:hover {
-  border-color: var(--ember);
+  border-color: var(--ash);
 }
 
 .problem-dropdown:focus {
   outline: none;
-  border-color: var(--ember);
-  box-shadow: 0 0 0 3px var(--ember-glow);
+  border-color: var(--ash);
 }
 
 .problem-dropdown option {
@@ -37,8 +36,8 @@
 
 .dropdown-arrow {
   position: absolute;
-  right: 12px;
+  right: 10px;
   color: var(--ash);
   pointer-events: none;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }

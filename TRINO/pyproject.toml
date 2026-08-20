@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "exam-proctoring-assistant"
+version = "0.1.0"
+description = "RAG-based examination evidence analysis system"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  { name = "Trino Team" }
+]
+license = { text = "MIT" }
+dependencies = [
+  "streamlit==1.45.0",
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.6",
+  "langchain==0.3.27",
+  "langchain-text-splitters==0.3.11",
+  "langchain-openai==0.3.35",
+  "langchain-chroma==0.2.6",
+  "langgraph==0.2.76",
+  "chromadb==1.5.9",
+  "sqlalchemy==2.0.35",
+  "psycopg2-binary==2.9.9",
+  "python-dotenv==1.0.1",
+  "pytesseract==0.3.10",
+  "opencv-python-headless",
+  "numpy",
+  "pandas",
+  "scikit-learn",
+  "plotly",
+  "pillow",
+  "requests",
+  "cryptography==43.0.1",
+  "httpx==0.27.2",
+  "pytest==8.3.3"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "black>=24.0.0",
+  "ruff>=0.5.0"
+]
+
+[project.scripts]
+proctoring-api = "proctoring_assistant.api:main"
+proctoring-ui = "proctoring_assistant.ui:main"
+proctoring-cli = "proctoring_assistant.cli:main"
+
+[tool.setuptools]
+packages = ["proctoring_assistant", "utils"]

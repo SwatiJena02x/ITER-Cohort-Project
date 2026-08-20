@@ -23,26 +23,26 @@ const PERSONA_CONFIG = {
 };
 
 const TONE_CONFIG = {
-  neutral_thinking: { label: 'Thinking...', glowClass: 'glow-ember' },
-  playful_warning: { label: 'Hmm...', glowClass: 'glow-alert' },
-  disappointed: { label: 'Disappointed', glowClass: 'glow-alert' },
-  impressed: { label: 'Impressed!', glowClass: 'glow-signal' },
-  celebrating: { label: 'Celebrating!', glowClass: 'glow-signal' },
-  encouraging: { label: 'Keep going!', glowClass: 'glow-ember' },
+  neutral_thinking: { label: 'Thinking...', frameClass: 'tone-ember' },
+  playful_warning: { label: 'Hmm...', frameClass: 'tone-alert' },
+  disappointed: { label: 'Disappointed', frameClass: 'tone-alert' },
+  impressed: { label: 'Impressed!', frameClass: 'tone-signal' },
+  celebrating: { label: 'Celebrating!', frameClass: 'tone-signal' },
+  encouraging: { label: 'Keep going!', frameClass: 'tone-spark' },
 };
 
 const AvatarPanel = ({ persona, tone, isAnalyzing }) => {
   const config = PERSONA_CONFIG[persona] || PERSONA_CONFIG.walter_white;
   const toneConfig = TONE_CONFIG[tone] || TONE_CONFIG.neutral_thinking;
 
-  const glowClass = useMemo(() => {
-    if (isAnalyzing) return 'glow-ember glow-pulse';
-    return toneConfig.glowClass;
-  }, [isAnalyzing, toneConfig.glowClass]);
+  const frameClass = useMemo(() => {
+    if (isAnalyzing) return 'tone-ember analyzing-pulse';
+    return toneConfig.frameClass;
+  }, [isAnalyzing, toneConfig.frameClass]);
 
   return (
     <div className="avatar-panel" id="avatar-panel">
-      <div className={`avatar-frame ${glowClass}`}>
+      <div className={`avatar-frame ${frameClass}`}>
         <div className="avatar-inner" style={{ '--persona-color': config.color }}>
           <span className="avatar-emoji">{config.emoji}</span>
         </div>

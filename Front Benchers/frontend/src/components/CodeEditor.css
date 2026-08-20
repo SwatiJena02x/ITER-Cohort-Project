@@ -5,37 +5,38 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--panel-line);
-  background: #0E1117;
+  background: #0C0E14;
   min-height: 300px;
 }
 
 .editor-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
+  gap: 10px;
+  padding: 8px 14px;
   background: var(--panel);
   border-bottom: 1px solid var(--panel-line);
 }
 
 .editor-dots {
   display: flex;
-  gap: 6px;
+  gap: 5px;
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
+  opacity: 0.6;
 }
 
-.dot-red { background: #FF5C5C; }
-.dot-yellow { background: #FFB83D; }
-.dot-green { background: #4FD8B5; }
+.dot-red { background: #D45454; }
+.dot-yellow { background: #D4AD42; }
+.dot-green { background: #44B899; }
 
 .editor-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   color: var(--ash);
   letter-spacing: 0.02em;
 }

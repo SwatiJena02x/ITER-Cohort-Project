@@ -1,0 +1,282 @@
+DSA NOTES
+=========
+
+1. ARRAYS
+----------
+
+Arrays store elements in contiguous memory.
+
+Common operations:
+- Access: O(1)
+- Search: O(n)
+- Insert at end: O(1) amortized
+- Insert at beginning: O(n)
+- Delete: O(n)
+
+Common patterns:
+- Two Pointer
+- Sliding Window
+- Prefix Sum
+- Binary Search
+- Kadane's Algorithm
+
+
+2. HASHING
+----------
+
+HashMap / HashSet provide average O(1) lookup.
+
+Common problems:
+- Two Sum
+- Contains Duplicate
+- Frequency Counting
+- Longest Consecutive Sequence
+
+Example:
+
+nums = [2,7,11,15]
+target = 9
+
+Use a HashMap to store previously visited values.
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+
+3. TWO POINTER
+--------------
+
+Two pointers are useful when working with sorted arrays
+or when searching for pairs.
+
+Example:
+
+left = 0
+right = len(nums) - 1
+
+while left < right:
+    total = nums[left] + nums[right]
+
+    if total == target:
+        return [left, right]
+
+    elif total < target:
+        left += 1
+
+    else:
+        right -= 1
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+
+4. SLIDING WINDOW
+-----------------
+
+Sliding Window is useful for contiguous subarrays
+or substrings.
+
+Common problems:
+- Longest Substring Without Repeating Characters
+- Maximum Sum Subarray of Size K
+- Minimum Window Substring
+
+General pattern:
+
+left = 0
+
+for right in range(len(nums)):
+
+    # Add nums[right]
+
+    while window_is_invalid:
+        # Remove nums[left]
+        left += 1
+
+
+5. STACK
+--------
+
+Stack follows LIFO.
+
+Operations:
+- Push: O(1)
+- Pop: O(1)
+- Top: O(1)
+
+Applications:
+- Parentheses
+- Next Greater Element
+- Monotonic Stack
+- Expression Evaluation
+
+
+6. QUEUE
+--------
+
+Queue follows FIFO.
+
+Operations:
+- Enqueue: O(1)
+- Dequeue: O(1)
+
+Applications:
+- BFS
+- Scheduling
+- Sliding Window
+
+
+7. LINKED LIST
+--------------
+
+Common operations:
+- Insert at beginning: O(1)
+- Search: O(n)
+- Delete with reference: O(1)
+
+Important techniques:
+- Fast and Slow Pointer
+- Reverse Linked List
+- Detect Cycle
+- Merge Two Sorted Lists
+
+
+8. BINARY SEARCH
+----------------
+
+Binary Search works on sorted data.
+
+Time Complexity: O(log n)
+Space Complexity: O(1)
+
+Basic idea:
+
+left = 0
+right = len(nums) - 1
+
+while left <= right:
+
+    mid = (left + right) // 2
+
+    if nums[mid] == target:
+        return mid
+
+    elif nums[mid] < target:
+        left = mid + 1
+
+    else:
+        right = mid - 1
+
+
+9. TREES
+--------
+
+Important traversals:
+
+DFS:
+- Preorder
+- Inorder
+- Postorder
+
+BFS:
+- Level Order Traversal
+
+Complexity:
+
+Traversal:
+O(n)
+
+Space:
+O(h) for recursive DFS
+where h is tree height.
+
+
+10. GRAPHS
+----------
+
+Common algorithms:
+- BFS
+- DFS
+- Dijkstra
+- Topological Sort
+- Union Find
+
+BFS is commonly used for shortest path
+in an unweighted graph.
+
+
+11. DYNAMIC PROGRAMMING
+-----------------------
+
+DP is useful when a problem contains:
+
+1. Overlapping subproblems
+2. Optimal substructure
+
+Common DP problems:
+- Climbing Stairs
+- House Robber
+- Coin Change
+- Longest Common Subsequence
+- 0/1 Knapsack
+
+Typical approach:
+
+1. Define the state
+2. Define the transition
+3. Define base cases
+4. Determine computation order
+
+
+12. GREEDY
+----------
+
+Greedy algorithms make the locally optimal choice.
+
+Examples:
+- Activity Selection
+- Jump Game
+- Interval Scheduling
+- Fractional Knapsack
+
+
+13. BACKTRACKING
+---------------
+
+Backtracking explores possible solutions
+and removes choices when they cannot lead
+to a valid solution.
+
+Examples:
+- N-Queens
+- Sudoku
+- Permutations
+- Combinations
+- Subsets
+
+
+14. COMPLEXITY CHEAT SHEET
+--------------------------
+
+O(1)       Constant
+O(log n)   Binary Search
+O(n)       Linear traversal
+O(n log n) Efficient sorting
+O(n²)      Nested loops
+O(2^n)     Subset/backtracking
+O(n!)      Permutations
+
+
+15. INTERVIEW RULES
+-------------------
+
+Always explain:
+
+1. Brute Force
+2. Better Approach
+3. Optimal Approach
+4. Time Complexity
+5. Space Complexity
+6. Edge Cases
+7. Dry Run
+8. Optimization

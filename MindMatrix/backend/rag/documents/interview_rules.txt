@@ -1,0 +1,347 @@
+=========================================================
+DSA INTERVIEW EVALUATION RULES
+=========================================================
+
+
+==========================
+Interview Evaluation Process
+==========================
+
+A good DSA interview evaluation should check:
+
+1. Problem Understanding
+
+2. Approach Explanation
+
+3. Algorithm Selection
+
+4. Code Correctness
+
+5. Complexity Analysis
+
+6. Edge Case Handling
+
+7. Communication Skills
+
+
+
+---------------------------------------------------------
+
+
+==========================
+Problem Understanding
+==========================
+
+Candidate should explain:
+
+- What is given?
+- What is required?
+- Constraints
+- Important observations
+
+
+Good candidate:
+
+Understands constraints before coding.
+
+
+
+Poor candidate:
+
+Starts coding without analysis.
+
+
+
+---------------------------------------------------------
+
+
+==========================
+Approach Explanation
+==========================
+
+Candidate should explain:
+
+1. Brute force approach
+
+2. Limitations of brute force
+
+3. Optimized approach
+
+4. Why optimization works
+
+
+Example:
+
+
+Problem:
+
+Two Sum
+
+
+Brute Force:
+
+Check every pair.
+
+Complexity:
+
+O(n²)
+
+
+Optimal:
+
+Use HashMap.
+
+Complexity:
+
+O(n)
+
+
+
+---------------------------------------------------------
+
+
+==========================
+Algorithm Selection
+==========================
+
+Evaluate whether candidate chooses correct pattern.
+
+
+Examples:
+
+
+Sorted Array:
+
+Use Two Pointer
+
+
+Searching:
+
+Use Binary Search
+
+
+Frequency:
+
+Use HashMap
+
+
+Subarray:
+
+Use Sliding Window
+
+
+Tree:
+
+Use DFS/BFS
+
+
+Graph:
+
+Use BFS/DFS
+
+
+
+---------------------------------------------------------
+
+
+==========================
+Code Quality Rules
+==========================
+
+Good code should have:
+
+- Meaningful variable names
+- Proper indentation
+- Modular functions
+- No unnecessary complexity
+- Clear logic
+
+
+Avoid:
+
+- Duplicate code
+- Hardcoded values
+- Unclear variables
+
+
+
+---------------------------------------------------------
+
+
+==========================
+Complexity Evaluation
+==========================
+
+Candidate must mention:
+
+
+Time Complexity:
+
+How runtime grows with input size.
+
+
+Space Complexity:
+
+Extra memory used.
+
+
+
+Common Complexity:
+
+
+Excellent:
+
+O(1)
+
+O(log n)
+
+
+Good:
+
+O(n)
+
+
+Acceptable:
+
+O(n log n)
+
+
+Needs Improvement:
+
+O(n²)
+
+
+Poor:
+
+O(2^n)
+
+
+
+---------------------------------------------------------
+
+
+==========================
+Edge Case Evaluation
+==========================
+
+Candidate should consider:
+
+
+Empty input
+
+
+Single element
+
+
+Large input
+
+
+Duplicate values
+
+
+Negative numbers
+
+
+Boundary conditions
+
+
+
+---------------------------------------------------------
+
+
+==========================
+Communication Scoring
+==========================
+
+
+Score 9-10:
+
+- Clear explanation
+- Strong reasoning
+- Explains trade-offs
+- Handles questions
+
+
+Score 7-8:
+
+- Good solution
+- Minor explanation issues
+
+
+Score 5-6:
+
+- Understands basics
+- Needs guidance
+
+
+Score 1-4:
+
+- Poor understanding
+- Cannot explain approach
+
+
+
+---------------------------------------------------------
+
+
+==========================
+Follow Up Questions
+==========================
+
+Interviewers can ask:
+
+
+1. Can you optimize this solution?
+
+
+2. Can you reduce memory usage?
+
+
+3. What happens for empty input?
+
+
+4. Can you solve recursively?
+
+
+5. Can you explain time complexity?
+
+
+6. Why did you choose this approach?
+
+
+
+---------------------------------------------------------
+
+
+==========================
+Final Interview Decision
+==========================
+
+
+Strong Hire:
+
+- Correct solution
+- Optimal approach
+- Good communication
+
+
+Hire:
+
+- Correct solution
+- Minor improvements needed
+
+
+Needs Improvement:
+
+- Partial understanding
+
+
+Reject:
+
+- Cannot solve or explain
+
+
+
+=========================================================
+END OF INTERVIEW RULES
+=========================================================

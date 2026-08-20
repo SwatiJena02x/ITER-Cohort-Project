@@ -1,11 +1,17 @@
-"""Groq API wrapper for LLM calls.
+"""LangChain + Groq LLM wrapper for DSA Coach.
 
+Uses ChatGroq from langchain-groq for all LLM interactions.
+Model: openai/gpt-oss-120b (Groq LPU inference).
 One LLM call per interaction — no multi-step chains.
-Expects structured JSON output with comment, tone, and hint_available.
+Expects structured JSON output with comment, tone, and hint_available for analyze.
 """
 import json
 import os
-from groq import Groq
+import re
+from typing import Optional
+
+from langchain_groq import ChatGroq
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 
 # Valid tones the LLM must return
 VALID_TONES = [
@@ -17,15 +23,23 @@ VALID_TONES = [
     "encouraging",
 ]
 
-# Initialize Groq client
-_client = None
+# ─── Model configuration ───────────────────────────────────────────────
+MODEL_NAME = "openai/gpt-oss-120b"
+
+# Initialize LangChain ChatGroq client
+_llm: Optional[ChatGroq] = None
 
 
-def _get_client() -> Groq:
-    global _client
-    if _client is None:
-        _client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-    return _client
+def _get_llm() -> ChatGroq:
+    """Get or create the ChatGroq LLM instance."""
+    global _llm
+    if _llm is None:
+        _llm = ChatGroq(
+            model=MODEL_NAME,
+            api_key=os.getenv("GROQ_API_KEY"),
+            temperature=0.7,
+        )
+    return _llm
 
 
 def _build_analyze_prompt(persona_voice: str, anti_pattern: dict, code: str, optimal_solutions: list[str], previous_comments: list[str]) -> str:
@@ -36,37 +50,35 @@ def _build_analyze_prompt(persona_voice: str, anti_pattern: dict, code: str, opt
         optimal_context = f"\nFor your reference, here are the optimal solutions to this problem:\n{sols_formatted}\nCompare the student's code against these optimal solutions to see if they are on the right track."
 
     if anti_pattern:
-        issue_text = f"The student's code has this logic issue: {anti_pattern['description']}. {anti_pattern['explanation']}."
+        issue_text = f"The student's code has a logic issue: {anti_pattern['description']}. {anti_pattern['explanation']}."
     else:
-        issue_text = "The student is currently typing. Read their ENTIRE code block to understand their approach. Comment dynamically on their specific logic. If they have fatal flaws (e.g. using len() on an integer), point them out. If their code is already optimal and matches the optimal solutions, PRAISE them and do NOT tell them to optimize further."
+        issue_text = "The student is currently typing. Their code might be incomplete. Do NOT be disappointed just because they haven't finished typing (e.g. missing returns). If they are on the right track towards the optimal solution, use a 'neutral_thinking' or 'encouraging' tone. ONLY use 'disappointed' if they are doing something fundamentally wrong. If their code is perfectly optimal and complete, PRAISE them with 'impressed'."
 
     prev_comments_text = ""
     if previous_comments:
         prev_list = "\n".join(f"- {c}" for c in previous_comments[-5:])
-        prev_comments_text = f"\nYou have ALREADY said these comments (DO NOT repeat any of them, say something completely different):\n{prev_list}"
+        prev_comments_text = f"\nYou have ALREADY said these comments (DO NOT repeat them):\n{prev_list}"
 
     return f"""You are a DSA coach. Personality: {persona_voice}
 {optimal_context}
 
 {issue_text}
 
-Here is their current code (NOTE: ignore missing indented blocks at the end, they are still typing):
+Here is their current code:
 ```python
 {code}
 ```
 {prev_comments_text}
 
 RULES — VERY IMPORTANT:
-- Your comment MUST be 1-2 SHORT sentences only (MAX 25 words total).
-- YOU MUST SOUND EXACTLY LIKE THE CHARACTER. Use their catchphrases, tone, and metaphors (e.g. Walter White: 'impure product', 'let him cook', 'chemistry'; Kratos: 'boy', 'warrior'; Thanos: 'balance', 'inevitable').
-- Speak PLAINLY and clearly so a beginner can understand the technical advice, but wrap it in the persona's distinct voice.
-- Do NOT be boring. Be harsh, witty, or entertaining based on the persona.
-- Do NOT explain the solution or name the optimal data structure.
-- Do NOT write a paragraph. One punchy line is ideal.
-- NEVER repeat yourself. Your response MUST be completely different from your previous comments listed above. Use different words, different sentence structure, different metaphors.
+- Your comment MUST be EXACTLY ONE short, punchy sentence (MAX 15 words).
+- YOU MUST SOUND EXACTLY LIKE THE CHARACTER. Use their catchphrases, tone, and metaphors.
+- Speak PLAINLY and clearly so a beginner can understand.
+- Do NOT explain the entire solution or name the exact data structure to use.
+- NEVER repeat yourself. Your response MUST be completely different from previous comments.
 
 Respond with ONLY this JSON:
-{{"comment": "your short comment", "tone": "one_of_valid_tones", "hint_available": true}}
+{{"comment": "your 1-sentence comment", "tone": "one_of_valid_tones", "hint_available": true}}
 
 Valid tones: {', '.join(VALID_TONES)}"""
 
@@ -114,11 +126,13 @@ def generate_analyze_comment(
     optimal_solutions: list[str],
     previous_comments: list[str] = [],
 ) -> dict:
-    """Generate a 1-2 sentence coach comment based on the AST analysis."""
-    import re
-
-    client = _get_client()
-    if not client:
+    """Generate a 1-2 sentence coach comment based on the AST analysis.
+    
+    Uses LangChain ChatGroq. JSON is extracted from the text response
+    using our robust _extract_json parser.
+    """
+    llm = _get_llm()
+    if not os.getenv("GROQ_API_KEY"):
         return {"comment": "[Groq API key missing] Please set GROQ_API_KEY in .env", "tone": "neutral_thinking", "hint_available": False}
 
     prompt = _build_analyze_prompt(persona_voice, anti_pattern, code, optimal_solutions, previous_comments)
@@ -146,17 +160,16 @@ def generate_analyze_comment(
         result.setdefault("comment", "Keep going...")
         return result
 
-    # llama-3.3-70b-versatile supports response_format: json_object properly
     try:
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[{"role": "system", "content": prompt}],
-            response_format={"type": "json_object"},
-            temperature=0.7,
-            max_tokens=150,
+        # LangChain invoke — JSON mode requires a user message alongside the system prompt
+        response = llm.invoke(
+            [
+                SystemMessage(content=prompt),
+                HumanMessage(content="Analyze the code and respond with the JSON."),
+            ],
         )
-        content = response.choices[0].message.content or ""
-        print(f"[LLM] raw_response: {content[:300]}")
+        content = response.content or ""
+        print(f"[LLM Analyze] raw_response: {content.encode('utf-8', errors='replace').decode('utf-8')[:300]}")
 
         result = _extract_json(content)
         if result.get("comment"):
@@ -184,39 +197,44 @@ def generate_chat_reply(
     history: list[dict],
     rag_context: str = "",
 ) -> str:
-    """Generate an in-character chat reply."""
-    client = _get_client()
+    """Generate an in-character chat reply using LangChain ChatGroq."""
+    llm = _get_llm()
     system_prompt = _build_chat_prompt(persona_voice, problem_description, problem_title, rag_context)
 
-    messages = [{"role": "system", "content": system_prompt}]
+    # Build LangChain message list from chat history
+    messages = [SystemMessage(content=system_prompt)]
     for msg in history[-10:]:  # Keep last 10 messages for context
-        messages.append({"role": msg["role"], "content": msg["content"]})
-    messages.append({"role": "user", "content": message})
+        if msg["role"] == "user":
+            messages.append(HumanMessage(content=msg["content"]))
+        else:
+            messages.append(AIMessage(content=msg["content"]))
+    messages.append(HumanMessage(content=message))
 
     try:
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=messages,
-            temperature=0.9,
+        response = llm.invoke(
+            messages,
             max_tokens=400,
+            temperature=0.9,
         )
-        return response.choices[0].message.content
-    except Exception:
+        return response.content
+    except Exception as e:
+        print(f"[LLM Error] generate_chat_reply failed: {e}")
         return "I seem to be momentarily distracted. Ask me again."
 
 
 def generate_hint_in_character(persona_voice: str, hint_text: str, rag_context: str = "") -> str:
-    """Deliver a hint rephrased in the persona's voice."""
-    client = _get_client()
+    """Deliver a hint rephrased in the persona's voice using LangChain ChatGroq."""
+    llm = _get_llm()
     prompt = _build_hint_prompt(persona_voice, hint_text, rag_context)
 
     try:
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[{"role": "user", "content": prompt}],
+        response = llm.invoke(
+            [HumanMessage(content=prompt)],
             temperature=0.8,
-            max_tokens=60,
         )
-        return response.choices[0].message.content
-    except Exception:
+        content = response.content or ""
+        print(f"[LLM Hint] raw_response: {content.encode('utf-8', errors='replace').decode('utf-8')[:300]}")
+        return content
+    except Exception as e:
+        print(f"[LLM Error] generate_hint_in_character failed: {e}")
         return hint_text  # Fall back to raw hint text
