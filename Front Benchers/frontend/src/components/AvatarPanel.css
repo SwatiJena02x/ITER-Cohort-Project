@@ -2,99 +2,78 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--space-lg);
-  gap: var(--space-md);
+  padding: var(--space-md) var(--space-md) var(--space-sm);
+  gap: var(--space-sm);
 }
 
-/* ─── Glow ring frame ─── */
+/* ─── Avatar frame — glowing ring ─── */
 .avatar-frame {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: box-shadow var(--transition-slow);
+  transition: border-color var(--transition-slow), box-shadow var(--transition-slow);
+  border: 2.5px solid var(--panel-line);
 }
 
-.avatar-frame::before {
-  content: '';
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  padding: 3px;
-  background: conic-gradient(
-    from 0deg,
-    var(--ember),
-    transparent 40%,
-    var(--ember) 60%,
-    transparent 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.6;
-  transition: opacity var(--transition-slow);
+/* Tone-based glow */
+.avatar-frame.tone-ember {
+  border-color: var(--ember);
+  box-shadow: 0 0 18px rgba(212, 121, 58, 0.3), 0 0 40px rgba(212, 121, 58, 0.1);
 }
 
-/* Glow states */
-.avatar-frame.glow-ember {
-  box-shadow: 0 0 30px var(--ember-glow), 0 0 60px rgba(255, 138, 61, 0.1);
-}
-.avatar-frame.glow-ember::before {
-  background: conic-gradient(from 0deg, var(--ember), transparent 40%, var(--ember) 60%, transparent 100%);
+.avatar-frame.tone-signal {
+  border-color: var(--signal);
+  box-shadow: 0 0 18px rgba(68, 184, 153, 0.3), 0 0 40px rgba(68, 184, 153, 0.1);
 }
 
-.avatar-frame.glow-signal {
-  box-shadow: 0 0 30px var(--signal-glow), 0 0 60px rgba(79, 216, 181, 0.1);
-}
-.avatar-frame.glow-signal::before {
-  background: conic-gradient(from 0deg, var(--signal), transparent 40%, var(--signal) 60%, transparent 100%);
+.avatar-frame.tone-alert {
+  border-color: var(--alert);
+  box-shadow: 0 0 18px rgba(212, 84, 84, 0.3), 0 0 40px rgba(212, 84, 84, 0.1);
 }
 
-.avatar-frame.glow-alert {
-  box-shadow: 0 0 30px var(--alert-glow), 0 0 60px rgba(255, 92, 92, 0.1);
-}
-.avatar-frame.glow-alert::before {
-  background: conic-gradient(from 0deg, var(--alert), transparent 40%, var(--alert) 60%, transparent 100%);
+.avatar-frame.tone-spark {
+  border-color: var(--spark);
+  box-shadow: 0 0 18px rgba(212, 173, 66, 0.3), 0 0 40px rgba(212, 173, 66, 0.1);
 }
 
-/* Pulse animation — only on the glow ring */
-.avatar-frame.glow-pulse::before {
-  animation: glowPulse 2s ease-in-out infinite;
+/* Pulse animation when analyzing */
+.avatar-frame.analyzing-pulse {
+  animation: ringPulse 1.8s ease-in-out infinite;
 }
 
-.avatar-frame.glow-pulse {
-  animation: shadowPulse 2s ease-in-out infinite;
-}
+@keyframes ringPulse {
 
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
+  0%,
+  100% {
+    box-shadow: 0 0 12px rgba(212, 121, 58, 0.2);
+    border-color: rgba(212, 121, 58, 0.5);
+  }
 
-@keyframes shadowPulse {
-  0%, 100% { box-shadow: 0 0 20px var(--ember-glow); }
-  50% { box-shadow: 0 0 40px var(--ember-glow), 0 0 80px rgba(255, 138, 61, 0.15); }
+  50% {
+    box-shadow: 0 0 28px rgba(212, 121, 58, 0.45), 0 0 50px rgba(212, 121, 58, 0.15);
+    border-color: var(--ember);
+  }
 }
 
 /* ─── Inner avatar circle ─── */
 .avatar-inner {
-  width: 108px;
-  height: 108px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
-  background: var(--panel);
+  background: var(--surface);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--panel-line);
   position: relative;
   z-index: 1;
 }
 
 .avatar-emoji {
-  font-size: 3rem;
+  font-size: 2.5rem;
   line-height: 1;
 }
 
@@ -103,47 +82,69 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .avatar-name {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  color: var(--fog);
+  color: var(--white);
   margin: 0;
 }
 
 .avatar-subtitle {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--ash);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
 .avatar-tone {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: var(--radius-sm);
   margin-top: 4px;
   display: inline-block;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
-.tone-neutral_thinking { color: var(--ember); background: rgba(255, 138, 61, 0.1); }
-.tone-playful_warning { color: var(--alert); background: rgba(255, 92, 92, 0.1); }
-.tone-disappointed { color: var(--alert); background: rgba(255, 92, 92, 0.1); }
-.tone-impressed { color: var(--signal); background: rgba(79, 216, 181, 0.1); }
-.tone-celebrating { color: var(--signal); background: rgba(79, 216, 181, 0.1); }
-.tone-encouraging { color: var(--ember); background: rgba(255, 138, 61, 0.1); }
+.tone-neutral_thinking {
+  color: var(--ember);
+  background: rgba(212, 121, 58, 0.08);
+}
+
+.tone-playful_warning {
+  color: var(--alert);
+  background: rgba(212, 84, 84, 0.08);
+}
+
+.tone-disappointed {
+  color: var(--alert);
+  background: rgba(212, 84, 84, 0.08);
+}
+
+.tone-impressed {
+  color: var(--signal);
+  background: rgba(68, 184, 153, 0.08);
+}
+
+.tone-celebrating {
+  color: var(--signal);
+  background: rgba(68, 184, 153, 0.08);
+}
+
+.tone-encouraging {
+  color: var(--spark);
+  background: rgba(212, 173, 66, 0.08);
+}
 
 /* ─── Reduced motion ─── */
 @media (prefers-reduced-motion: reduce) {
-  .avatar-frame.glow-pulse::before {
-    animation: none;
-    opacity: 0.8;
-  }
-  .avatar-frame.glow-pulse {
+  .avatar-frame.analyzing-pulse {
     animation: none;
   }
 }

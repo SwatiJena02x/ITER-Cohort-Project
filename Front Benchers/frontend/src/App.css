@@ -1,14 +1,13 @@
 /* ═══════════════════════════════════════════════════════════════════════ */
 /*  DSA Coach — Main Application Styles                                   */
-/*  Premium dark theme with cold blue undertone, editor-dominant layout   */
+/*  Dark aesthetic, muted tones, everything fits in viewport              */
 /* ═══════════════════════════════════════════════════════════════════════ */
-
-/* ─── Google Fonts are loaded in index.html ─── */
 
 .app {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background: var(--ink);
 }
 
@@ -20,99 +19,97 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 24px;
+  padding: 8px 20px;
   background: var(--panel);
   border-bottom: 1px solid var(--panel-line);
-  position: sticky;
-  top: 0;
+  flex-shrink: 0;
   z-index: 100;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .app-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .logo-icon {
-  font-size: 1.4rem;
-  filter: drop-shadow(0 0 8px var(--ember-glow));
+  font-size: 1.2rem;
+  opacity: 0.8;
 }
 
 .logo-text {
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: var(--fog);
   margin: 0;
   letter-spacing: -0.01em;
-  background: linear-gradient(135deg, var(--fog) 0%, var(--ember) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .mobile-toggle {
   display: none;
   background: var(--panel);
   border: 1px solid var(--panel-line);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   padding: 6px 10px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
+  color: var(--fog);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════ */
-/*  Workspace — split layout                                               */
+/*  Workspace — fills remaining viewport height                            */
 /* ═══════════════════════════════════════════════════════════════════════ */
 
 .workspace {
   display: flex;
   flex: 1;
+  min-height: 0;
   overflow: hidden;
 }
 
-/* ─── Left: Editor column (60%) ─── */
+/* ─── Left: Editor column — flex fills height, no scroll ─── */
 .editor-column {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: var(--space-lg);
-  gap: var(--space-md);
-  overflow-y: auto;
+  padding: var(--space-sm) var(--space-md);
+  gap: var(--space-sm);
+  overflow: hidden;
 }
 
-/* ─── Problem description ─── */
+/* ─── Problem description — compact, limited height ─── */
 .problem-description {
   background: var(--panel);
   border: 1px solid var(--panel-line);
   border-radius: var(--radius-md);
-  padding: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
+  flex-shrink: 0;
+  max-height: 220px;
+  overflow-y: auto;
 }
 
 .problem-title {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: var(--fog);
+  color: var(--white);
   margin: 0;
 }
 
@@ -120,52 +117,50 @@
   display: inline-flex;
   align-self: flex-start;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
 }
 
 .difficulty-easy {
-  background: rgba(79, 216, 181, 0.12);
+  background: rgba(68, 184, 153, 0.1);
   color: var(--signal);
 }
 
 .difficulty-medium {
-  background: rgba(255, 138, 61, 0.12);
+  background: rgba(212, 121, 58, 0.1);
   color: var(--ember);
 }
 
 .difficulty-hard {
-  background: rgba(255, 92, 92, 0.12);
+  background: rgba(212, 84, 84, 0.1);
   color: var(--alert);
 }
 
 .problem-text {
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: var(--ash);
-  line-height: 1.65;
-  max-height: 200px;
-  overflow-y: auto;
+  line-height: 1.55;
 }
 
 .problem-text code {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
-  background: rgba(255, 138, 61, 0.08);
+  font-size: 0.8rem;
+  background: rgba(212, 121, 58, 0.06);
   color: var(--ember);
-  padding: 1px 6px;
-  border-radius: 3px;
+  padding: 1px 5px;
+  border-radius: 2px;
 }
 
 .problem-text pre {
   background: var(--ink);
   border: 1px solid var(--panel-line);
   border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  margin: 8px 0;
+  padding: 8px 12px;
+  margin: 6px 0;
   overflow-x: auto;
 }
 
@@ -180,70 +175,65 @@
   font-weight: 600;
 }
 
-/* ─── Editor container with analyzing glow ─── */
+/* ─── Editor container — fills remaining space ─── */
 .editor-container {
   flex: 1;
-  min-height: 350px;
+  min-height: 200px;
   border-radius: var(--radius-md);
   position: relative;
-  transition: box-shadow var(--transition-slow);
-}
-
-.editor-container.analyzing {
-  box-shadow: 0 0 20px var(--ember-glow), 0 0 40px rgba(255, 138, 61, 0.08);
+  transition: border-color var(--transition-slow);
 }
 
 .editor-container.analyzing::after {
   content: '';
   position: absolute;
-  inset: -1px;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 138, 61, 0.3);
-  pointer-events: none;
-  animation: borderPulse 2s ease-in-out infinite;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--ember);
+  border-radius: 3px 0 0 3px;
+  opacity: 0.6;
   z-index: 10;
+  pointer-events: none;
 }
 
-@keyframes borderPulse {
-  0%, 100% { border-color: rgba(255, 138, 61, 0.15); }
-  50% { border-color: rgba(255, 138, 61, 0.4); }
-}
-
-/* ─── Action bar ─── */
+/* ─── Action bar — always visible at bottom ─── */
 .action-bar {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   justify-content: flex-end;
+  flex-shrink: 0;
+  padding: 2px 0;
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-family: var(--font-body);
   font-size: 0.85rem;
   font-weight: 600;
-  padding: 10px 20px;
-  border-radius: var(--radius-md);
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   border: 1px solid transparent;
 }
 
 .btn-icon {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .btn-hint {
-  background: rgba(255, 138, 61, 0.08);
+  background: rgba(212, 121, 58, 0.06);
   color: var(--ember);
-  border-color: rgba(255, 138, 61, 0.2);
+  border-color: rgba(212, 121, 58, 0.15);
 }
 
 .btn-hint:hover:not(:disabled) {
-  background: rgba(255, 138, 61, 0.15);
-  border-color: var(--ember);
-  box-shadow: 0 0 16px var(--ember-glow);
+  background: rgba(212, 121, 58, 0.12);
+  border-color: rgba(212, 121, 58, 0.3);
 }
 
 .btn-run {
@@ -254,19 +244,18 @@
 }
 
 .btn-run:hover:not(:disabled) {
-  background: #6AEACA;
-  box-shadow: 0 0 20px var(--signal-glow);
+  background: #52C9A5;
   transform: translateY(-1px);
 }
 
 .btn:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
   transform: none !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════ */
-/*  Right: Coach sidebar (fixed width)                                     */
+/*  Right: Coach sidebar — fills viewport height                           */
 /* ═══════════════════════════════════════════════════════════════════════ */
 
 .coach-sidebar {
@@ -277,9 +266,6 @@
   background: var(--panel);
   border-left: 1px solid var(--panel-line);
   overflow: hidden;
-  height: calc(100vh - 56px);
-  position: sticky;
-  top: 56px;
 }
 
 /* ─── Sidebar tabs ─── */
@@ -287,11 +273,12 @@
   display: flex;
   border-top: 1px solid var(--panel-line);
   border-bottom: 1px solid var(--panel-line);
+  flex-shrink: 0;
 }
 
 .tab-btn {
   flex: 1;
-  padding: 10px 0;
+  padding: 9px 0;
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
@@ -306,12 +293,12 @@
 
 .tab-btn:hover {
   color: var(--fog);
-  background: var(--panel-hover);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .tab-btn.active {
-  color: var(--ember);
-  border-bottom-color: var(--ember);
+  color: var(--fog);
+  border-bottom-color: var(--ash);
 }
 
 /* ─── Sidebar panel content ─── */
@@ -333,7 +320,8 @@
   }
 
   .editor-column {
-    padding: var(--space-md);
+    padding: var(--space-sm);
+    overflow-y: auto;
   }
 
   .coach-sidebar {
@@ -357,13 +345,13 @@
   }
 
   .logo-text {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 }
 
 @media (max-width: 600px) {
   .app-header {
-    padding: 10px 16px;
+    padding: 8px 12px;
   }
 
   .persona-selector {
@@ -371,15 +359,15 @@
   }
 
   .problem-description {
-    padding: var(--space-md);
+    padding: var(--space-sm);
   }
 
   .problem-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .editor-container {
-    min-height: 250px;
+    min-height: 200px;
   }
 
   .action-bar {

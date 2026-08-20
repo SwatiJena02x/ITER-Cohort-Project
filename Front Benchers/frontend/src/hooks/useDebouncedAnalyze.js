@@ -1,10 +1,11 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 
 /**
- * Custom hook that immediately fires the /analyze API call.
+ * Custom hook that debounces the /analyze API call.
  */
-export function useDebouncedAnalyze() {
+export function useDebouncedAnalyze(delay = 2000) {
   const abortRef = useRef(null);
+  const timeoutRef = useRef(null);
 
   const instantAnalyze = useCallback(
     async (problemId, code, persona, previousComments, onResult) => {
@@ -45,11 +46,31 @@ export function useDebouncedAnalyze() {
     []
   );
 
+  const debouncedAnalyze = useCallback(
+    (...args) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        instantAnalyze(...args);
+      }, delay);
+    },
+    [instantAnalyze, delay]
+  );
+
   const cancel = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
     if (abortRef.current) {
       abortRef.current.abort();
     }
   }, []);
 
-  return { debouncedAnalyze: instantAnalyze, cancel };
+  // Cleanup on unmount
+  useEffect(() => {
+    return cancel;
+  }, [cancel]);
+
+  return { debouncedAnalyze, cancel };
 }

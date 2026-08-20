@@ -15,14 +15,14 @@
 
 .hint-tier-dots {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .tier-dot {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  border: 2px solid var(--panel-line);
+  border: 1px solid var(--panel-line);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,17 +31,16 @@
 
 .tier-dot.unlocked {
   border-color: var(--signal);
-  background: rgba(79, 216, 181, 0.15);
+  background: rgba(68, 184, 153, 0.08);
 }
 
 .tier-dot.current {
   border-color: var(--ember);
-  box-shadow: 0 0 10px var(--ember-glow);
 }
 
 .tier-number {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--ash);
 }
 
@@ -49,7 +48,7 @@
 .tier-dot.current .tier-number { color: var(--ember); }
 
 .hint-tier-label {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   color: var(--ash);
 }
 
@@ -57,7 +56,7 @@
 .hint-descriptions {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 .hint-level {
@@ -68,20 +67,20 @@
 
 .hint-level-tag {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  padding: 2px 8px;
+  font-size: 0.62rem;
+  padding: 1px 6px;
   border-radius: var(--radius-sm);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   flex-shrink: 0;
 }
 
-.tag-nudge { background: rgba(255, 138, 61, 0.12); color: var(--ember); }
-.tag-technique { background: rgba(79, 216, 181, 0.12); color: var(--signal); }
-.tag-solution { background: rgba(255, 92, 92, 0.12); color: var(--alert); }
+.tag-nudge { background: rgba(212, 121, 58, 0.08); color: var(--ember); }
+.tag-technique { background: rgba(68, 184, 153, 0.08); color: var(--signal); }
+.tag-solution { background: rgba(212, 84, 84, 0.08); color: var(--alert); }
 
 .hint-level-desc {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--ash);
 }
 
@@ -89,21 +88,21 @@
 .hint-history {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   overflow-y: auto;
   flex: 1;
 }
 
 .hint-item {
-  background: var(--panel);
+  background: var(--surface);
   border: 1px solid var(--panel-line);
   border-radius: var(--radius-sm);
-  padding: 10px 12px;
+  padding: 8px 10px;
 }
 
 .hint-tier-badge {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   color: var(--ember);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -111,34 +110,33 @@
 
 .hint-text {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--fog);
   line-height: 1.5;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 /* ─── Request button ─── */
 .btn-request-hint {
   width: 100%;
-  padding: 10px 16px;
-  background: rgba(255, 138, 61, 0.1);
+  padding: 8px 14px;
+  background: rgba(212, 121, 58, 0.06);
   color: var(--ember);
-  border: 1px solid rgba(255, 138, 61, 0.3);
-  border-radius: var(--radius-md);
+  border: 1px solid rgba(212, 121, 58, 0.15);
+  border-radius: var(--radius-sm);
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .btn-request-hint:hover:not(:disabled) {
-  background: rgba(255, 138, 61, 0.18);
-  border-color: var(--ember);
-  box-shadow: 0 0 16px var(--ember-glow);
+  background: rgba(212, 121, 58, 0.1);
+  border-color: rgba(212, 121, 58, 0.25);
 }
 
 .btn-request-hint:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
 }

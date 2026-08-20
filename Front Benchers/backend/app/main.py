@@ -1,6 +1,8 @@
-"""DSA Coach — FastAPI Backend.
+"""DSA Coach — FastAPI Backend with LangChain/LangGraph.
 
-Loads problem data and personas at startup, mounts all routers.
+Loads problem data and personas at startup, builds RAG index,
+and mounts all routers. Uses LangChain for LLM calls and
+LangGraph for the chat pipeline.
 """
 import json
 import os
@@ -75,13 +77,13 @@ async def startup():
     print("[RAG] Building hybrid search index...")
     build_index()
 
-    # Verify Groq API key is set
+    # Verify Groq API key is set (used by LangChain ChatGroq)
     if not os.getenv("GROQ_API_KEY"):
-        print("[WARN] GROQ_API_KEY not set! LLM features will fail.")
+        print("[WARN] GROQ_API_KEY not set! LangChain + Groq LLM features will fail.")
     else:
-        print("[OK] Groq API key configured")
+        print("[OK] LangChain + Groq API key configured")
 
-    print("[READY] DSA Coach API ready!")
+    print("[READY] DSA Coach API ready (LangChain + LangGraph)!")
 
 
 # ─── Mount routers ──────────────────────────────────────────────────────

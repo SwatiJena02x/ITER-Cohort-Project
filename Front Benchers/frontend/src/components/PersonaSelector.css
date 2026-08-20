@@ -7,13 +7,13 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--panel);
+  background: transparent;
   color: var(--ash);
   border: 1px solid var(--panel-line);
-  border-radius: var(--radius-md);
-  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
   font-family: var(--font-body);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   cursor: pointer;
   transition: all var(--transition-fast);
   white-space: nowrap;
@@ -21,19 +21,19 @@
 
 .persona-btn:hover {
   color: var(--fog);
-  border-color: var(--ember);
-  background: var(--panel-hover);
+  border-color: var(--persona-accent, var(--ash));
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .persona-btn.active {
-  color: var(--ember);
-  border-color: var(--ember);
-  background: rgba(255, 138, 61, 0.08);
-  box-shadow: 0 0 12px var(--ember-glow);
+  color: var(--white);
+  border-color: var(--persona-accent, var(--ash));
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--persona-accent, #888) 30%, transparent);
 }
 
 .persona-emoji {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .persona-name {

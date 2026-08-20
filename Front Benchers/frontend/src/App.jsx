@@ -36,15 +36,28 @@ function App() {
 
   // ─── Load problems list ─────────────────────────────────────────────
   useEffect(() => {
-    fetch(`${API_BASE}/problems`)
-      .then((r) => r.json())
-      .then((data) => {
-        setProblems(data);
-        if (data.length > 0) {
-          setSelectedProblem(data[0].id);
-        }
-      })
-      .catch((err) => console.error('Failed to load problems:', err));
+    let isMounted = true;
+    const loadProblems = () => {
+      fetch(`${API_BASE}/problems`)
+        .then((r) => {
+          if (!r.ok) throw new Error('Network response was not ok');
+          return r.json();
+        })
+        .then((data) => {
+          if (!isMounted) return;
+          setProblems(data);
+          if (data.length > 0) {
+            setSelectedProblem(data[0].id);
+          }
+        })
+        .catch((err) => {
+          if (!isMounted) return;
+          console.error('Failed to load problems, retrying in 2s...', err);
+          setTimeout(loadProblems, 2000);
+        });
+    };
+    loadProblems();
+    return () => { isMounted = false; };
   }, []);
 
   // ─── Load problem detail when selection changes ─────────────────────
