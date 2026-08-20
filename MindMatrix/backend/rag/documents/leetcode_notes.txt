@@ -1,0 +1,688 @@
+=========================================================
+LEETCODE PROBLEM KNOWLEDGE BASE
+=========================================================
+
+
+==========================
+1. Two Sum (LeetCode 1)
+==========================
+
+Problem:
+
+Find two numbers whose sum equals target.
+
+
+Common Approach:
+
+Brute Force:
+
+Check every pair.
+
+Time Complexity:
+
+O(n²)
+
+
+Optimal Approach:
+
+Use HashMap.
+
+
+Algorithm:
+
+Store visited numbers.
+
+For each number:
+
+difference = target - number
+
+Check if difference exists.
+
+
+
+Time Complexity:
+
+O(n)
+
+
+Space Complexity:
+
+O(n)
+
+
+
+Pattern:
+
+Hashing
+
+
+
+---------------------------------------------------------
+
+
+==========================
+2. Best Time To Buy And Sell Stock
+(LeetCode 121)
+==========================
+
+
+Problem:
+
+Find maximum profit from buying and selling stock.
+
+
+Approach:
+
+Track minimum buying price.
+
+Calculate profit every day.
+
+
+Formula:
+
+profit = current_price - minimum_price
+
+
+
+Time Complexity:
+
+O(n)
+
+
+Space Complexity:
+
+O(1)
+
+
+
+Pattern:
+
+One Pass Algorithm
+
+
+
+---------------------------------------------------------
+
+
+==========================
+3. Valid Parentheses
+(LeetCode 20)
+==========================
+
+
+Problem:
+
+Check if brackets are balanced.
+
+
+Approach:
+
+Use Stack.
+
+
+Rules:
+
+Opening bracket:
+
+Push into stack
+
+
+Closing bracket:
+
+Pop and compare
+
+
+
+Time Complexity:
+
+O(n)
+
+
+Space Complexity:
+
+O(n)
+
+
+
+Pattern:
+
+Stack
+
+
+
+---------------------------------------------------------
+
+
+==========================
+4. Merge Two Sorted Lists
+(LeetCode 21)
+==========================
+
+
+Problem:
+
+Merge two sorted linked lists.
+
+
+Approach:
+
+Use two pointers.
+
+
+Compare nodes.
+
+Attach smaller node.
+
+
+
+Time Complexity:
+
+O(n+m)
+
+
+Space Complexity:
+
+O(1)
+
+
+
+Pattern:
+
+Linked List Two Pointer
+
+
+
+---------------------------------------------------------
+
+
+==========================
+5. Binary Tree Traversal
+==========================
+
+
+Types:
+
+Preorder:
+
+Root Left Right
+
+
+Inorder:
+
+Left Root Right
+
+
+Postorder:
+
+Left Right Root
+
+
+Level Order:
+
+BFS traversal
+
+
+
+Pattern:
+
+Tree DFS/BFS
+
+
+
+---------------------------------------------------------
+
+
+==========================
+6. Maximum Depth Of Binary Tree
+(LeetCode 104)
+==========================
+
+
+Approach:
+
+Use recursion.
+
+
+Formula:
+
+
+depth = 1 + max(left_depth,right_depth)
+
+
+
+Time Complexity:
+
+O(n)
+
+
+Space Complexity:
+
+O(h)
+
+
+
+Pattern:
+
+Tree Recursion
+
+
+
+---------------------------------------------------------
+
+
+==========================
+7. Number Of Islands
+(LeetCode 200)
+==========================
+
+
+Problem:
+
+Count connected islands.
+
+
+Approach:
+
+DFS/BFS traversal.
+
+
+Steps:
+
+1. Find land
+
+2. Run DFS
+
+3. Mark visited
+
+
+
+Time Complexity:
+
+O(m*n)
+
+
+Space Complexity:
+
+O(m*n)
+
+
+
+Pattern:
+
+Graph DFS
+
+
+
+---------------------------------------------------------
+
+
+==========================
+8. Longest Substring Without
+Repeating Characters
+(LeetCode 3)
+==========================
+
+
+Problem:
+
+Find longest substring without duplicate characters.
+
+
+Approach:
+
+Sliding Window + HashSet
+
+
+Maintain:
+
+Left pointer
+
+Right pointer
+
+
+
+Time Complexity:
+
+O(n)
+
+
+Space Complexity:
+
+O(n)
+
+
+
+Pattern:
+
+Sliding Window
+
+
+
+---------------------------------------------------------
+
+
+==========================
+9. Maximum Subarray
+(LeetCode 53)
+==========================
+
+
+Problem:
+
+Find contiguous subarray with maximum sum.
+
+
+Approach:
+
+Kadane Algorithm.
+
+
+Formula:
+
+
+current_sum =
+max(number,
+current_sum + number)
+
+
+
+Time Complexity:
+
+O(n)
+
+
+Space Complexity:
+
+O(1)
+
+
+
+Pattern:
+
+Dynamic Programming
+
+
+
+---------------------------------------------------------
+
+
+==========================
+10. Climbing Stairs
+(LeetCode 70)
+==========================
+
+
+Problem:
+
+Number of ways to reach nth stair.
+
+
+Approach:
+
+Dynamic Programming.
+
+
+State:
+
+dp[i] = dp[i-1] + dp[i-2]
+
+
+
+Time Complexity:
+
+O(n)
+
+
+Space Complexity:
+
+O(1)
+
+
+
+Pattern:
+
+DP
+
+
+
+---------------------------------------------------------
+
+
+==========================
+11. Coin Change
+(LeetCode 322)
+==========================
+
+
+Problem:
+
+Minimum coins required for amount.
+
+
+Approach:
+
+Dynamic Programming.
+
+
+State:
+
+minimum coins for every amount.
+
+
+
+Time Complexity:
+
+O(amount * coins)
+
+
+Space Complexity:
+
+O(amount)
+
+
+
+Pattern:
+
+DP
+
+
+
+---------------------------------------------------------
+
+
+==========================
+12. Course Schedule
+(LeetCode 207)
+==========================
+
+
+Problem:
+
+Detect cycle in dependency graph.
+
+
+Approach:
+
+Topological Sort.
+
+
+Use:
+
+BFS + Indegree
+
+
+
+Time Complexity:
+
+O(V+E)
+
+
+
+Pattern:
+
+Graph
+
+
+
+---------------------------------------------------------
+
+
+==========================
+13. Kth Largest Element
+==========================
+
+
+Problem:
+
+Find kth largest number.
+
+
+Approach:
+
+Heap / Priority Queue.
+
+
+Maintain min heap of size k.
+
+
+
+Time Complexity:
+
+O(n log k)
+
+
+
+Pattern:
+
+Heap
+
+
+
+---------------------------------------------------------
+
+
+==========================
+14. LRU Cache
+(LeetCode 146)
+==========================
+
+
+Problem:
+
+Design cache with O(1) operations.
+
+
+Data Structures:
+
+HashMap
+
+Doubly Linked List
+
+
+
+Operations:
+
+get()
+
+put()
+
+
+
+Pattern:
+
+Design + Hashing
+
+
+
+---------------------------------------------------------
+
+
+==========================
+15. Word Search
+(LeetCode 79)
+==========================
+
+
+Problem:
+
+Find word in character grid.
+
+
+Approach:
+
+Backtracking DFS.
+
+
+
+Steps:
+
+Choose
+
+Explore
+
+Undo
+
+
+
+Time Complexity:
+
+O(m*n*4^L)
+
+
+
+Pattern:
+
+Backtracking
+
+
+
+---------------------------------------------------------
+
+
+==========================
+Problem Solving Strategy
+==========================
+
+
+Always follow:
+
+
+Step 1:
+
+Understand problem
+
+
+Step 2:
+
+Analyze constraints
+
+
+Step 3:
+
+Think brute force
+
+
+Step 4:
+
+Optimize
+
+
+Step 5:
+
+Write code
+
+
+Step 6:
+
+Dry run
+
+
+Step 7:
+
+Analyze complexity
+
+
+
+=========================================================
+END OF LEETCODE NOTES
+=========================================================

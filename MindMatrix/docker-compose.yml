@@ -1,0 +1,42 @@
+
+
+services:
+
+  # ==========================================================
+  # BACKEND
+  # ==========================================================
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: dsa-coach-backend
+
+    env_file:
+      - ./backend/.env
+
+    ports:
+      - "8000:8000"
+
+    restart: unless-stopped
+
+
+  # ==========================================================
+  # FRONTEND
+  # ==========================================================
+
+  frontend:
+    build:
+      context: ./frontend/frontend
+      dockerfile: Dockerfile
+
+    container_name: dsa-coach-frontend
+
+    ports:
+      - "5173:80"
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped

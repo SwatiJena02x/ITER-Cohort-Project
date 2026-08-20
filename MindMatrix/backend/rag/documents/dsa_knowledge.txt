@@ -1,0 +1,383 @@
+=========================================================
+DSA KNOWLEDGE BASE
+=========================================================
+
+==========================
+Arrays
+==========================
+
+An array stores elements in contiguous memory.
+
+Common Operations:
+- Traversal
+- Searching
+- Sorting
+- Prefix Sum
+- Sliding Window
+- Two Pointer
+
+Time Complexity:
+Access : O(1)
+Search : O(n)
+Insert : O(n)
+Delete : O(n)
+
+---------------------------------------------------------
+
+==========================
+Hash Map
+==========================
+
+HashMap provides average O(1) lookup.
+
+Used for:
+
+- Two Sum
+- Frequency Counting
+- Duplicate Detection
+- Group Anagrams
+- Longest Consecutive Sequence
+
+Advantages:
+
+- Fast lookup
+- Efficient searching
+
+---------------------------------------------------------
+
+==========================
+Stack
+==========================
+
+LIFO (Last In First Out)
+
+Applications:
+
+- Balanced Parentheses
+- Next Greater Element
+- Expression Evaluation
+- Monotonic Stack
+
+Operations:
+
+Push : O(1)
+
+Pop : O(1)
+
+Peek : O(1)
+
+---------------------------------------------------------
+
+==========================
+Queue
+==========================
+
+FIFO (First In First Out)
+
+Applications:
+
+- BFS
+- Scheduling
+- Producer Consumer
+
+Operations:
+
+Enqueue : O(1)
+
+Dequeue : O(1)
+
+---------------------------------------------------------
+
+==========================
+Linked List
+==========================
+
+Types:
+
+- Singly Linked List
+- Doubly Linked List
+- Circular Linked List
+
+Advantages:
+
+Efficient insertion and deletion.
+
+---------------------------------------------------------
+
+==========================
+Trees
+==========================
+
+Binary Tree
+
+Binary Search Tree
+
+AVL Tree
+
+Heap
+
+Traversal:
+
+Preorder
+
+Inorder
+
+Postorder
+
+Level Order
+
+Applications:
+
+Hierarchy
+
+Searching
+
+Expression Tree
+
+---------------------------------------------------------
+
+==========================
+Graphs
+==========================
+
+Representation:
+
+Adjacency List
+
+Adjacency Matrix
+
+Algorithms:
+
+DFS
+
+BFS
+
+Topological Sort
+
+Dijkstra
+
+Bellman Ford
+
+Floyd Warshall
+
+Union Find
+
+Minimum Spanning Tree
+
+---------------------------------------------------------
+
+==========================
+Binary Search
+==========================
+
+Use only when search space is sorted.
+
+Time Complexity:
+
+O(log n)
+
+Applications:
+
+Lower Bound
+
+Upper Bound
+
+Search on Answer
+
+---------------------------------------------------------
+
+==========================
+Sliding Window
+==========================
+
+Used for:
+
+Maximum Sum Subarray
+
+Longest Substring
+
+Minimum Window Substring
+
+Time Complexity:
+
+Usually O(n)
+
+---------------------------------------------------------
+
+==========================
+Two Pointer
+==========================
+
+Works mainly on sorted arrays.
+
+Applications:
+
+Pair Sum
+
+Remove Duplicates
+
+Container With Most Water
+
+Time Complexity:
+
+O(n)
+
+---------------------------------------------------------
+
+==========================
+Dynamic Programming
+==========================
+
+Idea:
+
+Store previous results.
+
+Avoid repeated computation.
+
+Applications:
+
+Fibonacci
+
+Knapsack
+
+Coin Change
+
+House Robber
+
+Longest Common Subsequence
+
+Longest Increasing Subsequence
+
+---------------------------------------------------------
+
+==========================
+Greedy
+==========================
+
+Choose locally optimal solution.
+
+Applications:
+
+Activity Selection
+
+Huffman Coding
+
+Jump Game
+
+Gas Station
+
+---------------------------------------------------------
+
+==========================
+Backtracking
+==========================
+
+Try all possibilities.
+
+Undo previous choices.
+
+Applications:
+
+N Queens
+
+Sudoku
+
+Permutation
+
+Combination Sum
+
+---------------------------------------------------------
+
+==========================
+Recursion
+==========================
+
+A function calling itself.
+
+Always define:
+
+Base Case
+
+Recursive Case
+
+---------------------------------------------------------
+
+==========================
+Time Complexity Guide
+==========================
+
+Excellent:
+
+O(1)
+
+O(log n)
+
+Good:
+
+O(n)
+
+Acceptable:
+
+O(n log n)
+
+Slow:
+
+O(n²)
+
+Very Slow:
+
+O(n³)
+
+Exponential:
+
+O(2ⁿ)
+
+Factorial:
+
+O(n!)
+
+---------------------------------------------------------
+
+==========================
+Space Complexity Guide
+==========================
+
+O(1)
+
+Constant memory
+
+O(n)
+
+Extra array
+
+HashMap
+
+Recursion Stack
+
+---------------------------------------------------------
+
+==========================
+Interview Tips
+==========================
+
+Always explain:
+
+1. Brute Force
+
+2. Better Approach
+
+3. Optimal Solution
+
+4. Time Complexity
+
+5. Space Complexity
+
+6. Edge Cases
+
+7. Dry Run
+
+8. Optimization
+
+=========================================================
+END OF KNOWLEDGE BASE
+=========================================================

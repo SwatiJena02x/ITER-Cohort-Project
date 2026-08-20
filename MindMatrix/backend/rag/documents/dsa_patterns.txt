@@ -1,0 +1,447 @@
+=========================================================
+DSA PATTERNS KNOWLEDGE BASE
+=========================================================
+
+
+==========================
+1. Two Pointer Pattern
+==========================
+
+Used when working with:
+
+- Sorted arrays
+- Pair searching
+- Removing duplicates
+
+
+Common Problems:
+
+- Two Sum II
+- Container With Most Water
+- Remove Duplicates From Sorted Array
+
+
+Approach:
+
+Maintain two pointers:
+
+left = start
+
+right = end
+
+
+Move pointers based on condition.
+
+
+Time Complexity:
+
+O(n)
+
+
+Space Complexity:
+
+O(1)
+
+
+
+---------------------------------------------------------
+
+
+==========================
+2. Sliding Window Pattern
+==========================
+
+Used for:
+
+- Subarrays
+- Substrings
+- Continuous sequences
+
+
+Types:
+
+Fixed Window:
+
+Example:
+Maximum sum of size K
+
+
+Variable Window:
+
+Example:
+Longest substring without repeating characters
+
+
+Technique:
+
+Expand window
+
+Shrink window when condition fails
+
+
+Time Complexity:
+
+O(n)
+
+
+
+---------------------------------------------------------
+
+
+==========================
+3. Hashing Pattern
+==========================
+
+Used for:
+
+- Fast lookup
+- Frequency counting
+- Duplicate checking
+
+
+Data Structures:
+
+HashMap
+
+HashSet
+
+
+Common Problems:
+
+Two Sum
+
+Group Anagrams
+
+Longest Consecutive Sequence
+
+
+Average Lookup:
+
+O(1)
+
+
+
+---------------------------------------------------------
+
+
+==========================
+4. Binary Search Pattern
+==========================
+
+Requirement:
+
+Search space should be sorted.
+
+
+Applications:
+
+- Searching element
+- Finding minimum/maximum answer
+- Optimization problems
+
+
+Complexity:
+
+O(log n)
+
+
+
+---------------------------------------------------------
+
+
+==========================
+5. Fast and Slow Pointer
+==========================
+
+Also called:
+
+Floyd Cycle Detection
+
+
+Used for:
+
+- Cycle detection
+- Finding middle node
+- Linked list problems
+
+
+Examples:
+
+Linked List Cycle
+
+Happy Number
+
+
+Complexity:
+
+O(n)
+
+
+
+---------------------------------------------------------
+
+
+==========================
+6. Depth First Search Pattern
+==========================
+
+DFS explores deeply before backtracking.
+
+
+Used in:
+
+- Trees
+- Graphs
+- Backtracking
+
+
+Applications:
+
+Tree Traversal
+
+Connected Components
+
+Path Finding
+
+
+
+---------------------------------------------------------
+
+
+==========================
+7. Breadth First Search Pattern
+==========================
+
+BFS explores level by level.
+
+
+Used for:
+
+- Shortest path
+- Level order traversal
+
+
+Applications:
+
+Binary Tree Level Order
+
+Shortest Path in Unweighted Graph
+
+
+Complexity:
+
+O(V+E)
+
+
+
+---------------------------------------------------------
+
+
+==========================
+8. Dynamic Programming Pattern
+==========================
+
+Use when:
+
+- Overlapping subproblems
+- Optimal substructure
+
+
+Steps:
+
+1. Define state
+
+2. Find transition
+
+3. Set base case
+
+
+Types:
+
+Memoization
+
+Tabulation
+
+
+
+---------------------------------------------------------
+
+
+==========================
+9. Backtracking Pattern
+==========================
+
+Used when we need all possible solutions.
+
+
+Steps:
+
+1. Choose
+
+2. Explore
+
+3. Unchoose
+
+
+Problems:
+
+N Queens
+
+Permutations
+
+Subsets
+
+Sudoku
+
+
+
+---------------------------------------------------------
+
+
+==========================
+10. Monotonic Stack Pattern
+==========================
+
+Used for:
+
+- Next greater element
+- Next smaller element
+
+
+Problems:
+
+Daily Temperatures
+
+Largest Rectangle Histogram
+
+
+Complexity:
+
+O(n)
+
+
+
+---------------------------------------------------------
+
+
+==========================
+11. Heap / Priority Queue Pattern
+==========================
+
+Used for:
+
+- Top K elements
+- Scheduling
+- Minimum/Maximum extraction
+
+
+Problems:
+
+K Largest Elements
+
+Merge K Sorted Lists
+
+
+Complexity:
+
+O(n log k)
+
+
+
+---------------------------------------------------------
+
+
+==========================
+12. Greedy Pattern
+==========================
+
+Choose best option at current step.
+
+
+Problems:
+
+Activity Selection
+
+Jump Game
+
+Interval Scheduling
+
+
+
+---------------------------------------------------------
+
+
+==========================
+13. Prefix Sum Pattern
+==========================
+
+Used for:
+
+Range sum queries.
+
+
+Formula:
+
+prefix[i] = prefix[i-1] + array[i]
+
+
+Applications:
+
+Subarray Sum
+
+Range Query
+
+
+
+---------------------------------------------------------
+
+
+==========================
+14. Union Find Pattern
+==========================
+
+Used for:
+
+- Connected components
+- Cycle detection
+
+
+Operations:
+
+Find
+
+Union
+
+
+Complexity:
+
+Almost O(1)
+
+
+
+---------------------------------------------------------
+
+
+==========================
+15. Trie Pattern
+==========================
+
+Used for:
+
+- Prefix searching
+- Dictionary problems
+
+
+Applications:
+
+Autocomplete
+
+Word Search
+
+Search Suggestions
+
+
+
+=========================================================
+END OF DSA PATTERNS
+=========================================================

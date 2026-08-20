@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Caveat:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-board-bg text-board-ink font-body antialiased;
+}
+
+/* subtle graph-paper grid used behind hero / whiteboard panels */
+.whiteboard {
+  background-color: #FFFFFF;
+  background-image:
+    linear-gradient(#E7E4D8 1px, transparent 1px),
+    linear-gradient(90deg, #E7E4D8 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.marker-underline {
+  background-image: linear-gradient(120deg, currentColor 0%, currentColor 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 6px;
+  background-position: 0 88%;
+}
+
+/* visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid #2B4FE0;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
