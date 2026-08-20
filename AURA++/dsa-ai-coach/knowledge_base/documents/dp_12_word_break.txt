@@ -1,0 +1,29 @@
+TITLE: Word Break
+
+Problem Statement:
+Determine whether a string can be segmented into dictionary words.
+
+Core Idea:
+Check whether a valid dictionary word can end at each position.
+
+DP State:
+dp[i] = whether the prefix of length i can be segmented.
+
+Base Case:
+dp[0] = True.
+
+Transition:
+dp[i] is true if there exists j < i such that dp[j] is true and
+s[j:i] is in the dictionary.
+
+Time Complexity:
+Typically O(n^2) substring checks, depending on implementation.
+
+Space Complexity:
+O(n).
+
+Common Mistakes:
+Checking dictionary membership inefficiently or mishandling empty prefixes.
+
+Key Takeaway:
+Prefix-based state definitions work well for string segmentation.

@@ -1,0 +1,40 @@
+{
+  "id": "valid-anagram",
+  "leetcode_id": 242,
+  "title": "Valid Anagram",
+  "difficulty": "Easy",
+  "description": "Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`, and `false` otherwise.\n\nAn anagram is a word or phrase formed by rearranging the letters of a different word or phrase, using all the original letters exactly once.\n\n**Example 1:**\n```\nInput: s = \"anagram\", t = \"nagaram\"\nOutput: true\n```\n\n**Example 2:**\n```\nInput: s = \"rat\", t = \"car\"\nOutput: false\n```\n\n**Constraints:**\n- 1 <= s.length, t.length <= 5 * 10^4\n- s and t consist of lowercase English letters.",
+  "function_signature": "def is_anagram(s: str, t: str) -> bool:",
+  "starter_code": "def is_anagram(s, t):\n    # Write your solution here\n    pass",
+  "test_cases": [
+    {"input": {"s": "anagram", "t": "nagaram"}, "expected": true},
+    {"input": {"s": "rat", "t": "car"}, "expected": false},
+    {"input": {"s": "listen", "t": "silent"}, "expected": true},
+    {"input": {"s": "hello", "t": "world"}, "expected": false}
+  ],
+  "brute_force": {
+    "approach": "Sort both strings and compare them",
+    "complexity": "O(n log n) time, O(n) space"
+  },
+  "optimal": {
+    "approach": "Count character frequencies using a hash map (or array of 26), compare counts",
+    "complexity": "O(n) time, O(1) space (bounded by alphabet size)",
+    "key_insight": "Two strings are anagrams if and only if their character frequency distributions are identical — no need to sort"
+  },
+  "optimal_solutions": [
+    "from collections import Counter\ndef is_anagram(s, t):\n    return Counter(s) == Counter(t)",
+    "def is_anagram(s, t):\n    if len(s) != len(t):\n        return False\n    counts = {}\n    for char in s:\n        counts[char] = counts.get(char, 0) + 1\n    for char in t:\n        if char not in counts or counts[char] == 0:\n            return False\n        counts[char] -= 1\n    return True"
+  ],
+  "anti_patterns": [
+    {
+      "rule": "uses_sorted_for_comparison",
+      "description": "Using sorted() to sort both strings before comparing — works but is suboptimal",
+      "explanation": "Sorting is O(n log n). Counting character frequencies with a dictionary or Counter is O(n) and more efficient."
+    }
+  ],
+  "hints": [
+    "Two strings are anagrams if they have exactly the same characters in exactly the same quantities. What's the fastest way to check that?",
+    "Count how many times each character appears in both strings. If the counts match, they're anagrams.",
+    "Use a dictionary (or collections.Counter): count chars in s, then subtract counts for chars in t. If all counts are zero, return True."
+  ]
+}

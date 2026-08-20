@@ -1,0 +1,40 @@
+{
+  "id": "valid-parentheses",
+  "leetcode_id": 20,
+  "title": "Valid Parentheses",
+  "difficulty": "Easy",
+  "description": "Given a string `s` containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid.\n\nAn input string is valid if:\n1. Open brackets must be closed by the same type of brackets.\n2. Open brackets must be closed in the correct order.\n3. Every close bracket has a corresponding open bracket of the same type.\n\n**Example 1:**\n```\nInput: s = \"()\"\nOutput: true\n```\n\n**Example 2:**\n```\nInput: s = \"()[]{}\"\nOutput: true\n```\n\n**Example 3:**\n```\nInput: s = \"(]\"\nOutput: false\n```\n\n**Constraints:**\n- 1 <= s.length <= 10^4\n- s consists of parentheses only `'()[]{}'`.",
+  "function_signature": "def is_valid(s: str) -> bool:",
+  "starter_code": "def is_valid(s):\n    # Write your solution here\n    pass",
+  "test_cases": [
+    {"input": {"s": "()"}, "expected": true},
+    {"input": {"s": "()[]{}"}, "expected": true},
+    {"input": {"s": "(]"}, "expected": false},
+    {"input": {"s": "({[]})"}, "expected": true},
+    {"input": {"s": "((("}, "expected": false}
+  ],
+  "brute_force": {
+    "approach": "Repeatedly replace '()', '[]', '{}' with empty string until no more replacements can be made, then check if string is empty",
+    "complexity": "O(n^2) time in the worst case, O(n) space"
+  },
+  "optimal": {
+    "approach": "Use a stack: push opening brackets, pop and check matching when closing bracket encountered",
+    "complexity": "O(n) time, O(n) space",
+    "key_insight": "A stack naturally enforces the 'last opened must be first closed' rule"
+  },
+  "optimal_solutions": [
+    "def is_valid(s):\n    stack = []\n    mapping = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in mapping:\n            top = stack.pop() if stack else '#'\n            if mapping[char] != top:\n                return False\n        else:\n            stack.append(char)\n    return not stack"
+  ],
+  "anti_patterns": [
+    {
+      "rule": "string_replace_loop",
+      "description": "Using str.replace() in a while loop to remove bracket pairs — inefficient brute force approach",
+      "explanation": "Repeatedly scanning and replacing substrings is O(n^2) in the worst case. A stack lets you validate the entire string in a single O(n) pass."
+    }
+  ],
+  "hints": [
+    "Think about what data structure naturally handles 'last in, first out' — the same order brackets need to be closed in.",
+    "A stack is perfect here: push every opening bracket, and when you see a closing bracket, pop and check if it matches.",
+    "Create a dict mapping closing→opening brackets. For each char: if it's opening, push to stack. If closing, pop from stack and check if it matches. Return True if stack is empty at the end."
+  ]
+}

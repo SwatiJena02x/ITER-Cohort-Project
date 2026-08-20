@@ -1,0 +1,26 @@
+TITLE: Unbounded Knapsack
+
+Problem Statement:
+Maximize value with a capacity when each item can be selected unlimited times.
+
+Core Idea:
+Unlike 0/1 Knapsack, an item can be reused.
+
+DP State:
+dp[w] = maximum value achievable for capacity w.
+
+Transition:
+dp[w] = max(dp[w], dp[w-weight] + value).
+
+Time Complexity:
+O(n * capacity).
+
+Space Complexity:
+O(capacity).
+
+Key Difference:
+In 0/1 Knapsack each item is used at most once.
+In Unbounded Knapsack items may be reused.
+
+Key Takeaway:
+Loop direction matters when using a one-dimensional DP array.

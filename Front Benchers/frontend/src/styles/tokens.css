@@ -1,0 +1,108 @@
+/* ─── DSA Coach Design Tokens ─────────────────────────────────────────── */
+/* Intentional dark theme — cold blue undertone, not flat grey             */
+/* Color is feedback: ember=thinking, alert=roast, signal=success          */
+
+:root {
+  /* ─── Colors ─── */
+  --ink: #0A0C10;
+  --panel: #14171F;
+  --panel-line: #242836;
+  --ember: #FF8A3D;
+  --signal: #4FD8B5;
+  --alert: #FF5C5C;
+  --ash: #9AA3B2;
+  --fog: #E7E9EE;
+
+  /* ─── Derived colors ─── */
+  --ember-glow: rgba(255, 138, 61, 0.25);
+  --signal-glow: rgba(79, 216, 181, 0.25);
+  --alert-glow: rgba(255, 92, 92, 0.25);
+  --panel-hover: #1A1E2A;
+  --panel-active: #1E2233;
+
+  /* ─── Typography ─── */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'Inter', sans-serif;
+
+  /* ─── Spacing ─── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* ─── Radius ─── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* ─── Transitions ─── */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 500ms ease;
+}
+
+/* ─── Global resets ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--ink);
+  color: var(--fog);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── Scrollbar styling ─── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--panel-line);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ash);
+}
+
+/* ─── Focus states ─── */
+*:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 2px;
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: var(--ember-glow);
+  color: var(--fog);
+}

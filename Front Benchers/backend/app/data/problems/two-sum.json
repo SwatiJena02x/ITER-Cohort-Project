@@ -1,0 +1,92 @@
+{
+  "id": "two-sum",
+  "leetcode_id": 1,
+  "title": "Two Sum",
+  "difficulty": "Easy",
+  "description": "Given an array of integers `nums` and an integer `target`, return the indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\n\nYou can return the answer in any order.\n\n**Example 1:**\n```\nInput: nums = [2,7,11,15], target = 9\nOutput: [0,1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].\n```\n\n**Example 2:**\n```\nInput: nums = [3,2,4], target = 6\nOutput: [1,2]\n```\n\n**Constraints:**\n- 2 <= nums.length <= 10^4\n- -10^9 <= nums[i] <= 10^9\n- Only one valid answer exists.",
+  "function_signature": "def two_sum(nums: list[int], target: int) -> list[int]:",
+  "starter_code": "def two_sum(nums, target):\n    # Write your solution here\n    pass",
+  "test_cases": [
+    {
+      "input": {
+        "nums": [
+          2,
+          7,
+          11,
+          15
+        ],
+        "target": 9
+      },
+      "expected": [
+        0,
+        1
+      ]
+    },
+    {
+      "input": {
+        "nums": [
+          3,
+          2,
+          4
+        ],
+        "target": 6
+      },
+      "expected": [
+        1,
+        2
+      ]
+    },
+    {
+      "input": {
+        "nums": [
+          3,
+          3
+        ],
+        "target": 6
+      },
+      "expected": [
+        0,
+        1
+      ]
+    },
+    {
+      "input": {
+        "nums": [
+          0,
+          4,
+          3,
+          0
+        ],
+        "target": 7
+      },
+      "expected": [
+        1,
+        2
+      ]
+    }
+  ],
+  "brute_force": {
+    "approach": "Nested loop comparing every pair of elements",
+    "complexity": "O(n^2) time, O(1) space"
+  },
+  "optimal": {
+    "approach": "Single pass with a hash map storing seen values and their indices",
+    "complexity": "O(n) time, O(n) space",
+    "key_insight": "For each number, check if (target - number) was already seen instead of scanning ahead"
+  },
+  "optimal_solutions": [
+    "def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        if target - num in seen:\n            return [seen[target - num], i]\n        seen[num] = i\n    return []"
+  ],
+  "anti_patterns": [
+    {
+      "rule": "nested_loop_over_same_array",
+      "description": "Two nested for-loops both iterating over the input — classic brute force signal",
+      "explanation": "This checks every pair, which is O(n^2). You don't need to re-scan the array if you remember what you've already seen using a hash map."
+    }
+  ],
+  "hints": [
+    "What if you didn't need to look ahead at all — only back at what you've already seen?",
+    "A hash map (dictionary) storing each number's index as you go lets you check for its complement instantly.",
+    "For each num in nums: if (target - num) is already a key in your dict, return [dict[target-num], current_index]. Otherwise, add num: index to the dict."
+  ]
+}

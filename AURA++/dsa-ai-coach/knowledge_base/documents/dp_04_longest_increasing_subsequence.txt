@@ -1,0 +1,35 @@
+TITLE: Longest Increasing Subsequence
+
+Problem Statement:
+Given an integer array, find the length of the longest strictly
+increasing subsequence.
+
+Core Idea:
+For every element, determine the longest increasing subsequence
+ending at that element.
+
+DP State:
+dp[i] = length of the longest increasing subsequence ending at i.
+
+Base Case:
+dp[i] = 1 for every i.
+
+Transition:
+If nums[j] < nums[i], then:
+dp[i] = max(dp[i], dp[j] + 1).
+
+Example:
+nums = [10, 9, 2, 5, 3, 7, 101, 18]
+Answer = 4.
+
+Time Complexity:
+O(n^2) for the basic DP solution.
+
+Space Complexity:
+O(n).
+
+Optimization:
+The problem can be solved in O(n log n) using patience sorting and binary search.
+
+Key Takeaway:
+Think about the subsequence ending at each index.

@@ -1,0 +1,27 @@
+TITLE: Palindromic Substrings
+
+Problem Statement:
+Count the number of substrings that are palindromes.
+
+Core Idea:
+A substring is a palindrome if its end characters match and the inside
+is also a palindrome.
+
+DP State:
+dp[i][j] = whether substring i..j is a palindrome.
+
+Base Cases:
+Length 1 substrings are palindromes.
+Length 2 is a palindrome if both characters match.
+
+Transition:
+dp[i][j] = true if s[i] == s[j] and the inside is a palindrome.
+
+Time Complexity:
+O(n^2).
+
+Space Complexity:
+O(n^2) for the classic DP approach.
+
+Key Takeaway:
+Interval DP is useful when the state is defined by a left and right boundary.

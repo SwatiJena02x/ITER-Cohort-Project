@@ -1,0 +1,24 @@
+TITLE: Longest Common Subsequence
+
+Problem Statement:
+Given two strings, return the length of their longest common subsequence.
+
+Core Idea:
+Compare the current characters. If they match, extend the LCS.
+Otherwise, discard one character from one of the strings.
+
+DP State:
+dp[i][j] = LCS length for prefixes of lengths i and j.
+
+Transition:
+If chars match: 1 + dp[i-1][j-1].
+Otherwise: max(dp[i-1][j], dp[i][j-1]).
+
+Time Complexity:
+O(m*n).
+
+Space Complexity:
+O(m*n), or O(n) optimized.
+
+Key Takeaway:
+LCS is a classic two-dimensional string DP problem.

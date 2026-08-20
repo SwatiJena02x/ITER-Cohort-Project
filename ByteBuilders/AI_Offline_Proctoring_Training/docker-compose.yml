@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+
+    environment:
+      POSTGRES_DB: proctoring_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Ashish@123
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d proctoring_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+
+    
+
+    volumes:
+      - ollama_data:/root/.ollama
+
+  streamlit:
+    build: .
+    container_name: ai_proctoring
+
+    ports:
+      - "8501:8501"
+
+    env_file:
+      - .env
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+
+    volumes:
+      - ./data:/app/data
+
+volumes:
+  postgres_data:
+  ollama_data:

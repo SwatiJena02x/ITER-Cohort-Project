@@ -1,0 +1,26 @@
+TITLE: 0/1 Knapsack
+
+Problem Statement:
+Given items with weights and values and a capacity, maximize total value
+without exceeding capacity. Each item can be used at most once.
+
+Core Idea:
+For each item, choose whether to take it or skip it.
+
+DP State:
+dp[w] = maximum value achievable with capacity w.
+
+Transition:
+dp[w] = max(dp[w], dp[w-weight] + value).
+
+Time Complexity:
+O(n * capacity).
+
+Space Complexity:
+O(capacity) with one-dimensional optimization.
+
+Common Mistakes:
+Processing capacities in the wrong direction when using a one-dimensional DP array.
+
+Key Takeaway:
+0/1 means each item is either selected once or not selected.

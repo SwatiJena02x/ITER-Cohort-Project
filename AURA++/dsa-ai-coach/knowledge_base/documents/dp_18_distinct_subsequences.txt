@@ -1,0 +1,24 @@
+TITLE: Distinct Subsequences
+
+Problem Statement:
+Count how many distinct subsequences of string s equal string t.
+
+DP State:
+dp[i][j] = number of ways to form the first j characters of t using
+the first i characters of s.
+
+Transition:
+If characters match, include possibilities using or skipping s[i].
+Otherwise skip the current character.
+
+Time Complexity:
+O(m*n).
+
+Space Complexity:
+O(m*n), or O(n) optimized.
+
+Common Mistakes:
+Confusing subsequences with substrings.
+
+Key Takeaway:
+The transition often branches into take or skip.

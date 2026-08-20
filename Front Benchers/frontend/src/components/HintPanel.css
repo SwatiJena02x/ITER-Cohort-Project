@@ -1,0 +1,144 @@
+.hint-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  height: 100%;
+}
+
+/* ─── Tier progress ─── */
+.hint-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.hint-tier-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.tier-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--panel-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+}
+
+.tier-dot.unlocked {
+  border-color: var(--signal);
+  background: rgba(79, 216, 181, 0.15);
+}
+
+.tier-dot.current {
+  border-color: var(--ember);
+  box-shadow: 0 0 10px var(--ember-glow);
+}
+
+.tier-number {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ash);
+}
+
+.tier-dot.unlocked .tier-number { color: var(--signal); }
+.tier-dot.current .tier-number { color: var(--ember); }
+
+.hint-tier-label {
+  font-size: 0.78rem;
+  color: var(--ash);
+}
+
+/* ─── Tier descriptions ─── */
+.hint-descriptions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hint-level {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hint-level-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.tag-nudge { background: rgba(255, 138, 61, 0.12); color: var(--ember); }
+.tag-technique { background: rgba(79, 216, 181, 0.12); color: var(--signal); }
+.tag-solution { background: rgba(255, 92, 92, 0.12); color: var(--alert); }
+
+.hint-level-desc {
+  font-size: 0.75rem;
+  color: var(--ash);
+}
+
+/* ─── Hint history ─── */
+.hint-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.hint-item {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+.hint-tier-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--ember);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hint-text {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--fog);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+/* ─── Request button ─── */
+.btn-request-hint {
+  width: 100%;
+  padding: 10px 16px;
+  background: rgba(255, 138, 61, 0.1);
+  color: var(--ember);
+  border: 1px solid rgba(255, 138, 61, 0.3);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-request-hint:hover:not(:disabled) {
+  background: rgba(255, 138, 61, 0.18);
+  border-color: var(--ember);
+  box-shadow: 0 0 16px var(--ember-glow);
+}
+
+.btn-request-hint:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

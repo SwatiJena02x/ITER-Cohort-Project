@@ -1,0 +1,24 @@
+TITLE: Target Sum
+
+Problem Statement:
+Assign + or - to each number so that the resulting sum equals target.
+Count the number of valid assignments.
+
+Core Idea:
+This can be transformed into a subset-sum counting problem under
+appropriate conditions.
+
+DP State:
+dp[s] = number of ways to achieve sum s.
+
+Time Complexity:
+Depends on the transformed subset-sum range.
+
+Space Complexity:
+Typically O(target-like range).
+
+Common Mistakes:
+Ignoring impossible parity conditions or mishandling zeros.
+
+Key Takeaway:
+Many sign-assignment problems can be transformed into subset-sum problems.

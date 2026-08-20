@@ -1,0 +1,42 @@
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: dsa_backend
+
+    ports:
+      - "2024:2024"
+
+    env_file:
+      - .env
+
+    environment:
+      OLLAMA_HOST: http://host.docker.internal:11434
+      DB_HOST: host.docker.internal
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    restart: unless-stopped
+
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+
+    container_name: dsa_frontend
+
+    ports:
+      - "8501:8501"
+
+    environment:
+      BACKEND_URL: http://backend:2024
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
