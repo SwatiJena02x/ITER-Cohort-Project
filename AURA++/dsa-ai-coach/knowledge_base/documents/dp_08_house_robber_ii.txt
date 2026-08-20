@@ -1,0 +1,28 @@
+TITLE: House Robber II
+
+Problem Statement:
+Houses are arranged in a circle. Adjacent houses cannot both be robbed.
+
+Core Idea:
+Because the first and last houses are adjacent, solve two linear cases:
+1. Exclude the first house.
+2. Exclude the last house.
+
+DP State:
+Use the standard House Robber recurrence inside each linear range.
+
+Example:
+nums = [2, 3, 2]
+Answer = 3.
+
+Time Complexity:
+O(n).
+
+Space Complexity:
+O(1) with rolling variables.
+
+Common Mistakes:
+Applying the ordinary House Robber recurrence directly to the circular array.
+
+Key Takeaway:
+Circular DP problems are often split into two linear cases.

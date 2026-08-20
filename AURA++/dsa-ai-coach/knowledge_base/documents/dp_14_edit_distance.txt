@@ -1,0 +1,25 @@
+TITLE: Edit Distance
+
+Problem Statement:
+Find the minimum number of insertions, deletions, and substitutions
+needed to transform one string into another.
+
+DP State:
+dp[i][j] = minimum edits to transform the first i characters of
+one string into the first j characters of the other.
+
+Base Cases:
+Transforming an empty string requires insertions or deletions.
+
+Transition:
+If characters match, use dp[i-1][j-1].
+Otherwise use 1 + min(insert, delete, replace).
+
+Time Complexity:
+O(m*n).
+
+Space Complexity:
+O(m*n), or O(n).
+
+Key Takeaway:
+String transformation naturally maps to a two-dimensional DP state.

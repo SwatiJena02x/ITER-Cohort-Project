@@ -1,0 +1,41 @@
+TITLE: House Robber
+
+Problem Statement:
+Given an array of integers where nums[i] represents the money in
+the ith house, determine the maximum amount of money that can be
+robbed without robbing two adjacent houses.
+
+Core Idea:
+At every house, choose between skipping the current house or robbing it.
+
+DP State:
+dp[i] = maximum money that can be robbed from houses 0..i.
+
+Base Cases:
+dp[0] = nums[0].
+For the first two houses, dp[1] = max(nums[0], nums[1]).
+
+Transition:
+dp[i] = max(dp[i-1], dp[i-2] + nums[i]).
+
+Algorithm:
+Initialize the first one or two states and iterate through the array.
+
+Example:
+nums = [2, 7, 9, 3, 1]
+Answer = 12.
+
+Time Complexity:
+O(n).
+
+Space Complexity:
+O(n), or O(1) with rolling variables.
+
+Common Mistakes:
+Using adjacent houses together or mishandling arrays of size 0 or 1.
+
+Optimization:
+Only the previous two DP states are required, so O(1) extra space is possible.
+
+Key Takeaway:
+House Robber is a classic choose-or-skip dynamic programming problem.

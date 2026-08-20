@@ -1,0 +1,21 @@
+TITLE: Interleaving String
+
+Problem Statement:
+Determine whether a string s3 can be formed by interleaving s1 and s2
+while preserving the relative order of characters in each string.
+
+DP State:
+dp[i][j] = whether the first i characters of s1 and first j characters
+of s2 can form the first i+j characters of s3.
+
+Transition:
+Take the next character from s1 or s2 when it matches s3.
+
+Time Complexity:
+O(m*n).
+
+Space Complexity:
+O(m*n), or O(n).
+
+Key Takeaway:
+Use two indices to represent how much of each source string has been consumed.

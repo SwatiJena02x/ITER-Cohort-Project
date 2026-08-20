@@ -1,0 +1,106 @@
+HOUSE ROBBER - DYNAMIC PROGRAMMING
+
+Problem:
+
+You are given an integer array nums where nums[i] represents
+the amount of money stored in the ith house.
+
+You cannot rob two adjacent houses.
+
+Return the maximum amount of money you can rob without robbing
+two adjacent houses.
+
+Example:
+
+Input:
+nums = [2, 7, 9, 3, 1]
+
+Output:
+12
+
+Explanation:
+
+Rob house 1: 2
+Rob house 3: 9
+Rob house 5: 1
+
+Total = 2 + 9 + 1 = 12
+
+
+DYNAMIC PROGRAMMING APPROACH
+
+State:
+
+dp[i] represents the maximum amount of money that can be
+robbed from the first i houses.
+
+At every house there are two choices:
+
+1. Skip the current house.
+2. Rob the current house.
+
+If we skip the current house:
+
+dp[i - 1]
+
+If we rob the current house:
+
+dp[i - 2] + nums[i]
+
+Therefore:
+
+dp[i] = max(
+    dp[i - 1],
+    dp[i - 2] + nums[i]
+)
+
+
+BASE CASE
+
+dp[0] = 0
+
+For the first house:
+
+dp[1] = nums[0]
+
+
+TIME COMPLEXITY
+
+O(n)
+
+
+SPACE COMPLEXITY
+
+O(n)
+
+The space can be optimized to O(1) because we only need the
+previous two states.
+
+
+COMMON MISTAKES
+
+1. Robbing two adjacent houses.
+
+2. Incorrect base cases.
+
+3. Incorrectly defining dp[i].
+
+4. Using the current value instead of dp[i - 2] when robbing
+   the current house.
+
+5. Using unnecessary O(n) space when O(1) is possible.
+
+
+IMPORTANT CONCEPT
+
+The key idea is to identify the two choices at every house:
+
+SKIP:
+Use the previous answer.
+
+ROB:
+Use the answer from two houses before plus the current money.
+
+This creates the recurrence:
+
+dp[i] = max(dp[i - 1], dp[i - 2] + nums[i])

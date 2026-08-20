@@ -1,0 +1,26 @@
+TITLE: Unique Paths
+
+Problem Statement:
+Count the number of ways to move from the top-left to the bottom-right
+of an m x n grid, moving only right or down.
+
+Core Idea:
+Each cell can be reached from the cell above or the cell to the left.
+
+DP State:
+dp[r][c] = number of ways to reach cell (r, c).
+
+Base Case:
+First row and first column each have one way.
+
+Transition:
+dp[r][c] = dp[r-1][c] + dp[r][c-1].
+
+Time Complexity:
+O(m*n).
+
+Space Complexity:
+O(m*n), or O(n) with rolling rows.
+
+Key Takeaway:
+Grid movement problems often have local predecessor transitions.

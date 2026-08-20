@@ -1,0 +1,34 @@
+TITLE: Coin Change
+
+Problem Statement:
+Given coin denominations and a target amount, return the minimum
+number of coins required to make that amount. Return -1 if impossible.
+
+Core Idea:
+Build the answer for smaller amounts and reuse them.
+
+DP State:
+dp[a] = minimum number of coins needed to make amount a.
+
+Base Case:
+dp[0] = 0.
+
+Transition:
+dp[a] = min(dp[a], dp[a-coin] + 1) for every usable coin.
+
+Example:
+coins = [1, 2, 5], amount = 11
+Answer = 3 because 11 = 5 + 5 + 1.
+
+Time Complexity:
+O(amount * number_of_coins).
+
+Space Complexity:
+O(amount).
+
+Common Mistakes:
+Using an invalid initial value, ignoring unreachable amounts,
+or using a greedy approach when greedy is not guaranteed to work.
+
+Key Takeaway:
+Coin Change is a bottom-up one-dimensional dynamic programming problem.
