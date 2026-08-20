@@ -1,0 +1,67 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyd
+.venv/
+venv/
+env/
+
+# =========================
+# Environment & Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Node / React
+# =========================
+node_modules/
+dist/
+build/
+.vite/
+
+# =========================
+# Data
+# =========================
+data/raw/*
+data/processed/*
+
+# Keep folder structure in Git
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs / Temporary Files
+# =========================
+*.log
+*.tmp
+
+# =========================
+# Local databases / generated files
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# ChromaDB persistent storage
+# =========================
+backend/storage/*
+!backend/storage/chroma/
+backend/storage/chroma/*
+!backend/storage/chroma/.gitkeep
